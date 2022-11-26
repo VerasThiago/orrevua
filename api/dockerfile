@@ -1,0 +1,23 @@
+FROM golang:1.18-buster AS build
+
+WORKDIR /app
+
+ENV GO111MODULE=on
+
+COPY ./api ./api
+COPY ./shared ./shared
+
+RUN cd shared && go mod download
+
+RUN cd api && go mod download
+RUN cd api && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -mod=mod -o /go/bin/api main.go
+
+FROM alpine
+
+COPY --from=build /go/bin/api /app/
+COPY --from=build /app/api/.env /app/.env
+COPY --from=build /app/shared/.env /app/.env
+
+WORKDIR /app
+
+CMD ["./api"]
