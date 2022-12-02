@@ -10,6 +10,8 @@ require (
 	gorm.io/gorm v1.23.8
 )
 
+require github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
+
 require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
