@@ -41,7 +41,7 @@ func (l *LoginUserHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	if user, err = l.GetRepository().GetUserByEmail(request.Email); err != nil {
+	if user, err = l.GetRepository().GetUserByCPF(request.CPF); err != nil {
 		error_handler.HandleInternalServerError(context, err, l.GetLog())
 		return
 	}
@@ -54,7 +54,7 @@ func (l *LoginUserHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	if tokenString, err = auth.GenerateJWT(user.Email, user.Username, user.ID, l.GetSharedFlags().JwtKey, user.IsAdmin); err != nil {
+	if tokenString, err = auth.GenerateJWT(user.Email, user.Username, user.ID, user.CPF, l.GetSharedFlags().JwtKey, user.IsAdmin); err != nil {
 		error_handler.HandleInternalServerError(context, err, l.GetLog())
 		return
 	}

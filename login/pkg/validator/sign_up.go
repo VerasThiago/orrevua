@@ -16,6 +16,7 @@ func (s *SignUpRequest) Validate() []string {
 		"username": []string{"required", "alpha_dash"},
 		"email":    []string{"required", "email"},
 		"password": []string{"required"},
+		"cpf":		[]string{"required"},
 	}
 
 	options := govalidator.Options{
@@ -24,5 +25,5 @@ func (s *SignUpRequest) Validate() []string {
 	}
 
 	values := govalidator.New(options).ValidateStruct()
-	return validator.MergeUrlValues([]string{"name", "username", "email", "password"}, values)
+	return validator.MergeUrlValues([]string{"name", "username", "email", "password", "cpf"}, values)
 }

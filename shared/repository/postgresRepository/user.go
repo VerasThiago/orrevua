@@ -2,9 +2,9 @@ package postgresrepository
 
 import "github.com/verasthiago/tickets-generator/shared/models"
 
-func (p *PostgresRepository) GetUserByEmail(email string) (*models.User, error) {
+func (p *PostgresRepository) GetUserByCPF(cpf string) (*models.User, error) {
 	var user models.User
-	if record := p.db.Where("email = ?", email).First(&user); record.Error != nil {
+	if record := p.db.Where("cpf = ?", cpf).First(&user); record.Error != nil {
 		return nil, record.Error
 	}
 	return &user, nil

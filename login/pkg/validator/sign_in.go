@@ -6,13 +6,13 @@ import (
 )
 
 type SignInRequest struct {
-	Email    string `json:"email"`
+	CPF    	 string `json:"cpf"`
 	Password string `json:"password"`
 }
 
 func (s *SignInRequest) Validate() []string {
 	rules := govalidator.MapData{
-		"email":    []string{"required", "email"},
+		"cpf":      []string{"required"},
 		"password": []string{"required"},
 	}
 
@@ -22,5 +22,5 @@ func (s *SignInRequest) Validate() []string {
 	}
 
 	values := govalidator.New(options).ValidateStruct()
-	return validator.MergeUrlValues([]string{"email", "password"}, values)
+	return validator.MergeUrlValues([]string{"cpf", "password"}, values)
 }

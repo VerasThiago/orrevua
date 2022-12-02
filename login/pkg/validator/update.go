@@ -17,6 +17,7 @@ func (u *UpdateRequest) Validate() []string {
 		"username": []string{"alpha_dash"},
 		"email":    []string{"email"},
 		"password": []string{},
+		"cpf": 		[]string{"cpf"},
 	}
 
 	options := govalidator.Options{
@@ -25,5 +26,5 @@ func (u *UpdateRequest) Validate() []string {
 	}
 
 	values := govalidator.New(options).ValidateStruct()
-	return validator.MergeUrlValues([]string{"id", "name", "username", "email", "password"}, values)
+	return validator.MergeUrlValues([]string{"id", "name", "username", "email", "password", "cpf"}, values)
 }

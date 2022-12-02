@@ -3,7 +3,7 @@ package shared
 import "github.com/spf13/viper"
 
 const (
-	envFilePath = ".env"
+	envFilePath = "../shared/.env"
 	envFileName = "shared"
 	envFileType = "env"
 )

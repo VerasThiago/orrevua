@@ -44,5 +44,5 @@ func (c *CreateUserHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"email": request.Email, "username": request.Username})
+	context.JSON(http.StatusCreated, gin.H{"email": request.Email, "username": request.Username, "name": request.Name})
 }
