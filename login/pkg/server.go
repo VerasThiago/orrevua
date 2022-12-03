@@ -50,7 +50,7 @@ func (s *Server) Run() error {
 				apiV0User.POST("login", s.LoginAPI.Handler)
 				apiV0User.POST("forgot_password", s.ForgotPasswordAPI.Handler)
 				apiV0User.Use(s.AuthResetPasswordAPI.Handler()).PATCH("update_password", s.UpdatePasswordAPI.Handler)
-				apiV0User.POST("confirm_email", s.ConfirmEmailAPI.Handler)
+				apiV0User.GET("confirm_email", s.ConfirmEmailAPI.Handler)
 			}
 			apiV0Admin := apiV0.Group("/admin").Use(s.AdminAPI.Handler())
 			{
