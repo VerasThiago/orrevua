@@ -22,6 +22,7 @@ type SharedFlags struct {
 	SMTPEmailHost     string `mapstructure:"SMTP_HOST"`
 	SMTPEmailPort     string `mapstructure:"SMTP_PORT"`
 	JwtKey            string `mapstructure:"JWT_KEY"`
+	JwtKeyEmail       string `mapstructure:"JWT_KEY_PASSWORD"`
 }
 
 func (f *SharedFlags) InitFromViper() (*SharedFlags, error) {
