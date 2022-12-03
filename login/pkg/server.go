@@ -6,6 +6,7 @@ import (
 	"github.com/verasthiago/tickets-generator/login/pkg/handlers"
 	"github.com/verasthiago/tickets-generator/login/pkg/middlewares"
 	"github.com/verasthiago/tickets-generator/shared/errors"
+	shared_middlewares "github.com/verasthiago/tickets-generator/shared/middlewares"
 )
 
 type Server struct {
@@ -22,6 +23,7 @@ type Server struct {
 	ValidateTokenAPI     handlers.ValidateUserTokenAPI
 
 	AdminAPI middlewares.AuthUserAPI
+	CorsAPI  shared_middlewares.CORSAPI
 }
 
 func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
@@ -37,12 +39,16 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 
 	s.AuthResetPasswordAPI = new(middlewares.AuthResetPasswordHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 	s.AdminAPI = new(middlewares.AuthUserHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
+
+	s.CorsAPI = new(shared_middlewares.CORSHandler).InitFromFlags()
+
 	return s
 }
 
 func (s *Server) Run() error {
 
 	app := gin.Default()
+	app.Use(s.CorsAPI.Handler())
 	api := app.Group("/login")
 	{
 		apiV0 := api.Group("/v0")
