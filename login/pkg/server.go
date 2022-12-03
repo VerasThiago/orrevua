@@ -17,7 +17,7 @@ type Server struct {
 	ForgotPasswordAPI    handlers.ForgotPasswordAPI
 	UpdatePasswordAPI    handlers.UpdatePasswordAPI
 	AuthResetPasswordAPI middlewares.AuthResetPasswordAPI
-	VerifyEmailAPI      handlers.VerifyEmailAPI
+	VerifyEmailAPI       handlers.VerifyEmailAPI
 
 	AdminAPI middlewares.AuthUserAPI
 }
@@ -40,6 +40,7 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 func (s *Server) Run() error {
 
 	app := gin.Default()
+	app.Use(middlewares.CORSMiddleware())
 	api := app.Group("/login")
 	{
 		apiV0 := api.Group("/v0")
