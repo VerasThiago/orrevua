@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -46,6 +47,11 @@ func (l *LoginUserHandler) Handler(context *gin.Context) {
 
 	if user, err = l.GetRepository().GetUserByEmail(request.Email); err != nil {
 		error_handler.HandleInternalServerError(context, err, l.GetLog())
+		return
+	}
+
+	if !user.IsVerified {
+		error_handler.HandleInternalServerError(context, errors.New("unverified account"), l.GetLog())
 		return
 	}
 
