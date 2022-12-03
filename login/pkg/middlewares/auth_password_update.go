@@ -31,11 +31,7 @@ func (a *AuthResetPasswordHandler) Handler() gin.HandlerFunc {
 			context.Abort()
 			return
 		}
-<<<<<<< HEAD
 		err := auth.ValidateToken(tokenString, a.JwtKeyEmail)
-=======
-		err := auth.ValidateToken(tokenString, a.JwtKeyPassword)
->>>>>>> 80e3484 (create auth autenticator middleware)
 		if err != nil {
 			context.JSON(401, gin.H{"error": err.Error()})
 			context.Abort()
