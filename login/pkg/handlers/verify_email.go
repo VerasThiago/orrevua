@@ -26,13 +26,13 @@ func (c *VerifyEmailHandler) InitFromBuilder(builder builder.Builder) *VerifyEma
 func (c *VerifyEmailHandler) Handler(context *gin.Context) {
 	tokenString := context.GetHeader("Authorization")
 
-	user, err := auth.GetJWTClaimFromToken(tokenString, c.GetSharedFlags().JwtKeyEmail)
+	jwt, err := auth.GetJWTClaimFromToken(tokenString, c.GetSharedFlags().JwtKeyEmail)
 	if err != nil {
 		error_handler.HandleBadRequestError(context, err)
 		return
 	}
 
-	if err := c.GetRepository().VerifyUserAccountByID(user.ID); err != nil {
+	if err := c.GetRepository().VerifyUserAccountByID(jwt.User.ID); err != nil {
 		error_handler.HandleInternalServerError(context, err, c.GetLog())
 		return
 	}

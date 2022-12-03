@@ -47,7 +47,7 @@ func (a *AuthUserHandler) Handler() gin.HandlerFunc {
 			return
 		}
 
-		if !jwtClaim.IsAdmin {
+		if !jwtClaim.User.IsAdmin {
 			context.JSON(http.StatusUnauthorized, gin.H{"error": "user isn't admin"})
 			context.Abort()
 			return
