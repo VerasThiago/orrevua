@@ -32,6 +32,12 @@ type ForgotPasswordTemplateData struct {
 	Url   string
 }
 
+type ConfirmEmailTemplateData struct {
+	Email string
+	Title string
+	Token string
+}
+
 func (s *SMTP) SendInviteToUser(user models.User) error {
 	inviteTemplateData := InviteTemplateData{
 		Name:  user.Name,
@@ -86,6 +92,24 @@ func (s *SMTP) SendForgotPasswordURLToUserByEmail(user models.User, url string) 
 	return s.sendHtmlEmail(models.Email{
 		To:    user.Email,
 		Title: forgotPasswordTemplateData.Title,
+		Body:  *body,
+	})
+}
+
+func (s *SMTP) SendConfirmEmailToUser(user models.User, token string) error {
+	confirmEmailTemplateData := ConfirmEmailTemplateData{
+		Email: user.Email,
+		Title: CONFIRM_EMAIL_TITLE,
+		Token: token,
+	}
+
+	body, err := parseTemplate(confirmEmailTemplateData, CONFIRM_EMAIL_TEMPLATE_PATH)
+	if err != nil {
+		return err
+	}
+	return s.sendHtmlEmail(models.Email{
+		To:    user.Email,
+		Title: confirmEmailTemplateData.Title,
 		Body:  *body,
 	})
 }

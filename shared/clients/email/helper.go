@@ -16,6 +16,7 @@ import (
 const (
 	QR_CODE_TEMPLATE_PATH        = "../shared/templates/email.html"
 	RESET_PASSWORD_TEMPLATE_PATH = "../shared/templates/forgot_password.html"
+	CONFIRM_EMAIL_TEMPLATE_PATH  = "../shared/templates/confirm_email.html"
 	INVITE_TITLE                 = "Despedida Veras - Invite"
 	TICKETS_TILE                 = "Despedida Veras - Ingressos"
 	RESET_PASSOWRD_TITLE         = "Despedida Veras - Esqueci minha senha ?"
