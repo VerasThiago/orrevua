@@ -37,10 +37,6 @@ func (p *PostgresRepository) UpdateUserPasswordByEmail(email string, password st
 	return p.db.Model(&models.User{}).Where("email = ?", email).Update("password", user.Password).Error
 }
 
-func (p *PostgresRepository) GetUserByID(id string) (*models.User, error) {
-	var user models.User
-	if record := p.db.Where("id = ?", id).First(&user); record.Error != nil {
-		return nil, record.Error
-	}
-	return &user, nil
+func (p *PostgresRepository) UpdateConfirmedStatusByEmail(email string) error {
+	return p.db.Model(&models.User{}).Where("email = ?", email).Update("confirmed", true).Error
 }
