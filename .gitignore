@@ -1,3 +1,2 @@
 .hintrc
-shared/.env/shared.env
-login/.env/login.env
+*/.env/*.env
