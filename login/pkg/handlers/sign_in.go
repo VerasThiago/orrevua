@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
@@ -20,6 +21,8 @@ type LoginUserAPI interface {
 type LoginUserHandler struct {
 	builder.Builder
 }
+
+const SIGN_IN_TOKEN_EXPIRE_TIME = 1 * time.Hour
 
 func (l *LoginUserHandler) InitFromBuilder(builder builder.Builder) *LoginUserHandler {
 	l.Builder = builder
@@ -54,7 +57,7 @@ func (l *LoginUserHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	if tokenString, err = auth.GenerateJWT(user.Email, user.Username, user.ID, l.GetSharedFlags().JwtKey, user.IsAdmin); err != nil {
+	if tokenString, err = auth.GenerateJWT(user, l.GetSharedFlags().JwtKey, time.Now().Add(SIGN_IN_TOKEN_EXPIRE_TIME)); err != nil {
 		error_handler.HandleInternalServerError(context, err, l.GetLog())
 		return
 	}
