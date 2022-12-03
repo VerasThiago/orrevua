@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
 	"github.com/verasthiago/tickets-generator/login/pkg/validator"
+	"github.com/verasthiago/tickets-generator/shared/auth"
 	error_handler "github.com/verasthiago/tickets-generator/shared/errors"
 )
 
@@ -24,6 +26,8 @@ func (c *CreateUserHandler) InitFromBuilder(builder builder.Builder) *CreateUser
 
 func (c *CreateUserHandler) Handler(context *gin.Context) {
 	var request validator.SignUpRequest
+	var tokenString string
+	var err error
 	if err := context.ShouldBindJSON(&request); err != nil {
 		error_handler.HandleBadRequestError(context, err)
 		return
@@ -40,6 +44,16 @@ func (c *CreateUserHandler) Handler(context *gin.Context) {
 	}
 
 	if err := c.GetRepository().CreateUser(request.User); err != nil {
+		error_handler.HandleInternalServerError(context, err, c.GetLog())
+		return
+	}
+
+	if tokenString, err = auth.GenerateJWT(request.User, c.GetSharedFlags().JwtKeyEmail, time.Now().Add(RESET_PASSWORD_TOKEN_EXPIRE_TIME)); err != nil {
+		error_handler.HandleInternalServerError(context, err, c.GetLog())
+		return
+	}
+
+	if err := c.GetEmailClient().SendConfirmEmailToUser(*request.User, tokenString); err != nil {
 		error_handler.HandleInternalServerError(context, err, c.GetLog())
 		return
 	}
