@@ -10,10 +10,13 @@ import (
 type Server struct {
 	builder.Builder
 
-	LoginAPI  handlers.LoginUserAPI
-	CreateAPI handlers.CreateUserAPI
-	DeleteAPI handlers.DeleteUserAPI
-	UpdateAPI handlers.UpdateUserAPI
+	LoginAPI             handlers.LoginUserAPI
+	CreateAPI            handlers.CreateUserAPI
+	DeleteAPI            handlers.DeleteUserAPI
+	UpdateAPI            handlers.UpdateUserAPI
+	ForgotPasswordAPI    handlers.ForgotPasswordAPI
+	UpdatePasswordAPI    handlers.UpdatePasswordAPI
+	AuthResetPasswordAPI middlewares.AuthResetPasswordAPI
 
 	AdminAPI middlewares.AuthUserAPI
 }
@@ -24,6 +27,9 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 	s.CreateAPI = new(handlers.CreateUserHandler).InitFromBuilder(builder)
 	s.DeleteAPI = new(handlers.DeleteUserHandler).InitFromBuilder(builder)
 	s.UpdateAPI = new(handlers.UpdateUserHandler).InitFromBuilder(builder)
+	s.ForgotPasswordAPI = new(handlers.ForgotPasswordHandler).InitFromBuilder(builder)
+	s.UpdatePasswordAPI = new(handlers.UpdatePasswordHandler).InitFromBuilder(builder)
+	s.AuthResetPasswordAPI = new(middlewares.AuthResetPasswordHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 
 	s.AdminAPI = new(middlewares.AuthUserHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 	return s
@@ -40,6 +46,8 @@ func (s *Server) Run() error {
 			{
 				apiV0User.POST("register", s.CreateAPI.Handler)
 				apiV0User.POST("login", s.LoginAPI.Handler)
+				apiV0User.POST("forgot_password", s.ForgotPasswordAPI.Handler)
+				apiV0User.Use(s.AuthResetPasswordAPI.Handler()).PATCH("update_password", s.UpdatePasswordAPI.Handler)
 			}
 			apiV0Admin := apiV0.Group("/admin").Use(s.AdminAPI.Handler())
 			{
