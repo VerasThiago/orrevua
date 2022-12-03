@@ -19,7 +19,7 @@ const (
 	CONFIRM_EMAIL_TEMPLATE_PATH  = "../shared/templates/confirm_email.html"
 	INVITE_TITLE                 = "Despedida Veras - Invite"
 	TICKETS_TILE                 = "Despedida Veras - Ingressos"
-	RESET_PASSOWRD_TITLE         = "Despedida Veras - Esqueceu a senha ?"
+	RESET_PASSOWRD_TITLE         = "Despedida Veras - Esqueci minha senha ?"
 	CONFIRM_EMAIL_TITLE          = "Despediva Veras - Confirme seu email"
 	TICKETS_BODY                 = "Aqui está seus ingressos, tenha uma boa festa!"
 	PNG_EXTENTION                = "png"
