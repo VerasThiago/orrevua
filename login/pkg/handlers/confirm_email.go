@@ -3,9 +3,10 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/verasthiago/tickets-generator/shared/auth"
+
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
-	"github.com/verasthiago/tickets-generator/login/pkg/validator"
 	error_handler "github.com/verasthiago/tickets-generator/shared/errors"
 	"github.com/verasthiago/tickets-generator/shared/models"
 )
@@ -29,29 +30,16 @@ func ConfirmUserEmail(user *models.User) *models.User {
 }
 
 func (c *ConfirmEmailHandler) Handler(context *gin.Context) {
-	var request *validator.ConfirmEmailRequest
-	var user *models.User
-	var err error
+	tokenString := context.GetHeader("Authorization")
 
-	if err := context.ShouldBindJSON(&request); err != nil {
+	user, err := auth.GetJWTClaimFromToken(tokenString, c.GetSharedFlags().JwtKeyEmail)
+	if err != nil {
 		error_handler.HandleBadRequestError(context, err)
 		return
 	}
 
-	if errors := request.Validate(); len(errors) > 0 {
-		error_handler.HandleBadRequestErrors(context, errors)
-		return
-	}
-
-	if user, err = c.GetRepository().GetUserByID(request.ID); err != nil {
+	if err := c.GetRepository().UpdateConfirmedStatusByEmail(user.Email); err != nil {
 		error_handler.HandleInternalServerError(context, err, c.GetLog())
-		return
-	}
-
-	ConfirmUserEmail(user)
-
-	if err := c.GetRepository().UpdateUser(user); err != nil {
-		error_handler.HandleBadRequestError(context, err)
 		return
 	}
 
