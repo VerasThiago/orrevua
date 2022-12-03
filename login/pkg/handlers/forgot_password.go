@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
+	"github.com/verasthiago/tickets-generator/login/pkg/constants"
 	"github.com/verasthiago/tickets-generator/login/pkg/validator"
 	error_handler "github.com/verasthiago/tickets-generator/shared/errors"
 )
@@ -21,8 +22,6 @@ type ForgotPasswordAPI interface {
 type ForgotPasswordHandler struct {
 	builder.Builder
 }
-
-const RESET_PASSWORD_TOKEN_EXPIRE_TIME = 15 * time.Minute
 
 func (f *ForgotPasswordHandler) InitFromBuilder(builder builder.Builder) *ForgotPasswordHandler {
 	f.Builder = builder
@@ -48,7 +47,7 @@ func (f *ForgotPasswordHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	if tokenString, err = auth.GenerateJWT(&models.User{Email: request.Email}, f.GetSharedFlags().JwtKeyEmail, time.Now().Add(RESET_PASSWORD_TOKEN_EXPIRE_TIME)); err != nil {
+	if tokenString, err = auth.GenerateJWT(&models.User{Email: request.Email}, f.GetSharedFlags().JwtKeyEmail, time.Now().Add(constants.RESET_PASSWORD_TOKEN_EXPIRE_TIME)); err != nil {
 		error_handler.HandleInternalServerError(context, err, f.GetLog())
 		return
 	}

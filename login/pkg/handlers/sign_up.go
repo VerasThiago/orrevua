@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
+	"github.com/verasthiago/tickets-generator/login/pkg/constants"
 	"github.com/verasthiago/tickets-generator/login/pkg/validator"
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	error_handler "github.com/verasthiago/tickets-generator/shared/errors"
@@ -19,8 +20,6 @@ type CreateUserAPI interface {
 type CreateUserHandler struct {
 	builder.Builder
 }
-
-const VERIFY_EMAIL_TOKEN_EXPIRE_TIME = 1 * time.Hour
 
 func (c *CreateUserHandler) InitFromBuilder(builder builder.Builder) *CreateUserHandler {
 	c.Builder = builder
@@ -55,7 +54,7 @@ func (c *CreateUserHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	if tokenString, err = auth.GenerateJWT(request.User, c.GetSharedFlags().JwtKeyEmail, time.Now().Add(VERIFY_EMAIL_TOKEN_EXPIRE_TIME)); err != nil {
+	if tokenString, err = auth.GenerateJWT(request.User, c.GetSharedFlags().JwtKeyEmail, time.Now().Add(constants.VERIFY_EMAIL_TOKEN_EXPIRE_TIME)); err != nil {
 		error_handler.HandleInternalServerError(context, err, c.GetLog())
 		return
 	}
