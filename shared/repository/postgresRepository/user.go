@@ -36,3 +36,7 @@ func (p *PostgresRepository) UpdateUserPasswordByEmail(email string, password st
 	}
 	return p.db.Model(&models.User{}).Where("email = ?", email).Update("password", user.Password).Error
 }
+
+func (p *PostgresRepository) VerifyUserAccountByID(id string) error {
+	return p.db.Model(&models.User{}).Where("id = ?", id).Update("is_verified", true).Error
+}
