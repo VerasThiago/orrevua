@@ -11,6 +11,7 @@ import (
 type SMTPClient interface {
 	SendInviteToUser(user models.User) error
 	SendQRCodeToUser(user models.User) error
+	SendForgotPasswordURLToUser(user models.User, token string) error
 }
 
 type SMTP struct {
@@ -20,25 +21,31 @@ type SMTP struct {
 	auth     smtp.Auth
 }
 
-type TemplateData struct {
+type InviteTemplateData struct {
 	Name  string
 	Title string
 }
 
+type ResetPasswordTemplateData struct {
+	Email string
+	Title string
+	Token string
+}
+
 func (s *SMTP) SendInviteToUser(user models.User) error {
-	templateData := TemplateData{
+	inviteTemplateData := InviteTemplateData{
 		Name:  user.Name,
 		Title: INVITE_TITLE,
 	}
 
-	body, err := parseTemplate(templateData)
+	body, err := parseTemplate(inviteTemplateData, QR_CODE_TEMPLATE_PATH)
 	if err != nil {
 		return err
 	}
 
 	return s.sendHtmlEmail(models.Email{
 		To:    user.Email,
-		Title: templateData.Title,
+		Title: inviteTemplateData.Title,
 		Body:  *body,
 	})
 }
@@ -61,6 +68,26 @@ func (s *SMTP) SendQRCodeToUser(user models.User) error {
 		Title:       TICKETS_TILE,
 		Body:        TICKETS_BODY,
 		Attachments: attachments,
+	})
+}
+
+func (s *SMTP) SendForgotPasswordURLToUser(user models.User, token string) error {
+
+	resetPasswordTemplateData := ResetPasswordTemplateData{
+		Email: user.Email,
+		Title: RESET_PASSOWRD_TITLE,
+		Token: token,
+	}
+
+	body, err := parseTemplate(resetPasswordTemplateData, RESET_PASSWORD_TEMPLATE_PATH)
+	if err != nil {
+		return err
+	}
+
+	return s.sendHtmlEmail(models.Email{
+		To:    user.Email,
+		Title: resetPasswordTemplateData.Title,
+		Body:  *body,
 	})
 }
 
