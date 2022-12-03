@@ -4,6 +4,8 @@ import (
 	"errors"
 	"time"
 
+	"github.com/verasthiago/tickets-generator/shared/models"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -12,25 +14,23 @@ type JWTClaim struct {
 	Email    string `json:"email"`
 	ID       string `json:"id"`
 	IsAdmin  bool   `json:"isadmin"`
-	CPF 	 string `json:"cpf`
+	CPF      string `json:"cpf`
 	jwt.StandardClaims
 }
 
-func GenerateJWT(username, email, id, cpf, jwtKey string, isAdmin bool) (tokenString string, err error) {
-	expirationTime := time.Now().Add(1 * time.Hour)
+func GenerateJWT(user *models.User, jwtKey string, expirationTime time.Time) (string, error) {
 	claims := &JWTClaim{
-		Email:    email,
-		Username: username,
-		ID:       id,
-		IsAdmin:  isAdmin,
-		CPF:	  cpf,
+		Email:    user.Email,
+		Username: user.Username,
+		ID:       user.ID,
+		IsAdmin:  user.IsAdmin,
+		CPF:      user.CPF,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err = token.SignedString([]byte(jwtKey))
-	return
+	return token.SignedString([]byte(jwtKey))
 }
 
 func ValidateToken(signedToken, jwtKey string) error {

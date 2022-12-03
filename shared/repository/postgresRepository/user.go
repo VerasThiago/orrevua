@@ -1,6 +1,8 @@
 package postgresrepository
 
-import "github.com/verasthiago/tickets-generator/shared/models"
+import (
+	"github.com/verasthiago/tickets-generator/shared/models"
+)
 
 func (p *PostgresRepository) GetUserByCPF(cpf string) (*models.User, error) {
 	var user models.User
@@ -25,4 +27,16 @@ func (p *PostgresRepository) UpdateUser(user *models.User) error {
 
 func (p *PostgresRepository) DeleteUser(userID string) error {
 	return p.db.Where("id = ?", userID).Delete(&models.User{}).Error
+}
+
+func (p *PostgresRepository) UpdateUserPasswordByEmail(email string, password string) error {
+	user := models.User{}
+	if err := user.HashPassword(password); err != nil {
+		return err
+	}
+	return p.db.Model(&models.User{}).Where("email = ?", email).Update("password", user.Password).Error
+}
+
+func (p *PostgresRepository) VerifyUserAccountByID(id string) error {
+	return p.db.Model(&models.User{}).Where("id = ?", id).Update("is_verified", true).Error
 }

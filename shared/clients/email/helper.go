@@ -14,11 +14,15 @@ import (
 )
 
 const (
-	QR_CODE_TEMPLATE_PATH = "../shared/templates/email.html"
-	INVITE_TITLE          = "Despedida Veras - Invite"
-	TICKETS_TILE          = "Despedida Veras - Ingressos"
-	TICKETS_BODY          = "Aqui está seus ingressos, tenha uma boa festa!"
-	PNG_EXTENTION         = "png"
+	VERIFY_EMAIL_TEMPLATE_PATH   = "../shared/templates/verify_email.html"
+	QR_CODE_TEMPLATE_PATH        = "../shared/templates/email.html"
+	RESET_PASSWORD_TEMPLATE_PATH = "../shared/templates/forgot_password.html"
+	INVITE_TITLE                 = "Despedida Veras - Convite"
+	TICKETS_TILE                 = "Despedida Veras - Ingressos"
+	RESET_PASSOWRD_TITLE         = "Despedida Veras - Esqueci minha senha"
+	VERIFY_EMAIL_TITLE           = "Despedida Veras - Confirme seu email"
+	TICKETS_BODY                 = "Aqui está seus ingressos, tenha uma boa festa!"
+	PNG_EXTENTION                = "png"
 )
 
 func (s *SMTP) generateAttachmentsBody(email models.Email) []byte {
@@ -73,8 +77,8 @@ func (s *SMTP) sendHtmlEmail(email models.Email) error {
 	return smtp.SendMail(addr, s.auth, s.srcEmail, []string{email.To}, msg)
 }
 
-func parseTemplate(data interface{}) (*string, error) {
-	t, err := template.ParseFiles(QR_CODE_TEMPLATE_PATH)
+func parseTemplate(data interface{}, templatePath string) (*string, error) {
+	t, err := template.ParseFiles(templatePath)
 	if err != nil {
 		return nil, err
 	}

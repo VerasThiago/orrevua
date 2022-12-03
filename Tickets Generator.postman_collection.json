@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "243603bd-5d00-4c04-8a26-a70dc2a6218c",
+		"_postman_id": "d846a24c-4a3b-4349-976f-6f012938646f",
 		"name": "Tickets Generator",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "7729124"
+		"_exporter_id": "22781644"
 	},
 	"item": [
 		{
@@ -11,12 +11,24 @@
 			"item": [
 				{
 					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.globals.set(\"EMAIL_TOKEN\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"veras\",\r\n    \"username\": \"2verass\",\r\n    \"email\": \"thiago@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"name\": \"veras\",\r\n    \"username\": \"veras\",\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -34,6 +46,42 @@
 								"v0",
 								"user",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm Email",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{EMAIL_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/login/v0/user/confirm_email",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login",
+								"v0",
+								"user",
+								"confirm_email"
 							]
 						}
 					},
@@ -58,7 +106,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"thiago@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,6 +124,84 @@
 								"v0",
 								"user",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{EMAIL_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"abc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/login/v0/user/update_password",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login",
+								"v0",
+								"user",
+								"update_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.globals.set(\"EMAIL_TOKEN\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"thiago.wortnnes@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/login/v0/user/forgot_password",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login",
+								"v0",
+								"user",
+								"forgot_password"
 							]
 						}
 					},

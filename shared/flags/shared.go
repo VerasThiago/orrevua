@@ -9,6 +9,7 @@ const (
 )
 
 type SharedFlags struct {
+	AppHost           string `mapstructure:"APP_HOST"`
 	DatabaseHost      string `mapstructure:"DB_HOST"`
 	DatabasePort      string `mapstructure:"DB_PORT"`
 	DatabaseUser      string `mapstructure:"DB_USER"`
@@ -22,6 +23,7 @@ type SharedFlags struct {
 	SMTPEmailHost     string `mapstructure:"SMTP_HOST"`
 	SMTPEmailPort     string `mapstructure:"SMTP_PORT"`
 	JwtKey            string `mapstructure:"JWT_KEY"`
+	JwtKeyEmail       string `mapstructure:"JWT_KEY_EMAIL"`
 }
 
 func (f *SharedFlags) InitFromViper() (*SharedFlags, error) {

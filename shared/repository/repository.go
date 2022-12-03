@@ -9,4 +9,6 @@ type Repository interface {
 	CreateUser(user *models.User) error
 	DeleteUser(userID string) error
 	UpdateUser(user *models.User) error
+	UpdateUserPasswordByEmail(email string, password string) error
+	VerifyUserAccountByID(id string) error
 }
