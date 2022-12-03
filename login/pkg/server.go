@@ -17,6 +17,7 @@ type Server struct {
 	ForgotPasswordAPI    handlers.ForgotPasswordAPI
 	UpdatePasswordAPI    handlers.UpdatePasswordAPI
 	AuthResetPasswordAPI middlewares.AuthResetPasswordAPI
+	VerifyEmailAPI      handlers.VerifyEmailAPI
 
 	AdminAPI middlewares.AuthUserAPI
 }
@@ -30,6 +31,7 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 	s.ForgotPasswordAPI = new(handlers.ForgotPasswordHandler).InitFromBuilder(builder)
 	s.UpdatePasswordAPI = new(handlers.UpdatePasswordHandler).InitFromBuilder(builder)
 	s.AuthResetPasswordAPI = new(middlewares.AuthResetPasswordHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
+	s.VerifyEmailAPI = new(handlers.VerifyEmailHandler).InitFromBuilder(builder)
 
 	s.AdminAPI = new(middlewares.AuthUserHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 	return s
@@ -48,6 +50,7 @@ func (s *Server) Run() error {
 				apiV0User.POST("login", s.LoginAPI.Handler)
 				apiV0User.POST("forgot_password", s.ForgotPasswordAPI.Handler)
 				apiV0User.Use(s.AuthResetPasswordAPI.Handler()).PATCH("update_password", s.UpdatePasswordAPI.Handler)
+				apiV0User.PATCH("confirm_email", s.VerifyEmailAPI.Handler)
 			}
 			apiV0Admin := apiV0.Group("/admin").Use(s.AdminAPI.Handler())
 			{
