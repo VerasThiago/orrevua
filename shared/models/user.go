@@ -14,7 +14,7 @@ type User struct {
 	Email     string `json:"email" gorm:"unique"`
 	Password  string `json:"password"`
 	IsAdmin   bool   `json:"isadmin"`
-	Confirmed bool   `json:"confirmed"`
+	Confirmed bool   `json:"confirmed" gorm:"default:false"`
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
