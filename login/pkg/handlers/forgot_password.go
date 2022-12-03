@@ -60,5 +60,5 @@ func (f *ForgotPasswordHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"status": "success", "url": url})
+	context.JSON(http.StatusOK, gin.H{"status": "success", "url": url, "token": tokenString})
 }

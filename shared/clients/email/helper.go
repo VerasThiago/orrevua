@@ -14,12 +14,13 @@ import (
 )
 
 const (
+	VERIFY_EMAIL_TEMPLATE_PATH   = "../shared/templates/verify_email.html"
 	QR_CODE_TEMPLATE_PATH        = "../shared/templates/email.html"
 	RESET_PASSWORD_TEMPLATE_PATH = "../shared/templates/forgot_password.html"
-	INVITE_TITLE                 = "Despedida Veras - Invite"
+	INVITE_TITLE                 = "Despedida Veras - Convite"
 	TICKETS_TILE                 = "Despedida Veras - Ingressos"
-	RESET_PASSOWRD_TITLE         = "Despedida Veras - Esqueci minha senha ?"
-	CONFIRM_EMAIL_TITLE          = "Despediva Veras - Confirme seu email"
+	RESET_PASSOWRD_TITLE         = "Despedida Veras - Esqueci minha senha"
+	VERIFY_EMAIL_TITLE           = "Despedida Veras - Confirme seu email"
 	TICKETS_BODY                 = "Aqui está seus ingressos, tenha uma boa festa!"
 	PNG_EXTENTION                = "png"
 )

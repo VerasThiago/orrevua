@@ -12,6 +12,7 @@ type SMTPClient interface {
 	SendInviteToUser(user models.User) error
 	SendQRCodeToUser(user models.User) error
 	SendForgotPasswordURLToUserByEmail(user models.User, token string) error
+	SendVerifyEmailToUser(user models.User, token string) error
 }
 
 type SMTP struct {
@@ -27,6 +28,12 @@ type InviteTemplateData struct {
 }
 
 type ForgotPasswordTemplateData struct {
+	Email string
+	Title string
+	Url   string
+}
+
+type VerifyEmailTemplateData struct {
 	Email string
 	Title string
 	Url   string
@@ -86,6 +93,24 @@ func (s *SMTP) SendForgotPasswordURLToUserByEmail(user models.User, url string) 
 	return s.sendHtmlEmail(models.Email{
 		To:    user.Email,
 		Title: forgotPasswordTemplateData.Title,
+		Body:  *body,
+	})
+}
+
+func (s *SMTP) SendVerifyEmailToUser(user models.User, url string) error {
+	confirmEmailTemplateData := VerifyEmailTemplateData{
+		Email: user.Email,
+		Title: VERIFY_EMAIL_TITLE,
+		Url:   url,
+	}
+
+	body, err := parseTemplate(confirmEmailTemplateData, VERIFY_EMAIL_TEMPLATE_PATH)
+	if err != nil {
+		return err
+	}
+	return s.sendHtmlEmail(models.Email{
+		To:    user.Email,
+		Title: confirmEmailTemplateData.Title,
 		Body:  *body,
 	})
 }
