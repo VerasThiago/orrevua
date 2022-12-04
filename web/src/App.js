@@ -6,7 +6,6 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Tickets from './pages/tickets';
 
-import MainLayout from './layouts/mainLayout';
 import PrivateRoute from './components/privateRoute';
 
 import AuthProvider from './services/auth';
@@ -24,7 +23,7 @@ export default function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/login" element={<Login />} />
-          <Route element={<MainLayout />}>
+          <Route>
             <Route
               exact
               path="/tickets"
