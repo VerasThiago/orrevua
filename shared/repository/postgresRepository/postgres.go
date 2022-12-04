@@ -23,7 +23,7 @@ func (p *PostgresRepository) InitFromFlags(sharedFlags *shared.SharedFlags) repo
 
 	fmt.Println("Connected to Database!")
 
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.Ticket{})
 
 	return &PostgresRepository{
 		db,

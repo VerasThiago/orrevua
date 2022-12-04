@@ -1,12 +1,29 @@
 package postgresrepository
 
 import (
+	"github.com/verasthiago/tickets-generator/shared/errors"
 	"github.com/verasthiago/tickets-generator/shared/models"
+	"gorm.io/gorm"
 )
 
 func (p *PostgresRepository) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
 	if record := p.db.Where("email = ?", email).First(&user); record.Error != nil {
+		return nil, record.Error
+	}
+	return &user, nil
+}
+
+func (p *PostgresRepository) GetUserByID(id string) (*models.User, error) {
+	var user models.User
+	if record := p.db.Where("id = ?", id).First(&user); record.Error != nil {
+		if record.Error == gorm.ErrRecordNotFound {
+			return nil, errors.GenericError{
+				Code:    errors.STATUS_NOT_FOUND,
+				Err:     record.Error,
+				Message: "User not found",
+			}
+		}
 		return nil, record.Error
 	}
 	return &user, nil

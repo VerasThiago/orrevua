@@ -28,7 +28,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"veras\",\r\n    \"username\": \"veras\",\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"name\": \"veras\",\r\n    \"username\": \"veras\",\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"cpf\": \"123\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -115,7 +115,8 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/login/v0/user/signin",
+							"raw": "http://localhost:8081/login/v0/user/signin",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
@@ -217,8 +218,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.globals.set(\"TOKEN\", jsonData.token);"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -339,10 +339,10 @@
 			]
 		},
 		{
-			"name": "Api",
+			"name": "Ticket",
 			"item": [
 				{
-					"name": "hello",
+					"name": "List",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -353,7 +353,7 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:8080/api/v0/hello",
+							"raw": "localhost:8080/api/v0/ticket/list/4459670c-fdf6-4af1-b716-ee069fc8e3e5",
 							"host": [
 								"localhost"
 							],
@@ -361,7 +361,117 @@
 							"path": [
 								"api",
 								"v0",
-								"hello"
+								"ticket",
+								"list",
+								"4459670c-fdf6-4af1-b716-ee069fc8e3e5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ownerid\": \"4459670c-fdf6-4af1-b716-ee069fc8e3e5\",\n    \"name\":    \"Jacinto La Ele\",\n    \"email\":   \"laele@gmail.com\",\n    \"cpf\":     \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v0/ticket/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"ticket",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"9aa1ffe1-fc8a-411d-8195-bcc6d3093aa7\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v0/ticket/delete",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"ticket",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cpf\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v0/ticket/validate",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"ticket",
+								"validate"
 							]
 						}
 					},
