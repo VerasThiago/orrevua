@@ -9,6 +9,12 @@ require (
 )
 
 require (
+	github.com/bugsnag/bugsnag-go v2.2.0+incompatible // indirect
+	github.com/bugsnag/panicwrap v1.3.4 // indirect
+	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/sirupsen/logrus v1.4.2 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	gorm.io/gorm v1.23.8 // indirect
 )
