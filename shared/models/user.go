@@ -8,13 +8,15 @@ import (
 
 type User struct {
 	gorm.Model
-	ID         string `json:"id" gorm:"primary_key"`
-	Name       string `json:"name"`
-	Username   string `json:"username" gorm:"unique"`
-	Email      string `json:"email" gorm:"unique"`
-	Password   string `json:"password"`
-	IsAdmin    bool   `json:"isadmin" gorm:"default:false"`
-	IsVerified bool   `json:"isverified" gorm:"default:false"`
+	ID         string    `json:"id" gorm:"primary_key"`
+	Name       string    `json:"name"`
+	Username   string    `json:"username" gorm:"unique"`
+	Email      string    `json:"email" gorm:"unique"`
+	CPF        string    `json:"cpf" gorm:"unique"`
+	Password   string    `json:"password"`
+	TicketList *[]Ticket `json:"ticketlist,omitempty" gorm:"ForeignKey:OwnerID"`
+	IsAdmin    bool      `json:"isadmin" gorm:"default:false"`
+	IsVerified bool      `json:"isverified" gorm:"default:false"`
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
