@@ -3,12 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/home';
 import Login from './pages/login';
-import Dashboard from './pages/dashboard';
+import Tickets from './pages/tickets';
 
 import MainLayout from './layouts/mainLayout';
 import PrivateRoute from './components/privateRoute';
 
 import AuthProvider from './services/auth';
+
+import './App.less';
 
 export const AuthContext = createContext();
 
@@ -22,10 +24,10 @@ export default function App() {
           <Route element={<MainLayout />}>
             <Route
               exact
-              path="/dashboard"
+              path="/tickets"
               element={
                 <PrivateRoute>
-                  <Dashboard />
+                  <Tickets />
                 </PrivateRoute>
               }
             />

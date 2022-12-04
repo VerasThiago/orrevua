@@ -13,7 +13,7 @@ export default function Login() {
 
   const onFinish = async (values) => {
     const result = await login(values);
-    if (result) navigate('/dashboard', { replace: true, state: { from: location } });
+    if (result) navigate('/tickets', { replace: true, state: { from: location } });
   };
 
   return (
