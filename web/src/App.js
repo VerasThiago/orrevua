@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Home from './pages/home';
 import Login from './pages/login';
@@ -10,6 +11,7 @@ import PrivateRoute from './components/privateRoute';
 
 import AuthProvider from './services/auth';
 
+import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
 
 export const AuthContext = createContext();
@@ -17,6 +19,7 @@ export const AuthContext = createContext();
 export default function App() {
   return (
     <AuthProvider>
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />

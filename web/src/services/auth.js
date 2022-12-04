@@ -1,5 +1,5 @@
-import { message } from 'antd';
 import { useState } from 'react';
+import alertMessage from '../components/alertMessage';
 import { AuthContext } from '../App';
 import { apiRequest } from './api';
 
@@ -41,7 +41,7 @@ export default function AuthProvider({ children }) {
       return true;
     } else {
       removeToken();
-      if (responseBody.message) message.error(responseBody.message);
+      if (responseBody.message) alertMessage('error', responseBody.message);
       return false;
     }
   };
