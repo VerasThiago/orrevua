@@ -1,15 +1,9 @@
-import { Spin } from 'antd';
-
 export default function Loading() {
   return (
-    <div
-      style={{
-        minWidth: '100%',
-        minHeight: '100%',
-        textAlign: 'center',
-        lineHeight: '40rem'
-      }}>
-      <Spin size="large" />
+    <div className="w-100 h-100 text-center pt-5">
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
     </div>
   );
 }

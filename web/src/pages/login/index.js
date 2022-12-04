@@ -47,7 +47,7 @@ export default function Login() {
                 message: 'Senha é obrigatória'
               },
               {
-                min: 3,
+                min: 6,
                 message: 'Senha deve conter pelo menos 6 caracteres'
               }
             ]}>
