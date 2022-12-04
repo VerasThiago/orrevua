@@ -12,7 +12,7 @@ type ValidateTokenRequest struct {
 
 func (s *ValidateTokenRequest) Validate() []string {
 	rules := govalidator.MapData{
-		"token": []string{"required", constants.TOKEN_REGEX},
+		"token": []string{"required", constants.TOKEN_RULE},
 	}
 
 	options := govalidator.Options{

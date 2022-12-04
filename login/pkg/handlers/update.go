@@ -6,11 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
 	"github.com/verasthiago/tickets-generator/login/pkg/validator"
-	error_handler "github.com/verasthiago/tickets-generator/shared/errors"
+	"github.com/verasthiago/tickets-generator/shared/errors"
 )
 
 type UpdateUserAPI interface {
-	Handler(context *gin.Context)
+	Handler(context *gin.Context) error
 }
 
 type UpdateUserHandler struct {
@@ -22,22 +22,20 @@ func (l *UpdateUserHandler) InitFromBuilder(builder builder.Builder) *UpdateUser
 	return l
 }
 
-func (l *UpdateUserHandler) Handler(context *gin.Context) {
+func (l *UpdateUserHandler) Handler(context *gin.Context) error {
 	var request *validator.UpdateRequest
 	if err := context.ShouldBindJSON(&request); err != nil {
-		error_handler.HandleBadRequestError(context, err)
-		return
+		return err
 	}
 
-	if errors := request.Validate(); len(errors) > 0 {
-		error_handler.HandleBadRequestErrors(context, errors)
-		return
+	if errList := request.Validate(); len(errList) > 0 {
+		return errors.CreateGenericErrorFromValidateError(errList)
 	}
 
 	if err := l.GetRepository().UpdateUser(request.User); err != nil {
-		error_handler.HandleInternalServerError(context, err, l.GetLog())
-		return
+		return err
 	}
 
 	context.JSON(http.StatusOK, gin.H{"status": "success"})
+	return nil
 }

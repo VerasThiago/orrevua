@@ -5,6 +5,7 @@ import (
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
 	"github.com/verasthiago/tickets-generator/login/pkg/handlers"
 	"github.com/verasthiago/tickets-generator/login/pkg/middlewares"
+	"github.com/verasthiago/tickets-generator/shared/errors"
 )
 
 type Server struct {
@@ -31,10 +32,10 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 	s.UpdateAPI = new(handlers.UpdateUserHandler).InitFromBuilder(builder)
 	s.ForgotPasswordAPI = new(handlers.ForgotPasswordHandler).InitFromBuilder(builder)
 	s.UpdatePasswordAPI = new(handlers.UpdatePasswordHandler).InitFromBuilder(builder)
-	s.AuthResetPasswordAPI = new(middlewares.AuthResetPasswordHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 	s.VerifyEmailAPI = new(handlers.VerifyEmailHandler).InitFromBuilder(builder)
 	s.ValidateTokenAPI = new(handlers.ValidateUserTokenHandler).InitFromBuilder(builder)
 
+	s.AuthResetPasswordAPI = new(middlewares.AuthResetPasswordHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 	s.AdminAPI = new(middlewares.AuthUserHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 	return s
 }
@@ -49,26 +50,26 @@ func (s *Server) Run() error {
 
 			apiV0User := apiV0.Group("/user")
 			{
-				apiV0User.POST("signin", s.LoginAPI.Handler)
-				apiV0User.POST("signup", s.CreateAPI.Handler)
+				apiV0User.POST("signin", errors.ErrorRoute(s.LoginAPI.Handler))
+				apiV0User.POST("signup", errors.ErrorRoute(s.CreateAPI.Handler))
 				apiV0UserPassword := apiV0User.Group("/password")
 				{
-					apiV0UserPassword.POST("forget", s.ForgotPasswordAPI.Handler)
-					apiV0UserPassword.Use(s.AuthResetPasswordAPI.Handler()).PATCH("update", s.UpdatePasswordAPI.Handler)
+					apiV0UserPassword.POST("forget", errors.ErrorRoute(s.ForgotPasswordAPI.Handler))
+					apiV0UserPassword.Use(s.AuthResetPasswordAPI.Handler()).PATCH("update", errors.ErrorRoute(s.UpdatePasswordAPI.Handler))
 				}
 				apiV0UserEmail := apiV0User.Group("/email")
 				{
-					apiV0UserEmail.PATCH("verify", s.VerifyEmailAPI.Handler)
+					apiV0UserEmail.PATCH("verify", errors.ErrorRoute(s.VerifyEmailAPI.Handler))
 				}
 				apiV0Token := apiV0User.Group("/token")
 				{
-					apiV0Token.POST("validate", s.ValidateTokenAPI.Handler)
+					apiV0Token.POST("validate", errors.ErrorRoute(s.ValidateTokenAPI.Handler))
 				}
 			}
 			apiV0Admin := apiV0.Group("/admin").Use(s.AdminAPI.Handler())
 			{
-				apiV0Admin.DELETE("delete", s.DeleteAPI.Handler)
-				apiV0Admin.PUT("update", s.UpdateAPI.Handler)
+				apiV0Admin.DELETE("delete", errors.ErrorRoute(s.DeleteAPI.Handler))
+				apiV0Admin.PUT("update", errors.ErrorRoute(s.UpdateAPI.Handler))
 			}
 		}
 	}
