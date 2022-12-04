@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
   const refresh = async () => {
     setLoading(true);
 
-    apiRequest('login', 'token/validate', 'post')
+    apiRequest('login', 'login/v0/user/token/validate', 'post', { token: getToken() })
       .then(async (response) => {
         if (response.status === 200) {
           const json = await response.json();
@@ -33,7 +33,7 @@ export default function AuthProvider({ children }) {
   };
 
   const handleLogin = async (loginParams) => {
-    const response = await apiRequest('login', 'login/v0/user/login', 'post', loginParams);
+    const response = await apiRequest('login', 'login/v0/user/signin', 'post', loginParams);
     const responseBody = await response.json();
     if (response.ok) {
       setToken(responseBody.token);
