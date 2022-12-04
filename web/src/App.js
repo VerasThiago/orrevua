@@ -2,6 +2,7 @@ import React, { createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
+import Landing from './pages/landing';
 import Home from './pages/home';
 import Login from './pages/login';
 import Tickets from './pages/tickets';
@@ -23,6 +24,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/home" element={<Landing />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/404" element={<NotFound />} />
           <Route>
