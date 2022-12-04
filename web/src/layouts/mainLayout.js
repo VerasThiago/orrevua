@@ -1,33 +1,18 @@
 import React, { useContext } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Layout, Menu, Dropdown } from 'antd';
-import {
-  InsertRowLeftOutlined,
-  UserOutlined,
-  HomeOutlined,
-  LogoutOutlined
-} from '@ant-design/icons';
+import { UserOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import { AuthContext } from '../App';
 
-// import './mainLayout.less';
+import './mainLayout.less';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const menuItems = [
   {
-    label: 'Home',
-    key: '/dashboard',
+    label: 'Ingressos',
+    key: '/tickets',
     icon: React.createElement(HomeOutlined)
-  },
-  {
-    label: 'Properties',
-    key: '/properties',
-    icon: React.createElement(InsertRowLeftOutlined)
-  },
-  {
-    label: 'Tenants',
-    key: '/tenants',
-    icon: React.createElement(UserOutlined)
   }
 ];
 
@@ -40,7 +25,7 @@ function MainLayout() {
     <Menu
       items={[
         {
-          label: 'Profile',
+          label: 'Perfil',
           key: 'profile',
           icon: <UserOutlined />
         },
@@ -48,7 +33,7 @@ function MainLayout() {
           type: 'divider'
         },
         {
-          label: <div onClick={logout}>Logout</div>,
+          label: <div onClick={logout}>Sair</div>,
           key: 'logout',
           icon: <LogoutOutlined onClick={logout} style={{ color: 'red' }} />
         }

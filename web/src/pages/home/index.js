@@ -6,6 +6,6 @@ export default function Home() {
   const { authenticated } = useContext(AuthContext);
   const location = useLocation();
 
-  if (authenticated) return <Navigate to={'/dashboard'} state={{ from: location }} replace />;
+  if (authenticated) return <Navigate to={'/tickets'} state={{ from: location }} replace />;
   else return <Navigate to={'/login'} state={{ from: location }} replace />;
 }
