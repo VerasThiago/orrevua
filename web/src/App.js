@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import Home from './pages/home';
 import Login from './pages/login';
 import Tickets from './pages/tickets';
+import NotFound from './pages/notFound';
 
 import PrivateRoute from './components/privateRoute';
 
@@ -23,6 +24,7 @@ export default function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/login" element={<Login />} />
+          <Route exact path="/404" element={<NotFound />} />
           <Route>
             <Route
               exact
@@ -34,6 +36,7 @@ export default function App() {
               }
             />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

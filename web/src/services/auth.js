@@ -2,6 +2,7 @@ import { useState } from 'react';
 import alertMessage from '../components/alertMessage';
 import { AuthContext } from '../App';
 import { apiRequest } from './api';
+import { parseJwt } from '../utils/index';
 
 const TOKEN_KEY = 'TICKETS-TOKEN';
 
@@ -51,12 +52,20 @@ export default function AuthProvider({ children }) {
     setAuthenticated(false);
   };
 
+  const userData = () => {
+    const token = getToken();
+
+    if (token) return parseJwt(getToken());
+    else return null;
+  };
+
   const value = {
     loading,
     authenticated,
     refresh,
     login: handleLogin,
-    logout: handleLogout
+    logout: handleLogout,
+    userData
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
