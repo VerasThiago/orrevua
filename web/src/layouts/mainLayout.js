@@ -4,7 +4,7 @@ import { Layout, Menu, Dropdown } from 'antd';
 import { UserOutlined, HomeOutlined, LogoutOutlined } from '@ant-design/icons';
 import { AuthContext } from '../App';
 
-import './mainLayout.less';
+import './mainLayout.css';
 
 const { Header, Content, Footer, Sider } = Layout;
 
