@@ -10,19 +10,13 @@ import (
 )
 
 type JWTClaim struct {
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	ID       string `json:"id"`
-	IsAdmin  bool   `json:"isadmin"`
+	User *models.User
 	jwt.StandardClaims
 }
 
 func GenerateJWT(user *models.User, jwtKey string, expirationTime time.Time) (string, error) {
 	claims := &JWTClaim{
-		Email:    user.Email,
-		Username: user.Username,
-		ID:       user.ID,
-		IsAdmin:  user.IsAdmin,
+		User: user,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
