@@ -14,6 +14,7 @@ const (
 	STATUS_BAD_REQUEST           = http.StatusBadRequest
 	STATUS_INTERNAL_SERVER_ERROR = http.StatusInternalServerError
 	STATUS_UNAUTHORIZED          = http.StatusUnauthorized
+	STATUS_NOT_FOUND             = http.StatusNotFound
 )
 
 func ErrorRoute(route models.Route) func(c *gin.Context) {
