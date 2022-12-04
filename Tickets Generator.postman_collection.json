@@ -1,16 +1,16 @@
 {
 	"info": {
-		"_postman_id": "d846a24c-4a3b-4349-976f-6f012938646f",
+		"_postman_id": "66eab8ce-800a-452b-a6cb-1e564f170748",
 		"name": "Tickets Generator",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "22781644"
+		"_exporter_id": "7729124"
 	},
 	"item": [
 		{
 			"name": "User",
 			"item": [
 				{
-					"name": "Create",
+					"name": "Sign Up",
 					"event": [
 						{
 							"listen": "test",
@@ -36,7 +36,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/login/v0/user/register",
+							"raw": "localhost:8081/login/v0/user/signup",
 							"host": [
 								"localhost"
 							],
@@ -45,7 +45,7 @@
 								"login",
 								"v0",
 								"user",
-								"register"
+								"signup"
 							]
 						}
 					},
@@ -72,7 +72,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/login/v0/user/confirm_email",
+							"raw": "localhost:8081/login/v0/user/email/verify",
 							"host": [
 								"localhost"
 							],
@@ -81,14 +81,15 @@
 								"login",
 								"v0",
 								"user",
-								"confirm_email"
+								"email",
+								"verify"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Login",
+					"name": "Sign In",
 					"event": [
 						{
 							"listen": "test",
@@ -114,7 +115,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/login/v0/user/login",
+							"raw": "localhost:8081/login/v0/user/signin",
 							"host": [
 								"localhost"
 							],
@@ -123,7 +124,7 @@
 								"login",
 								"v0",
 								"user",
-								"login"
+								"signin"
 							]
 						}
 					},
@@ -150,7 +151,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/login/v0/user/update_password",
+							"raw": "localhost:8081/login/v0/user/password/update",
 							"host": [
 								"localhost"
 							],
@@ -159,7 +160,8 @@
 								"login",
 								"v0",
 								"user",
-								"update_password"
+								"password",
+								"update"
 							]
 						}
 					},
@@ -192,7 +194,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8081/login/v0/user/forgot_password",
+							"raw": "localhost:8081/login/v0/user/password/forget",
 							"host": [
 								"localhost"
 							],
@@ -201,7 +203,51 @@
 								"login",
 								"v0",
 								"user",
-								"forgot_password"
+								"password",
+								"forget"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"TOKEN\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"{{TOKEN}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/login/v0/user/token/validate",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login",
+								"v0",
+								"user",
+								"token",
+								"validate"
 							]
 						}
 					},

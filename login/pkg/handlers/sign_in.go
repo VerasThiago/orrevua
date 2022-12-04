@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
+	"github.com/verasthiago/tickets-generator/login/pkg/constants"
 	"github.com/verasthiago/tickets-generator/login/pkg/validator"
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	error_handler "github.com/verasthiago/tickets-generator/shared/errors"
@@ -22,8 +23,6 @@ type LoginUserAPI interface {
 type LoginUserHandler struct {
 	builder.Builder
 }
-
-const SIGN_IN_TOKEN_EXPIRE_TIME = 1 * time.Hour
 
 func (l *LoginUserHandler) InitFromBuilder(builder builder.Builder) *LoginUserHandler {
 	l.Builder = builder
@@ -63,7 +62,7 @@ func (l *LoginUserHandler) Handler(context *gin.Context) {
 		return
 	}
 
-	if tokenString, err = auth.GenerateJWT(user, l.GetSharedFlags().JwtKey, time.Now().Add(SIGN_IN_TOKEN_EXPIRE_TIME)); err != nil {
+	if tokenString, err = auth.GenerateJWT(user, l.GetSharedFlags().JwtKey, time.Now().Add(constants.APP_TOKEN_EXPIRE_TIME)); err != nil {
 		error_handler.HandleInternalServerError(context, err, l.GetLog())
 		return
 	}

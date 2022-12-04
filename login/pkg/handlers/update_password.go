@@ -38,13 +38,13 @@ func (r *UpdatePasswordHandler) Handler(context *gin.Context) {
 
 	tokenString := context.GetHeader("Authorization")
 
-	user, err := auth.GetJWTClaimFromToken(tokenString, r.GetSharedFlags().JwtKeyEmail)
+	jwt, err := auth.GetJWTClaimFromToken(tokenString, r.GetSharedFlags().JwtKeyEmail)
 	if err != nil {
 		error_handler.HandleBadRequestError(context, err)
 		return
 	}
 
-	if err := r.GetRepository().UpdateUserPasswordByEmail(user.Email, request.Password); err != nil {
+	if err := r.GetRepository().UpdateUserPasswordByEmail(jwt.User.Email, request.Password); err != nil {
 		error_handler.HandleInternalServerError(context, err, r.GetLog())
 		return
 	}
