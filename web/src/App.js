@@ -10,7 +10,7 @@ import PrivateRoute from './components/privateRoute';
 
 import AuthProvider from './services/auth';
 
-import './App.less';
+import './App.css';
 
 export const AuthContext = createContext();
 
