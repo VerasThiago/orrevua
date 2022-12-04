@@ -3,34 +3,28 @@ package postgresrepository
 import (
 	"github.com/verasthiago/tickets-generator/shared/errors"
 	"github.com/verasthiago/tickets-generator/shared/models"
-	"gorm.io/gorm"
 )
+
+const USER_DATA_NAME = "User"
 
 func (p *PostgresRepository) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
-	if record := p.db.Where("email = ?", email).First(&user); record.Error != nil {
-		return nil, record.Error
+	if err := errors.HandleDataNotFoundError(p.db.Where("email = ?", email).First(&user).Error, USER_DATA_NAME); err != nil {
+		return nil, err
 	}
 	return &user, nil
 }
 
 func (p *PostgresRepository) GetUserByID(id string) (*models.User, error) {
 	var user models.User
-	if record := p.db.Where("id = ?", id).First(&user); record.Error != nil {
-		if record.Error == gorm.ErrRecordNotFound {
-			return nil, errors.GenericError{
-				Code:    errors.STATUS_NOT_FOUND,
-				Err:     record.Error,
-				Message: "User not found",
-			}
-		}
-		return nil, record.Error
+	if err := errors.HandleDataNotFoundError(p.db.Where("id = ?", id).First(&user).Error, USER_DATA_NAME); err != nil {
+		return nil, err
 	}
 	return &user, nil
 }
 
 func (p *PostgresRepository) CreateUser(user *models.User) error {
-	return p.db.Create(user).Error
+	return errors.HandleDuplicateError(p.db.Create(user).Error)
 }
 
 func (p *PostgresRepository) UpdateUser(user *models.User) error {
@@ -39,11 +33,11 @@ func (p *PostgresRepository) UpdateUser(user *models.User) error {
 			return err
 		}
 	}
-	return p.db.Model(user).Updates(user).Error
+	return errors.HandleDataNotFoundError(p.db.Model(user).Updates(user).Error, USER_DATA_NAME)
 }
 
 func (p *PostgresRepository) DeleteUser(userID string) error {
-	return p.db.Where("id = ?", userID).Delete(&models.User{}).Error
+	return errors.HandleDataNotFoundError(p.db.Where("id = ?", userID).Delete(&models.User{}).Error, USER_DATA_NAME)
 }
 
 func (p *PostgresRepository) UpdateUserPasswordByEmail(email string, password string) error {
@@ -51,9 +45,9 @@ func (p *PostgresRepository) UpdateUserPasswordByEmail(email string, password st
 	if err := user.HashPassword(password); err != nil {
 		return err
 	}
-	return p.db.Model(&models.User{}).Where("email = ?", email).Update("password", user.Password).Error
+	return errors.HandleDataNotFoundError(p.db.Model(&models.User{}).Where("email = ?", email).Update("password", user.Password).Error, USER_DATA_NAME)
 }
 
 func (p *PostgresRepository) VerifyUserAccountByID(id string) error {
-	return p.db.Model(&models.User{}).Where("id = ?", id).Update("is_verified", true).Error
+	return errors.HandleDataNotFoundError(p.db.Model(&models.User{}).Where("id = ?", id).Update("is_verified", true).Error, USER_DATA_NAME)
 }
