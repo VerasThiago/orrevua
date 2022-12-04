@@ -9,11 +9,11 @@ import (
 	"github.com/verasthiago/tickets-generator/login/pkg/constants"
 	"github.com/verasthiago/tickets-generator/login/pkg/validator"
 	"github.com/verasthiago/tickets-generator/shared/auth"
-	error_handler "github.com/verasthiago/tickets-generator/shared/errors"
+	"github.com/verasthiago/tickets-generator/shared/errors"
 )
 
 type ValidateUserTokenAPI interface {
-	Handler(context *gin.Context)
+	Handler(context *gin.Context) error
 }
 
 type ValidateUserTokenHandler struct {
@@ -25,37 +25,32 @@ func (c *ValidateUserTokenHandler) InitFromBuilder(builder builder.Builder) *Val
 	return c
 }
 
-func (c *ValidateUserTokenHandler) Handler(context *gin.Context) {
+func (c *ValidateUserTokenHandler) Handler(context *gin.Context) error {
 	var err error
 	var tokenString string
 	var jwtClaim *auth.JWTClaim
 	var request validator.ValidateTokenRequest
 
 	if err := context.ShouldBindJSON(&request); err != nil {
-		error_handler.HandleBadRequestError(context, err)
-		return
+		return err
 	}
 
-	if errors := request.Validate(); len(errors) > 0 {
-		error_handler.HandleBadRequestErrors(context, errors)
-		return
+	if errList := request.Validate(); len(errList) > 0 {
+		return errors.CreateGenericErrorFromValidateError(errList)
 	}
 
 	if err := auth.ValidateToken(request.Token, c.GetSharedFlags().JwtKey); err != nil {
-		error_handler.HandleBadRequestError(context, err)
-		return
+		return err
 	}
 
 	if jwtClaim, err = auth.GetJWTClaimFromToken(request.Token, c.GetSharedFlags().JwtKey); err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		context.Abort()
-		return
+		return err
 	}
 
 	if tokenString, err = auth.GenerateJWT(jwtClaim.User, c.GetSharedFlags().JwtKey, time.Now().Add(constants.APP_TOKEN_EXPIRE_TIME)); err != nil {
-		error_handler.HandleInternalServerError(context, err, c.GetLog())
-		return
+		return err
 	}
 
 	context.JSON(http.StatusOK, gin.H{"status": "success", "token": tokenString})
+	return nil
 }
