@@ -1,11 +1,15 @@
 package errors
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgconn"
 	"github.com/verasthiago/tickets-generator/shared/models"
+	"gorm.io/gorm"
 )
 
 type StatusCode int
@@ -15,6 +19,8 @@ const (
 	STATUS_INTERNAL_SERVER_ERROR = http.StatusInternalServerError
 	STATUS_UNAUTHORIZED          = http.StatusUnauthorized
 	STATUS_NOT_FOUND             = http.StatusNotFound
+
+	DUPLICATED_KEY = "23505"
 )
 
 func ErrorRoute(route models.Route) func(c *gin.Context) {
@@ -49,4 +55,48 @@ func CreateGenericErrorFromValidateError(errors []string) GenericError {
 		Code:    STATUS_BAD_REQUEST,
 		Message: strings.Join(errors, "\n"),
 	}
+}
+
+func IsNotFoundError(err error) bool {
+	return err == gorm.ErrRecordNotFound
+}
+
+func IsDuplicatedKeyError(err error) bool {
+	var perr *pgconn.PgError
+	if errors.As(err, &perr) {
+		return perr.Code == DUPLICATED_KEY
+	}
+	return false
+}
+
+func HandleDuplicateError(err error) error {
+	if err == nil {
+		return err
+	}
+
+	if IsDuplicatedKeyError(err) {
+		return GenericError{
+			Code:    STATUS_BAD_REQUEST,
+			Err:     err,
+			Message: "Data already used",
+		}
+	}
+
+	return err
+}
+
+func HandleDataNotFoundError(err error, dataName string) error {
+	if err == nil {
+		return err
+	}
+
+	if IsNotFoundError(err) {
+		return GenericError{
+			Code:    STATUS_NOT_FOUND,
+			Err:     err,
+			Message: fmt.Sprintf("%+v not found", dataName),
+		}
+	}
+
+	return err
 }
