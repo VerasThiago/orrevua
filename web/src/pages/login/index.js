@@ -78,12 +78,12 @@ export default function Login() {
                 type="password"
                 placeholder="Senha"
               />
-              <div className="d-flex justify-content-end py-3">
-                <a className="login-forgot-password text-decoration-none" href="">
-                  Esqueceu a senha?
-                </a>
-              </div>
             </Form.Item>
+            <div className="d-flex justify-content-end pb-5">
+              <a className="login-forgot-password text-decoration-none" href="">
+                Esqueceu a senha?
+              </a>
+            </div>
             <Form.Item>
               <button type="submit" className="btn btn-primary w-100 rounded-pill py-3">
                 Entrar
