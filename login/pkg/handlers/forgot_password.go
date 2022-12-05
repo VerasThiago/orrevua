@@ -51,7 +51,7 @@ func (f *ForgotPasswordHandler) Handler(context *gin.Context) error {
 
 	url := GeneratePasswordResetUrl(f.GetSharedFlags().AppHost, tokenString)
 
-	if err := f.GetEmailClient().SendForgotPasswordURLToUserByEmail(models.User{Email: request.Email}, url); err != nil {
+	if err := f.GetEmailClient().SendForgotPasswordURLToUserByEmail(&models.User{Email: request.Email}, url); err != nil {
 		return err
 	}
 
