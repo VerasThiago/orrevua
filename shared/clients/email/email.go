@@ -10,7 +10,7 @@ import (
 
 type SMTPClient interface {
 	SendInviteToUser(user *models.User) error
-	SendQRCodeToUser(user *models.User) error
+	SendTicketsToUser(user *models.User, tickets []*models.Ticket) error
 	SendForgotPasswordURLToUserByEmail(user *models.User, token string) error
 	SendVerifyEmailToUser(user *models.User, token string) error
 }
@@ -57,17 +57,28 @@ func (s *SMTP) SendInviteToUser(user *models.User) error {
 	})
 }
 
-func (s *SMTP) SendQRCodeToUser(user *models.User) error {
-	// TODO: Get all user tickets (use tickets model that will be implemented soon)
-	var tickets []models.User = []models.User{*user}
+func (s *SMTP) SendTicketsToUser(user *models.User, tickets []*models.Ticket) error {
+	var err error
+	var qrCode []byte
 	var attachments map[string][]byte = make(map[string][]byte)
 
 	for _, ticket := range tickets {
-		qrcode, err := qrcode.Encode(user.ID, qrcode.Medium, 256)
-		if err != nil {
+		fileName := addFileExtention(ticket.Name, PNG_EXTENTION)
+
+		if qrCode, err = qrcode.Encode(ticket.CPF, qrcode.Medium, 256); err != nil {
 			return err
 		}
-		attachments[addFileExtention(ticket.Name, PNG_EXTENTION)] = qrcode
+
+		if ticket.CPF != user.CPF {
+			go s.sendEmailWithAttachments(models.Email{
+				To:          ticket.Email,
+				Title:       TICKETS_TILE,
+				Body:        TICKETS_BODY,
+				Attachments: map[string][]byte{fileName: qrCode},
+			})
+		}
+
+		attachments[fileName] = qrCode
 	}
 
 	return s.sendEmailWithAttachments(models.Email{
