@@ -51,6 +51,12 @@ func (l *TicketListHandler) Handler(context *gin.Context) error {
 		return err
 	}
 
+	if len(ticketList) == 0 {
+		if ticket, err := l.GetRepository().GetTicketByCPF(user.CPF); err == nil {
+			ticketList = append(ticketList, ticket)
+		}
+	}
+
 	context.JSON(http.StatusOK, gin.H{"status": "success", "data": ticketList})
 	return nil
 }
