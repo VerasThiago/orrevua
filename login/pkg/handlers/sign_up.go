@@ -56,8 +56,7 @@ func (c *CreateUserHandler) Handler(context *gin.Context) error {
 	}
 
 	url := GenerateVerifyEmailUrl(c.GetSharedFlags().AppHost, tokenString)
-
-	if err := c.GetEmailClient().SendVerifyEmailToUser(*request.User, url); err != nil {
+	if err := c.GetEmailClient().SendVerifyEmailToUser(request.User, url); err != nil {
 		return err
 	}
 

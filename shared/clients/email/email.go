@@ -9,10 +9,10 @@ import (
 )
 
 type SMTPClient interface {
-	SendInviteToUser(user models.User) error
-	SendQRCodeToUser(user models.User) error
-	SendForgotPasswordURLToUserByEmail(user models.User, token string) error
-	SendVerifyEmailToUser(user models.User, token string) error
+	SendInviteToUser(user *models.User) error
+	SendQRCodeToUser(user *models.User) error
+	SendForgotPasswordURLToUserByEmail(user *models.User, token string) error
+	SendVerifyEmailToUser(user *models.User, token string) error
 }
 
 type SMTP struct {
@@ -39,7 +39,7 @@ type VerifyEmailTemplateData struct {
 	Url   string
 }
 
-func (s *SMTP) SendInviteToUser(user models.User) error {
+func (s *SMTP) SendInviteToUser(user *models.User) error {
 	inviteTemplateData := InviteTemplateData{
 		Name:  user.Name,
 		Title: INVITE_TITLE,
@@ -57,9 +57,9 @@ func (s *SMTP) SendInviteToUser(user models.User) error {
 	})
 }
 
-func (s *SMTP) SendQRCodeToUser(user models.User) error {
+func (s *SMTP) SendQRCodeToUser(user *models.User) error {
 	// TODO: Get all user tickets (use tickets model that will be implemented soon)
-	var tickets []models.User = []models.User{user}
+	var tickets []models.User = []models.User{*user}
 	var attachments map[string][]byte = make(map[string][]byte)
 
 	for _, ticket := range tickets {
@@ -78,7 +78,7 @@ func (s *SMTP) SendQRCodeToUser(user models.User) error {
 	})
 }
 
-func (s *SMTP) SendForgotPasswordURLToUserByEmail(user models.User, url string) error {
+func (s *SMTP) SendForgotPasswordURLToUserByEmail(user *models.User, url string) error {
 	forgotPasswordTemplateData := ForgotPasswordTemplateData{
 		Email: user.Email,
 		Title: RESET_PASSOWRD_TITLE,
@@ -97,7 +97,7 @@ func (s *SMTP) SendForgotPasswordURLToUserByEmail(user models.User, url string) 
 	})
 }
 
-func (s *SMTP) SendVerifyEmailToUser(user models.User, url string) error {
+func (s *SMTP) SendVerifyEmailToUser(user *models.User, url string) error {
 	confirmEmailTemplateData := VerifyEmailTemplateData{
 		Email: user.Email,
 		Title: VERIFY_EMAIL_TITLE,
