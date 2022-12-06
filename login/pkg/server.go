@@ -15,6 +15,7 @@ type Server struct {
 	LoginAPI             handlers.LoginUserAPI
 	CreateAPI            handlers.CreateUserAPI
 	GetUserAPI           handlers.GetUserAPI
+	ListUserAPI          handlers.ListUserAPI
 	DeleteAPI            handlers.DeleteUserAPI
 	UpdateAPI            handlers.UpdateUserAPI
 	ForgotPasswordAPI    handlers.ForgotPasswordAPI
@@ -32,6 +33,7 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 	s.LoginAPI = new(handlers.LoginUserHandler).InitFromBuilder(builder)
 	s.CreateAPI = new(handlers.CreateUserHandler).InitFromBuilder(builder)
 	s.GetUserAPI = new(handlers.GetUserHandler).InitFromBuilder(builder)
+	s.ListUserAPI = new(handlers.ListUserHandler).InitFromBuilder(builder)
 	s.DeleteAPI = new(handlers.DeleteUserHandler).InitFromBuilder(builder)
 	s.UpdateAPI = new(handlers.UpdateUserHandler).InitFromBuilder(builder)
 	s.ForgotPasswordAPI = new(handlers.ForgotPasswordHandler).InitFromBuilder(builder)
@@ -61,6 +63,7 @@ func (s *Server) Run() error {
 				apiV0User.POST("signin", errors.ErrorRoute(s.LoginAPI.Handler))
 				apiV0User.POST("signup", errors.ErrorRoute(s.CreateAPI.Handler))
 				apiV0User.GET(":userid", errors.ErrorRoute(s.GetUserAPI.Handler))
+				apiV0User.GET("list", errors.ErrorRoute(s.ListUserAPI.Handler))
 				apiV0UserPassword := apiV0User.Group("/password")
 				{
 					apiV0UserPassword.POST("forget", errors.ErrorRoute(s.ForgotPasswordAPI.Handler))
