@@ -28,7 +28,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"veras\",\r\n    \"username\": \"veras\",\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"cpf\": \"123\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"name\": \"thiago\",\r\n    \"username\": \"thiago\",\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"cpf\": \"cpf-thiago\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,7 +107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"thiago.wortnnes@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -335,6 +335,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/login/v0/user/11ec39db-4a14-45c8-982e-d4183b88381e",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login",
+								"v0",
+								"user",
+								"11ec39db-4a14-45c8-982e-d4183b88381e"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -472,6 +499,83 @@
 								"v0",
 								"ticket",
 								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userid\": \"7c5fd09b-dbea-4e78-ac56-2ddcaa2cc5fb\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v0/ticket/send",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"ticket",
+								"send"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invite",
+			"item": [
+				{
+					"name": "Send",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"7c5fd09b-dbea-4e78-ac56-2ddcaa2cc5fb\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/v0/invite/send",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v0",
+								"invite",
+								"send"
 							]
 						}
 					},
