@@ -23,6 +23,22 @@ func (p *PostgresRepository) GetUserByID(id string) (*models.User, error) {
 	return &user, nil
 }
 
+// TODO: Use preload to handle in 1 query (need to fix the foreign key)
+func (p *PostgresRepository) GetUserWithTicketsByID(id string) (*models.User, error) {
+	var err error
+	var user *models.User
+
+	if user, err = p.GetUserByID(id); err != nil {
+		return nil, err
+	}
+
+	if user.TicketList, err = p.GetTicketListByUserID(id); err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
 func (p *PostgresRepository) CreateUser(user *models.User) error {
 	return errors.HandleDuplicateError(p.db.Create(user).Error)
 }
