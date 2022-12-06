@@ -18,6 +18,7 @@ type Server struct {
 	TicketCreate   ticket.TicketCreateAPI
 	TicketDelete   ticket.TicketDeleteAPI
 	TicketValidate ticket.TicketValidateAPI
+	TicketSend     ticket.TicketSendAPI
 
 	InviteSend invite.InviteSendAPI
 
@@ -31,6 +32,8 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 	s.TicketCreate = new(ticket.TicketCreateHandler).InitFromBuilder(builder)
 	s.TicketDelete = new(ticket.TicketDeleteHandler).InitFromBuilder(builder)
 	s.TicketValidate = new(ticket.TicketValidateHandler).InitFromBuilder(builder)
+	s.TicketSend = new(ticket.TicketSendHandler).InitFromBuilder(builder)
+
 	s.InviteSend = new(invite.InviteSendHandler).InitFromBuilder(builder)
 
 	s.AuthAPI = new(middlewares.AuthUserHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
@@ -52,6 +55,7 @@ func (s *Server) Run() error {
 				ticketV0.POST("/create", errors.ErrorRoute(s.TicketCreate.Handler))
 				ticketV0.DELETE("/delete", errors.ErrorRoute(s.TicketDelete.Handler))
 				ticketV0.POST("/validate", errors.ErrorRoute(s.TicketValidate.Handler))
+				ticketV0.POST("/send", errors.ErrorRoute(s.TicketSend.Handler))
 			}
 			inviteVO := apiV0.Group("/invite")
 			{
