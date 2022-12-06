@@ -362,6 +362,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "List Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8081/login/v0/user/list",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"login",
+								"v0",
+								"user",
+								"list"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
