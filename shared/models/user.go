@@ -14,7 +14,7 @@ type User struct {
 	Email      string    `json:"email" gorm:"unique"`
 	CPF        string    `json:"cpf" gorm:"unique"`
 	Password   string    `json:"password"`
-	TicketList *[]Ticket `json:"ticketlist,omitempty" gorm:"ForeignKey:OwnerID"`
+	TicketList []*Ticket `json:"ticketlist,omitempty" gorm:"ForeignKey:OwnerID"`
 	IsAdmin    bool      `json:"isadmin" gorm:"default:false"`
 	IsVerified bool      `json:"isverified" gorm:"default:false"`
 }
