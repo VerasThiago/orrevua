@@ -7,6 +7,7 @@ import (
 type Repository interface {
 	GetUserByEmail(email string) (*models.User, error)
 	GetUserByID(id string) (*models.User, error)
+	GetAllUsers() ([]*models.User, error)
 	GetUserWithTicketsByID(id string) (*models.User, error)
 	CreateUser(user *models.User) error
 	DeleteUser(userID string) error

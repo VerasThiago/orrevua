@@ -7,6 +7,14 @@ import (
 
 const USER_DATA_NAME = "User"
 
+func (p *PostgresRepository) GetAllUsers() ([]*models.User, error) {
+	var userList []*models.User
+	if err := p.db.Find(&userList).Error; err != nil {
+		return nil, err
+	}
+	return userList, nil
+}
+
 func (p *PostgresRepository) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
 	if err := errors.HandleDataNotFoundError(p.db.Where("email = ?", email).First(&user).Error, USER_DATA_NAME); err != nil {
