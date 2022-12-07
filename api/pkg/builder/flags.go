@@ -1,24 +1,22 @@
 package builder
 
 import (
-	"github.com/spf13/viper"
-)
+	"os"
 
-const (
-	envFilePath = ".env"
-	envFileName = "api"
-	envFileType = "env"
+	shared "github.com/verasthiago/tickets-generator/shared/flags"
+
+	"github.com/spf13/viper"
 )
 
 type Flags struct {
 	Port string `mapstructure:"API_PORT"`
 }
 
-func (f *Flags) InitFromViper() (*Flags, error) {
+func (f *Flags) InitFromViper(envConfigFile *shared.EnvFileConfig) (*Flags, error) {
 	viper := viper.New()
-	viper.AddConfigPath(envFilePath)
-	viper.SetConfigName(envFileName)
-	viper.SetConfigType(envFileType)
+	viper.AddConfigPath(envConfigFile.Path)
+	viper.SetConfigName(envConfigFile.Name)
+	viper.SetConfigType(envConfigFile.Type)
 
 	viper.AutomaticEnv()
 
@@ -32,4 +30,29 @@ func (f *Flags) InitFromViper() (*Flags, error) {
 	}
 
 	return &flags, nil
+}
+
+func GetApiFileConfigFromEnv() *shared.EnvFileConfig {
+	env := shared.Environment(os.Getenv(shared.ENV_NAME))
+	switch env {
+	case shared.PRODUCTION:
+		return &shared.EnvFileConfig{
+			Path: ".env",
+			Name: "api.production",
+			Type: "env",
+		}
+	case shared.DOCKER:
+		return &shared.EnvFileConfig{
+			Path: ".env",
+			Name: "api.docker",
+			Type: "env",
+		}
+	case shared.LOCAL:
+		return &shared.EnvFileConfig{
+			Path: ".env",
+			Name: "api.local",
+			Type: "env",
+		}
+	}
+	panic("invalid TICKETS_ENV env variable")
 }
