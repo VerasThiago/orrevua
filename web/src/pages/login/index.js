@@ -29,7 +29,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
+      <div className="col-lg-6 col-md-12 d-flex flex-column align-items-center justify-content-center">
         <div className="col-md-6">
           <p className="login-title-forms fw-bold">Entrar</p>
         </div>
