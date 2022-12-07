@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import Landing from './pages/landing';
 import Home from './pages/home';
 import Login from './pages/login';
+import ForgotPassword from './pages/forgotPassword';
 import Tickets from './pages/tickets';
 import NotFound from './pages/notFound';
 
@@ -26,6 +27,7 @@ export default function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/home" element={<Landing />} />
           <Route exact path="/login" element={<Login />} />
+          <Route exact path="/forgot_password" element={<ForgotPassword />} />
           <Route exact path="/404" element={<NotFound />} />
           <Route>
             <Route
