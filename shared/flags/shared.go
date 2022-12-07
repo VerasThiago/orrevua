@@ -1,11 +1,16 @@
-package shared
+package flags
 
-import "github.com/spf13/viper"
+import (
+	"os"
+
+	"github.com/spf13/viper"
+)
 
 const (
-	envFilePath = ".env"
-	envFileName = "shared"
-	envFileType = "env"
+	PRODUCTION Environment = "PRODUCTION"
+	LOCAL      Environment = "LOCAL"
+	DOCKER     Environment = "DOCKER"
+	ENV_NAME   string      = "TICKETS_ENV"
 )
 
 type SharedFlags struct {
@@ -26,11 +31,44 @@ type SharedFlags struct {
 	JwtKeyEmail       string `mapstructure:"JWT_KEY_EMAIL"`
 }
 
-func (f *SharedFlags) InitFromViper() (*SharedFlags, error) {
+type Environment string
+
+type EnvFileConfig struct {
+	Path string
+	Name string
+	Type string
+}
+
+func GetSharedFileConfigFromEnv() *EnvFileConfig {
+	env := Environment(os.Getenv(ENV_NAME))
+	switch env {
+	case PRODUCTION:
+		return &EnvFileConfig{
+			Path: ".env",
+			Name: "shared.production",
+			Type: "env",
+		}
+	case DOCKER:
+		return &EnvFileConfig{
+			Path: ".env",
+			Name: "shared.docker",
+			Type: "env",
+		}
+	case LOCAL:
+		return &EnvFileConfig{
+			Path: "../shared/.env",
+			Name: "shared.local",
+			Type: "env",
+		}
+	}
+	panic("invalid TICKETS_ENV env variable")
+}
+
+func (f *SharedFlags) InitFromViper(config *EnvFileConfig) (*SharedFlags, error) {
 	viper := viper.New()
-	viper.AddConfigPath(envFilePath)
-	viper.SetConfigName(envFileName)
-	viper.SetConfigType(envFileType)
+	viper.AddConfigPath(config.Path)
+	viper.SetConfigName(config.Name)
+	viper.SetConfigType(config.Type)
 
 	viper.AutomaticEnv()
 
