@@ -4,6 +4,8 @@ import alertMessage from '../alertMessage';
 
 export default function UserTicketHeader({ owner, ticket, reloadTickets }) {
   const handleDelete = () => {
+    if (!confirm('Tem certeza que deseja deletar esse ingresso?')) return;
+
     apiRequest('api', `api/v0/ticket/delete`, 'delete', { id: ticket.id })
       .then(async (response) => {
         const parsedResponse = await response.json();
@@ -32,7 +34,7 @@ export default function UserTicketHeader({ owner, ticket, reloadTickets }) {
       </div>
       {owner.isadmin === true && (
         <div className="ms-auto fs-4" role="button">
-          <TrashIcon onClick={handleDelete} />
+          <TrashIcon style={{ color: 'crimson' }} onClick={handleDelete} />
         </div>
       )}
     </div>
