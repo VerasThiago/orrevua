@@ -8,6 +8,7 @@ import Login from './pages/login';
 import ForgotPassword from './pages/forgotPassword';
 import Tickets from './pages/tickets';
 import NotFound from './pages/notFound';
+import Users from './pages/admin/users';
 
 import PrivateRoute from './components/privateRoute';
 
@@ -40,6 +41,15 @@ export default function App() {
               }
             />
           </Route>
+          <Route
+            exact
+            path="/admin/users"
+            element={
+              <PrivateRoute admin>
+                <Users />
+              </PrivateRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

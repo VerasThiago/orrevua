@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import './index.scss';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -20,10 +21,12 @@ export default function Login() {
       <LeftLoginBar />
       <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
         <div className="col-md-6">
-          <p className="login-title-forms">Entrar</p>
+          <p className="login-title-forms fw-bold">Entrar</p>
         </div>
         <div className="col-md-6">
-          <p className="login-greeting-forms">Sentimos sua falta! Faça o login para começar</p>
+          <p className="login-greeting-forms fw-bold">
+            Sentimos sua falta! Faça o login para começar
+          </p>
         </div>
         <div className="col-md-6">
           <Form
@@ -70,7 +73,7 @@ export default function Login() {
               />
             </Form.Item>
             <div className="d-flex justify-content-end pb-5">
-              <a className="login-forgot-password text-decoration-none" href="">
+              <a className="login-forgot-password fw-bold text-decoration-none" href="">
                 Esqueceu a senha?
               </a>
             </div>
@@ -81,7 +84,7 @@ export default function Login() {
               <div className="d-flex justify-content-center p-5">
                 <p className="login-signup-forms">
                   Não tem conta?
-                  <a className="text-decoration-none" href="">
+                  <a className="text-decoration-none fw-bold" href="">
                     {' '}
                     Cadastre-se
                   </a>
