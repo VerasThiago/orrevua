@@ -5,6 +5,7 @@ import Ticket from '../../../components/ticket/ticket';
 import { apiRequest } from '../../../services/api';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
+import { formatCpf } from '../../../utils';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
@@ -42,7 +43,7 @@ export default function AdminUserTickets() {
       <div className="d-flex gap-3 justify-content-start mb-4">
         <div>
           <p className="fs-4 fw-bold text-white mb-1">{user.name}</p>
-          <p className="text-white">CPF {user.cpf}</p>
+          <p className="text-white">CPF {formatCpf(user.cpf)}</p>
         </div>
         <div className="pt-2">
           <button className="btn btn-primary rounded-pill px-4">

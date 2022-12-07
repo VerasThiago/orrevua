@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ReactComponent as AddBtn } from '../../../images/add_circle.svg';
+import { formatCpf } from '../../../utils/index';
 
 export default function TableUsers({ data }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,7 +41,7 @@ export default function TableUsers({ data }) {
               <tr key={index}>
                 <td className="text-white">{item.name}</td>
                 <td className="text-white">{item.email}</td>
-                <td className="text-white">{cpfMask(item.cpf)}</td>
+                <td className="text-white">{formatCpf(item.cpf)}</td>
                 <td className="">
                   <NavLink to={`/admin/users/${item.id}`}>
                     <AddBtn />
