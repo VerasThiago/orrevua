@@ -1,0 +1,63 @@
+
+.header-title{
+  font-size: 33.0556px;
+  line-height: 110%;
+}
+
+.title-login{
+  font-size: 56px;
+  line-height: 110%;
+}
+
+.login-title-forms{
+  font-size: 34px;
+  line-height: 46px;
+}
+.login-greeting-forms{
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.login-forgot-password{
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: #E2E2E2;
+}
+
+.login-signup-forms{
+  font-size: 18px;
+  line-height: 20px;
+  color: #FFFFFF;
+}
+
+.header{
+  background: linear-gradient(0deg, rgba(134, 66, 244, 0.1), rgba(134, 66, 244, 0.1)), url(./image-bg.png);
+}
+
+@media only screen and (max-width: 960px){
+  .title-login{
+    font-size: 24px;
+    line-height: 110%;
+    }
+  .login-title-forms{
+    font-size: 24px;
+    line-height: 31px;
+  }
+  .login-greeting-forms{
+    font-size: 14px;
+    line-height: 18px;
+    color: #E2E2E2;
+  }
+  .login-forgot-password{
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    color: #E2E2E2;
+    }
+  .login-signup-forms{
+    font-size: 14px;
+    line-height: 20px;
+    color: #FFFFFF;
+    }
+}
