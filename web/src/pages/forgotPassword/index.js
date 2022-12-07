@@ -1,7 +1,9 @@
 import React from 'react';
-import { ReactComponent as IconMenu } from '../../images/logo.svg';
+import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
+import InputIcon from '../../components/inputIcon';
+import LeftLoginBar from '../../components/leftLoginBar';
 
 export default function Login() {
   const onFinish = async (event) => {
@@ -24,41 +26,40 @@ export default function Login() {
 
   return (
     <div className="row vh-100 m-0">
-      <div className="col-lg-6 col-md-12 d-flex flex-column justify-content-center header">
-        <div className="row justify-content-center h-50">
-          <div className="col-md-8 col-lg-8 d-flex flex-column justify-content-between">
-            <div className="d-flex">
-              <IconMenu className="me-2" />
-              <p className="header-title">ourevuá</p>
-            </div>
-            <p className="title-login h-50">Seus ingressos na palma da mão</p>
-          </div>
-        </div>
-      </div>
+      <LeftLoginBar />
       <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
-        <div className="col-md-6">
-          <p className="login-title-forms">Esqueceu sua senha?</p>
-        </div>
-        <div className="col-md-6">
-          <p className="login-greeting-forms">
-            Informe seu e-mail e enviaremos instruções para você criar sua nova senha.
-          </p>
-        </div>
-        <div className="col-md-6">
-          <form id="forgot_password" onSubmit={onFinish}>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              className="form-control text-white rounded-pill p-3 bg-dark"
-              aria-describedby="email"
-              placeholder="E-mail"
-            />
+        <div className="px-4" style={{ maxWidth: '450px' }}>
+          <div>
+            <p className="login-title-forms">Esqueceu sua senha?</p>
+          </div>
+          <div>
+            <p className="login-greeting-forms">
+              Informe seu e-mail e enviaremos instruções para você criar sua nova senha.
+            </p>
+          </div>
+          <div>
+            <form id="forgot_password" onSubmit={onFinish}>
+              <div>
+                <InputIcon
+                  id="email"
+                  name="email"
+                  type="email"
+                  className="form-control text-white rounded-pill p-3 bg-dark"
+                  aria-describedby="email"
+                  placeholder="E-mail"
+                  icon={<IconEmail />}
+                />
+              </div>
 
-            <button type="submit" className="btn btn-primary w-100 rounded-pill py-3 mt-5 fw-bold">
-              Enviar
-            </button>
-          </form>
+              <div>
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100 rounded-pill py-3 mt-5 fw-bold">
+                  Enviar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
