@@ -5,7 +5,7 @@ import { apiRequest } from '../../services/api';
 import alertMessage from '../alertMessage';
 import CircleAvatar from '../circleAvatar';
 
-export default function UserTicketHeader({ owner, ticket, reloadTickets, hideDelete }) {
+export default function UserTicketHeader({ ticket, reloadTickets, hideDelete }) {
   const { userData } = useContext(AuthContext);
 
   const handleDelete = () => {

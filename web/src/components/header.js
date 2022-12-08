@@ -1,6 +1,11 @@
+import { useContext } from 'react';
 import CircleAvatar from '../components/circleAvatar';
+import { AuthContext } from '../App';
 
-export default function Header({ title, subTitle, user }) {
+export default function Header({ title, subTitle }) {
+  const { userData } = useContext(AuthContext);
+  const user = userData().User;
+
   return (
     <div className="d-flex justify-content-between align-items-center mb-5">
       <div>

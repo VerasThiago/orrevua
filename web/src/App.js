@@ -55,8 +55,8 @@ export default function App() {
             exact
             path="/admin/users/:userId"
             element={
-              <PrivateRoute>
-                <AdminUserTickets admin />
+              <PrivateRoute admin>
+                <AdminUserTickets />
               </PrivateRoute>
             }
           />
@@ -64,8 +64,8 @@ export default function App() {
             exact
             path="/admin/users/:userId/ticket/create"
             element={
-              <PrivateRoute>
-                <AdminCreateTicket admin />
+              <PrivateRoute admin>
+                <AdminCreateTicket />
               </PrivateRoute>
             }
           />
