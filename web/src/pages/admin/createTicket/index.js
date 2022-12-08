@@ -63,7 +63,7 @@ export default function AdminUserTickets() {
       <p className="fs-2 mb-5">Criar ingresso</p>
       <p className="fs-4 mb-1">Despedida do Veras</p>
       <p>23 de Dezembro de 2022 - 18h</p>
-      <div className="d-flex gap-3 justify-content-start mb-4">
+      <div className="d-flex row gap-3 justify-content-start mb-4">
         <div className="col-md-12 col-lg-6" style={{ maxWidth: '300px' }}>
           <p className="fs-4 mb-4">Conta do usuário</p>
           <InputIcon
