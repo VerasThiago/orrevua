@@ -44,3 +44,7 @@ func (p *PostgresRepository) DeleteTicketByID(id string) error {
 func (p *PostgresRepository) ValidateTicketByCPF(cpf string) error {
 	return errors.HandleDataNotFoundError(p.db.Model(&models.Ticket{}).Where("cpf = ?", cpf).Updates(&models.Ticket{IsUsed: true, UsedTime: time.Now()}).Error, TICKET_MODEL_NAME)
 }
+
+func (p *PostgresRepository) MigrateTicket(model *models.Ticket) error {
+	return p.db.AutoMigrate(model)
+}

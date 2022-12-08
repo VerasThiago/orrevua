@@ -75,3 +75,7 @@ func (p *PostgresRepository) UpdateUserPasswordByEmail(email string, password st
 func (p *PostgresRepository) VerifyUserAccountByID(id string) error {
 	return errors.HandleDataNotFoundError(p.db.Model(&models.User{}).Where("id = ?", id).Update("is_verified", true).Error, USER_DATA_NAME)
 }
+
+func (p *PostgresRepository) MigrateUser(model *models.User) error {
+	return p.db.AutoMigrate(model)
+}
