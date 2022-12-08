@@ -10,6 +10,7 @@ import Tickets from './pages/tickets';
 import NotFound from './pages/notFound';
 import Users from './pages/admin/users';
 
+import AdminCreateTicket from './pages/admin/createTicket';
 import AdminUserTickets from './pages/admin/userTickets';
 
 import PrivateRoute from './components/privateRoute';
@@ -56,6 +57,15 @@ export default function App() {
             element={
               <PrivateRoute>
                 <AdminUserTickets admin />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path="/admin/users/:userId/ticket/create"
+            element={
+              <PrivateRoute>
+                <AdminCreateTicket admin />
               </PrivateRoute>
             }
           />

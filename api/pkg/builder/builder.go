@@ -13,5 +13,5 @@ type Builder interface {
 	GetLog() *zap.Logger
 	GetSharedFlags() *shared.SharedFlags
 	GetEmailClient() email.SMTPClient
-	InitBuilder() Builder
+	InitBuilder(apiEnvConfigFile, sharedEnvConfigFile *shared.EnvFileConfig) Builder
 }

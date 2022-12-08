@@ -3,6 +3,7 @@ import { AuthContext } from '../../App';
 import { ReactComponent as TrashIcon } from '../../images/trash.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../alertMessage';
+import CircleAvatar from '../circleAvatar';
 
 export default function UserTicketHeader({ owner, ticket, reloadTickets, hideDelete }) {
   const { userData } = useContext(AuthContext);
@@ -27,9 +28,7 @@ export default function UserTicketHeader({ owner, ticket, reloadTickets, hideDel
 
   return (
     <div className="p-3 d-flex gap-3">
-      <div className="py-2 rounded-circle bg-primary p-3" style={{ width: '40px', height: '40px' }}>
-        <span>{owner.name.split('')[0].toUpperCase()}</span>
-      </div>
+      <CircleAvatar userName={ticket.name} />
       <div>
         <div>{ticket.name}</div>
         <div>

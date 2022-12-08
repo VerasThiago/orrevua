@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ReactComponent as IconMenu } from '../../../images/qr_code.svg';
 import Ticket from '../../../components/ticket/ticket';
 import { apiRequest } from '../../../services/api';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
+import Header from '../../../components/header';
 import { formatCpf } from '../../../utils';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     reloadTickets();
@@ -39,14 +42,20 @@ export default function AdminUserTickets() {
 
   return (
     <div className="vh-100 m-0 p-4">
-      <p className="h1 text-white pb-4">Ingressos</p>
+      <Header title="Ingressos" user={user} />
       <div className="d-flex gap-3 justify-content-start mb-4">
         <div>
           <p className="fs-4 fw-bold text-white mb-1">{user.name}</p>
           <p className="text-white">CPF {formatCpf(user.cpf)}</p>
         </div>
         <div className="pt-2">
-          <button className="btn btn-primary rounded-pill px-4">
+          <button
+            className="btn btn-primary rounded-pill px-4"
+            onClick={() =>
+              navigate(`/admin/users/${userId}/ticket/create`, {
+                state: { from: location }
+              })
+            }>
             <IconMenu className="me-2" />
             Criar ingresso
           </button>

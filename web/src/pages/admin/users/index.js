@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { apiRequest } from '../../../services/api';
 import TableUsers from './TableUsers';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
+import Header from '../../../components/header';
+import { AuthContext } from '../../../App';
 
 export default function Users() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const { userData } = useContext(AuthContext);
 
   const keys = ['name', 'cpf', 'email'];
 
@@ -44,7 +47,7 @@ export default function Users() {
   }
   return (
     <div>
-      <h1 className="text-white m-5 fs-2">Usuários</h1>
+      <Header title="Usuários" user={userData().User} />
       <div className="form-group">
         <div className="input-group w-25 mx-5">
           <input
