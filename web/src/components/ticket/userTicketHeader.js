@@ -5,7 +5,7 @@ import { apiRequest } from '../../services/api';
 import alertMessage from '../alertMessage';
 import CircleAvatar from '../circleAvatar';
 
-export default function UserTicketHeader({ owner, ticket, reloadTickets }) {
+export default function UserTicketHeader({ owner, ticket, reloadTickets, hideDelete }) {
   const { userData } = useContext(AuthContext);
 
   const handleDelete = () => {
@@ -35,7 +35,7 @@ export default function UserTicketHeader({ owner, ticket, reloadTickets }) {
           <small>Ingresso individual</small>
         </div>
       </div>
-      {userData().User.isadmin === true && (
+      {userData().User.isadmin === true && !hideDelete && (
         <div className="ms-auto fs-4" role="button">
           <TrashIcon style={{ color: 'crimson' }} onClick={handleDelete} />
         </div>
