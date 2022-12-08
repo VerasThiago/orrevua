@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import './index.scss';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import HomeSidebar from '../../components/homeSidebar';
 
@@ -73,9 +73,11 @@ export default function Login() {
               />
             </Form.Item>
             <div className="d-flex justify-content-end pb-5">
-              <a className="login-forgot-password fw-bold text-decoration-none" href="">
+              <NavLink
+                to={'/forgot_password'}
+                className="login-forgot-password fw-bold text-decoration-none">
                 Esqueceu a senha?
-              </a>
+              </NavLink>
             </div>
             <Form.Item>
               <button type="submit" className="btn btn-primary w-100 rounded-pill py-3">
@@ -84,10 +86,9 @@ export default function Login() {
               <div className="d-flex justify-content-center p-5">
                 <p className="login-signup-forms">
                   Não tem conta?
-                  <a className="text-decoration-none fw-bold" href="">
-                    {' '}
+                  <NavLink to={'/signup'} className="mx-2 text-decoration-none fw-bold">
                     Cadastre-se
-                  </a>
+                  </NavLink>
                 </p>
               </div>
             </Form.Item>
