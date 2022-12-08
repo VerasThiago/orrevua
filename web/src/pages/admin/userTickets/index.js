@@ -5,6 +5,7 @@ import Ticket from '../../../components/ticket/ticket';
 import { apiRequest } from '../../../services/api';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
+import Header from '../../../components/header';
 import { formatCpf } from '../../../utils';
 
 export default function AdminUserTickets() {
@@ -41,7 +42,7 @@ export default function AdminUserTickets() {
 
   return (
     <div className="vh-100 m-0 p-4">
-      <p className="h1 text-white pb-4">Ingressos</p>
+      <Header title="Ingressos" user={user} />
       <div className="d-flex gap-3 justify-content-start mb-4">
         <div>
           <p className="fs-4 fw-bold text-white mb-1">{user.name}</p>
