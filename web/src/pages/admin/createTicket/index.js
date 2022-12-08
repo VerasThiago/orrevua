@@ -44,11 +44,13 @@ export default function AdminUserTickets() {
 
     apiRequest('api', 'api/v0/ticket/create', 'post', values)
       .then(async (response) => {
+        const parsedResponse = await response.json();
         if (response.ok) {
           alertMessage('success', 'Ingresso criado com sucesso!');
           event.target.reset();
         } else {
-          alertMessage('error', 'Ocorreu um erro inesperado');
+          if (parsedResponse.message) alertMessage('error', parsedResponse.message);
+          else alertMessage('error', 'Ocorreu um erro inesperado');
         }
       })
       .catch(() => {
