@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ReactComponent as IconMenu } from '../../../images/qr_code.svg';
 import Ticket from '../../../components/ticket/ticket';
 import { apiRequest } from '../../../services/api';
@@ -12,6 +12,8 @@ export default function AdminUserTickets() {
   const { userId } = useParams();
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     reloadTickets();
@@ -47,7 +49,13 @@ export default function AdminUserTickets() {
           <p className="text-white">CPF {formatCpf(user.cpf)}</p>
         </div>
         <div className="pt-2">
-          <button className="btn btn-primary rounded-pill px-4">
+          <button
+            className="btn btn-primary rounded-pill px-4"
+            onClick={() =>
+              navigate(`/admin/users/${userId}/ticket/create`, {
+                state: { from: location }
+              })
+            }>
             <IconMenu className="me-2" />
             Criar ingresso
           </button>
