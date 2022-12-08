@@ -19,6 +19,7 @@ import AuthProvider from './services/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
+import SignUp from './pages/signUp ';
 
 export const AuthContext = createContext();
 
@@ -69,6 +70,8 @@ export default function App() {
               </PrivateRoute>
             }
           />
+          <Route exact path="/signup" element={<SignUp />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
