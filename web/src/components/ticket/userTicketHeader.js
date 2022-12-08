@@ -1,8 +1,12 @@
+import { useContext } from 'react';
+import { AuthContext } from '../../App';
 import { ReactComponent as TrashIcon } from '../../images/trash.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../alertMessage';
 
 export default function UserTicketHeader({ owner, ticket, reloadTickets }) {
+  const { userData } = useContext(AuthContext);
+
   const handleDelete = () => {
     if (!confirm('Tem certeza que deseja deletar esse ingresso?')) return;
 
@@ -32,7 +36,7 @@ export default function UserTicketHeader({ owner, ticket, reloadTickets }) {
           <small>Ingresso individual</small>
         </div>
       </div>
-      {owner.isadmin === true && (
+      {userData().User.isadmin === true && (
         <div className="ms-auto fs-4" role="button">
           <TrashIcon style={{ color: 'crimson' }} onClick={handleDelete} />
         </div>
