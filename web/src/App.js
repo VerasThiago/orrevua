@@ -19,6 +19,7 @@ import AuthProvider from './services/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
+import ResetPassword from './pages/resetPassword';
 
 export const AuthContext = createContext();
 
@@ -69,6 +70,7 @@ export default function App() {
               </PrivateRoute>
             }
           />
+          <Route exact path="/password/reset" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
