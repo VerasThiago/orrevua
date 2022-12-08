@@ -4,7 +4,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../App';
-import { ReactComponent as IconMenu } from '../../images/logo.svg';
+import HomeSidebar from '../../components/homeSidebar';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,18 +18,8 @@ export default function Login() {
 
   return (
     <div className="row vh-100 m-0">
-      <div className="col-lg-6 col-md-12 d-flex flex-column justify-content-center header">
-        <div className="row justify-content-center h-50">
-          <div className="col-md-8 col-lg-8 d-flex flex-column justify-content-between">
-            <div className="d-flex">
-              <IconMenu className="me-2" />
-              <p className="header-title fw-bold">ourevuá</p>
-            </div>
-            <p className="title-login fw-bold h-50">Seus ingressos na palma da mão</p>
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-6 col-md-12 d-flex flex-column align-items-center justify-content-center">
+      <HomeSidebar />
+      <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
         <div className="col-md-6">
           <p className="login-title-forms fw-bold">Entrar</p>
         </div>
