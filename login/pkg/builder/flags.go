@@ -13,6 +13,10 @@ type Flags struct {
 
 func GetLoginFileConfigFromEnv() *shared.EnvFileConfig {
 	env := shared.Environment(os.Getenv(shared.ENV_NAME))
+	if env == "" {
+		panic("empty TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
+	}
+
 	switch env {
 	case shared.PRODUCTION:
 		return &shared.EnvFileConfig{
@@ -33,7 +37,8 @@ func GetLoginFileConfigFromEnv() *shared.EnvFileConfig {
 			Type: "env",
 		}
 	}
-	panic("invalid TICKETS_ENV env variable")
+
+	panic("invalid TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
 }
 
 func (f *Flags) InitFromViper(config *shared.EnvFileConfig) (*Flags, error) {

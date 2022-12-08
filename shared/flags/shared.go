@@ -41,6 +41,10 @@ type EnvFileConfig struct {
 
 func GetSharedFileConfigFromEnv() *EnvFileConfig {
 	env := Environment(os.Getenv(ENV_NAME))
+	if env == "" {
+		panic("empty TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
+	}
+
 	switch env {
 	case PRODUCTION:
 		return &EnvFileConfig{
@@ -61,7 +65,8 @@ func GetSharedFileConfigFromEnv() *EnvFileConfig {
 			Type: "env",
 		}
 	}
-	panic("invalid TICKETS_ENV env variable")
+
+	panic("invalid TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
 }
 
 func (f *SharedFlags) InitFromViper(config *EnvFileConfig) (*SharedFlags, error) {
