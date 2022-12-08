@@ -3,7 +3,7 @@ import { ReactComponent as IconMenu } from '../../images/qr_code.svg';
 import ticketImg from './ticket-img.png';
 import UserTicketHeader from './userTicketHeader';
 
-export default function Ticket({ ticket, user, reloadTickets }) {
+export default function Ticket({ ticket, user, reloadTickets, hideDelete }) {
   const [qrCodeVisible, setQrCodeVisible] = useState(false);
 
   const showQrCode = () => {
@@ -12,7 +12,12 @@ export default function Ticket({ ticket, user, reloadTickets }) {
 
   return (
     <div className="col-lg-3 col-md-12 rounded-3 py-0 px-0" style={{ backgroundColor: '#1f1f1f' }}>
-      <UserTicketHeader owner={user} ticket={ticket} reloadTickets={reloadTickets} />
+      <UserTicketHeader
+        owner={user}
+        ticket={ticket}
+        reloadTickets={reloadTickets}
+        hideDelete={hideDelete}
+      />
       {qrCodeVisible === true ? (
         <div className="text-center">
           <img
