@@ -1,10 +1,12 @@
 // Override default variables before the import
-$primary: rgba(129, 66, 233, 0.9);
+$primary: #763DD3;
 $secondary: #101010;
+$body-bg: #101010;
+$body-color: #F2F2F2;
+
 $pagination-color: #fff;
 $pagination-bg: $secondary;
 $pagination-border-color: $secondary;
-
 $pagination-hover-color: $primary;
 $pagination-hover-bg: $secondary;
 $pagination-hover-border-color: $secondary;
