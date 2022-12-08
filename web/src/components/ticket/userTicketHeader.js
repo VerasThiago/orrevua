@@ -28,7 +28,7 @@ export default function UserTicketHeader({ owner, ticket, reloadTickets }) {
   return (
     <div className="p-3 d-flex gap-3">
       <div className="py-2 rounded-circle bg-primary p-3" style={{ width: '40px', height: '40px' }}>
-        <span>{owner.name.split('')[0].toUpperCase()}</span>
+        <span>{ticket.name.split('')[0].toUpperCase()}</span>
       </div>
       <div>
         <div>{ticket.name}</div>
