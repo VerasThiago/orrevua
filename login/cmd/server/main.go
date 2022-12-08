@@ -3,10 +3,13 @@ package cmd
 import (
 	"github.com/verasthiago/tickets-generator/login/pkg"
 	"github.com/verasthiago/tickets-generator/login/pkg/builder"
+	shared "github.com/verasthiago/tickets-generator/shared/flags"
 )
 
 func Execute() {
-	builder := new(builder.ServerBuilder).InitBuilder()
+	sharedEnvConfigFile := shared.GetSharedFileConfigFromEnv()
+	loginEnvConfigFile := builder.GetLoginFileConfigFromEnv()
+	builder := new(builder.ServerBuilder).InitBuilder(loginEnvConfigFile, sharedEnvConfigFile)
 	server := new(pkg.Server).InitFromBuilder(builder)
 
 	if err := server.Run(); err != nil {

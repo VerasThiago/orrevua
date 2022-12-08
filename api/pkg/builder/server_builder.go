@@ -36,14 +36,14 @@ func (s *ServerBuilder) GetEmailClient() email.SMTPClient {
 	return s.Email
 }
 
-func (s *ServerBuilder) InitBuilder() Builder {
-	flags, err := new(Flags).InitFromViper()
+func (s *ServerBuilder) InitBuilder(apiEnvFileConfig, sharedEnvFileConfig *shared.EnvFileConfig) Builder {
+	flags, err := new(Flags).InitFromViper(apiEnvFileConfig)
 	if err != nil {
 		panic(err)
 	}
 	s.Flags = flags
 
-	sharedFlags, err := new(shared.SharedFlags).InitFromViper()
+	sharedFlags, err := new(shared.SharedFlags).InitFromViper(sharedEnvFileConfig)
 	if err != nil {
 		panic(err)
 	}

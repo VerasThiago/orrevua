@@ -1,24 +1,51 @@
 package builder
 
 import (
-	"github.com/spf13/viper"
-)
+	"os"
 
-const (
-	envFilePath = ".env"
-	envFileName = "login"
-	envFileType = "env"
+	"github.com/spf13/viper"
+	shared "github.com/verasthiago/tickets-generator/shared/flags"
 )
 
 type Flags struct {
 	Port string `mapstructure:"LOGIN_PORT"`
 }
 
-func (f *Flags) InitFromViper() (*Flags, error) {
+func GetLoginFileConfigFromEnv() *shared.EnvFileConfig {
+	env := shared.Environment(os.Getenv(shared.ENV_NAME))
+	if env == "" {
+		panic("empty TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
+	}
+
+	switch env {
+	case shared.PRODUCTION:
+		return &shared.EnvFileConfig{
+			Path: ".env",
+			Name: "login.production",
+			Type: "env",
+		}
+	case shared.DOCKER:
+		return &shared.EnvFileConfig{
+			Path: ".env",
+			Name: "login.docker",
+			Type: "env",
+		}
+	case shared.LOCAL:
+		return &shared.EnvFileConfig{
+			Path: ".env",
+			Name: "login.local",
+			Type: "env",
+		}
+	}
+
+	panic("invalid TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
+}
+
+func (f *Flags) InitFromViper(config *shared.EnvFileConfig) (*Flags, error) {
 	viper := viper.New()
-	viper.AddConfigPath(envFilePath)
-	viper.SetConfigName(envFileName)
-	viper.SetConfigType(envFileType)
+	viper.AddConfigPath(config.Path)
+	viper.SetConfigName(config.Name)
+	viper.SetConfigType(config.Type)
 
 	viper.AutomaticEnv()
 
