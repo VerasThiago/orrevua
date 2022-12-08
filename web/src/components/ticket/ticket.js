@@ -27,9 +27,12 @@ export default function Ticket({ ticket, user, reloadTickets }) {
 
       <div className="p-3">
         <p className="fw-bold">Despedida do Veras</p>
-        <span>23 de Novembro de 2022 - 18:00 às 21:00</span>
+        <span>23 de Dezembro de 2022 às 20h</span>
         <br />
-        <span>Endereço do local do evento completo</span>
+        <span>
+          Espaço Mocambo, St. de Habitações Individuais Norte Trecho 1 - Lago Norte, Brasília - DF,
+          71560-100
+        </span>
       </div>
       <div className="p-3 pt-4">
         <button className="btn btn-primary rounded-pill w-100" onClick={showQrCode}>
