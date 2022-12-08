@@ -3,9 +3,9 @@ import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
 import InputIcon from '../../components/inputIcon';
-import LeftLoginBar from '../../components/leftLoginBar';
+import HomeSidebar from '../../components/homeSidebar';
 
-export default function Login() {
+export default function ForgotPassword() {
   const onFinish = async (event) => {
     event.preventDefault();
     const values = Object.fromEntries(new FormData(event.target));
@@ -26,16 +26,14 @@ export default function Login() {
 
   return (
     <div className="row vh-100 m-0">
-      <LeftLoginBar />
+      <HomeSidebar />
       <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
         <div className="px-4" style={{ maxWidth: '450px' }}>
           <div>
-            <p className="login-title-forms">Esqueceu sua senha?</p>
+            <p className="fs-2">Esqueceu sua senha?</p>
           </div>
           <div>
-            <p className="login-greeting-forms">
-              Informe seu e-mail e enviaremos instruções para você criar sua nova senha.
-            </p>
+            <p>Informe seu e-mail e enviaremos instruções para você criar sua nova senha.</p>
           </div>
           <div>
             <form id="forgot_password" onSubmit={onFinish}>
@@ -44,7 +42,7 @@ export default function Login() {
                   id="email"
                   name="email"
                   type="email"
-                  className="form-control text-white rounded-pill p-3 bg-dark"
+                  className="form-control rounded-pill p-3 bg-dark"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}

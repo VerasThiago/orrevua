@@ -4,7 +4,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../App';
-import LeftLoginBar from '../../components/leftLoginBar';
+import HomeSidebar from '../../components/homeSidebar';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function Login() {
 
   return (
     <div className="row vh-100 m-0">
-      <LeftLoginBar />
+      <HomeSidebar />
       <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
         <div className="col-md-6">
           <p className="login-title-forms fw-bold">Entrar</p>

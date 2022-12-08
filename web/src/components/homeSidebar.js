@@ -1,6 +1,6 @@
 import { ReactComponent as IconMenu } from '../images/logo.svg';
 
-export default function LeftLoginBar() {
+export default function HomeSidebar() {
   return (
     <div className="col-lg-6 col-md-12 d-flex flex-column justify-content-center header">
       <div className="row justify-content-center h-50">
