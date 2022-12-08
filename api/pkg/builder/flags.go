@@ -1,8 +1,6 @@
 package builder
 
 import (
-	"os"
-
 	shared "github.com/verasthiago/tickets-generator/shared/flags"
 
 	"github.com/spf13/viper"
@@ -30,34 +28,4 @@ func (f *Flags) InitFromViper(envConfigFile *shared.EnvFileConfig) (*Flags, erro
 	}
 
 	return &flags, nil
-}
-
-func GetApiFileConfigFromEnv() *shared.EnvFileConfig {
-	env := shared.Environment(os.Getenv(shared.ENV_NAME))
-	if env == "" {
-		panic("empty TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
-	}
-
-	switch env {
-	case shared.PRODUCTION:
-		return &shared.EnvFileConfig{
-			Path: ".env",
-			Name: "api.production",
-			Type: "env",
-		}
-	case shared.DOCKER:
-		return &shared.EnvFileConfig{
-			Path: ".env",
-			Name: "api.docker",
-			Type: "env",
-		}
-	case shared.LOCAL:
-		return &shared.EnvFileConfig{
-			Path: ".env",
-			Name: "api.local",
-			Type: "env",
-		}
-	}
-
-	panic("invalid TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
 }
