@@ -10,6 +10,8 @@ import Tickets from './pages/tickets';
 import NotFound from './pages/notFound';
 import Users from './pages/admin/users';
 
+import AdminUserTickets from './pages/admin/userTickets';
+
 import PrivateRoute from './components/privateRoute';
 
 import AuthProvider from './services/auth';
@@ -30,23 +32,30 @@ export default function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/forgot_password" element={<ForgotPassword />} />
           <Route exact path="/404" element={<NotFound />} />
-          <Route>
-            <Route
-              exact
-              path="/tickets"
-              element={
-                <PrivateRoute>
-                  <Tickets />
-                </PrivateRoute>
-              }
-            />
-          </Route>
+          <Route
+            exact
+            path="/tickets"
+            element={
+              <PrivateRoute>
+                <Tickets />
+              </PrivateRoute>
+            }
+          />
           <Route
             exact
             path="/admin/users"
             element={
               <PrivateRoute admin>
                 <Users />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path="/admin/users/:userId"
+            element={
+              <PrivateRoute>
+                <AdminUserTickets admin />
               </PrivateRoute>
             }
           />

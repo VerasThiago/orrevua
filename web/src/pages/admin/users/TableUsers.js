@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ReactComponent as AddBtn } from '../../../images/add_circle.svg';
-import { formatCpf } from '../../../utils';
+import { formatCpf } from '../../../utils/index';
 
 export default function TableUsers({ data }) {
   const [currentPage, setCurrentPage] = useState(1);
