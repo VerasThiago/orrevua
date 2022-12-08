@@ -7,7 +7,7 @@ export default function Header({ title, subTitle }) {
   const user = userData().User;
 
   return (
-    <div className="d-flex justify-content-between align-items-center mb-5">
+    <div className="d-flex justify-content-between align-items-center mb-5 layout-header">
       <div>
         <div className="fs-2 fw-bold">{title}</div>
         {subTitle && <div>{subTitle}</div>}

@@ -18,7 +18,6 @@ import PrivateRoute from './components/privateRoute';
 import AuthProvider from './services/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
-import './App.css';
 
 export const AuthContext = createContext();
 

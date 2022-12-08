@@ -30,7 +30,7 @@ export default function Menu() {
   return (
     <div className="d-flex flex-column h-100 bg-dark gap-2 justify-content-between">
       <div>
-        <div className="d-flex justify-content-center align-items-center gap-2 py-5">
+        <div className="d-flex justify-content-center align-items-center gap-2 py-2 py-lg-5">
           <LogoIcon />
           <span className="fw-bold fs-2">orrevuá</span>
         </div>
