@@ -34,6 +34,10 @@ func (f *Flags) InitFromViper(envConfigFile *shared.EnvFileConfig) (*Flags, erro
 
 func GetApiFileConfigFromEnv() *shared.EnvFileConfig {
 	env := shared.Environment(os.Getenv(shared.ENV_NAME))
+	if env == "" {
+		panic("empty TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
+	}
+
 	switch env {
 	case shared.PRODUCTION:
 		return &shared.EnvFileConfig{
@@ -54,5 +58,6 @@ func GetApiFileConfigFromEnv() *shared.EnvFileConfig {
 			Type: "env",
 		}
 	}
-	panic("invalid TICKETS_ENV env variable")
+
+	panic("invalid TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
 }
