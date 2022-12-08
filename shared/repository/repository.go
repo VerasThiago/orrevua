@@ -14,6 +14,7 @@ type Repository interface {
 	UpdateUser(user *models.User) error
 	UpdateUserPasswordByEmail(email string, password string) error
 	VerifyUserAccountByID(id string) error
+	MigrateUser(model *models.User) error
 
 	CreateTicket(ticket *models.Ticket) error
 	GetTicketListByUserID(userID string) ([]*models.Ticket, error)
@@ -21,4 +22,5 @@ type Repository interface {
 	GetTicketByCPF(cpf string) (*models.Ticket, error)
 	DeleteTicketByID(id string) error
 	ValidateTicketByCPF(cpf string) error
+	MigrateTicket(model *models.Ticket) error
 }
