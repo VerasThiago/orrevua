@@ -51,7 +51,7 @@ export default function Login() {
                   id="email"
                   name="email"
                   type="email"
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   onChange={handleChange}
@@ -63,7 +63,7 @@ export default function Login() {
                   id="password"
                   name="password"
                   type="password"
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="password"
                   placeholder="Senha"
                   onChange={handleChange}
@@ -78,9 +78,7 @@ export default function Login() {
                 </NavLink>
               </div>
               <div>
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 rounded-pill py-3 mt-5 fw-bold">
+                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
                   Entrar
                 </button>
                 <div className="d-flex justify-content-center p-5">

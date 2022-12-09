@@ -50,7 +50,7 @@ export default function AdminUserTickets() {
         </div>
         <div className="pt-2">
           <button
-            className="btn btn-primary rounded-pill px-4"
+            className="btn btn-primary py-2 px-4"
             onClick={() =>
               navigate(`/admin/users/${userId}/ticket/create`, {
                 state: { from: location }

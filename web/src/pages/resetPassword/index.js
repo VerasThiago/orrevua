@@ -88,7 +88,7 @@ export default function ResetPassword() {
                   id="password"
                   name="password"
                   type={showPw ? 'text' : 'password'}
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="password"
                   placeholder="Nova senha"
                   onChange={handleChange}
@@ -100,7 +100,7 @@ export default function ResetPassword() {
                   id="confirm-password"
                   name="confirmPassword"
                   type={showConfirmPw ? 'text' : 'password'}
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="confirm-password"
                   placeholder="Confirme nova senha"
                   onChange={handleChange}
@@ -109,9 +109,7 @@ export default function ResetPassword() {
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 rounded-pill py-3 mt-5 fw-bold">
+                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
                   Salvar senha
                 </button>
               </div>

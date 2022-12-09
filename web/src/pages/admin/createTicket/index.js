@@ -72,7 +72,7 @@ export default function AdminUserTickets() {
             id="email"
             name="email"
             type="email"
-            className="form-control rounded-pill p-3 bg-dark"
+            className="form-control"
             aria-describedby="email"
             placeholder="E-mail"
             value={formatCpf(user.cpf)}
@@ -91,7 +91,7 @@ export default function AdminUserTickets() {
                 id="name"
                 name="name"
                 type="text"
-                className="form-control rounded-pill p-3 bg-dark"
+                className="form-control"
                 aria-describedby="name"
                 placeholder="Nome"
                 icon={<IconUser />}
@@ -102,7 +102,7 @@ export default function AdminUserTickets() {
                 id="email"
                 name="email"
                 type="email"
-                className="form-control rounded-pill p-3 bg-dark"
+                className="form-control"
                 aria-describedby="email"
                 placeholder="E-mail"
                 icon={<IconEmail />}
@@ -113,16 +113,14 @@ export default function AdminUserTickets() {
                 id="cpf"
                 name="cpf"
                 type="text"
-                className="form-control rounded-pill p-3 bg-dark"
+                className="form-control"
                 aria-describedby="cpf"
                 placeholder="CPF"
                 icon={<IconBadge />}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <button
-                type="submit"
-                className="btn btn-primary w-100 rounded-pill py-3 mt-3 fw-bold">
+              <button type="submit" className="btn btn-primary w-100 mt-3 fw-bold">
                 Criar ingresso
               </button>
             </div>
