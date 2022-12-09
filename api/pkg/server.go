@@ -5,6 +5,7 @@ import (
 	"github.com/verasthiago/tickets-generator/api/pkg/builder"
 	"github.com/verasthiago/tickets-generator/api/pkg/handlers"
 	"github.com/verasthiago/tickets-generator/api/pkg/handlers/invite"
+	"github.com/verasthiago/tickets-generator/api/pkg/handlers/migrate"
 	"github.com/verasthiago/tickets-generator/api/pkg/handlers/ticket"
 	"github.com/verasthiago/tickets-generator/api/pkg/middlewares"
 	"github.com/verasthiago/tickets-generator/shared/errors"
@@ -23,6 +24,8 @@ type Server struct {
 
 	InviteSend invite.InviteSendAPI
 
+	Migrate migrate.MigrateAPI
+
 	AuthAPI middlewares.AuthUserAPI
 	CorsAPI shared_middlewares.CORSAPI
 }
@@ -36,10 +39,13 @@ func (s *Server) InitFromBuilder(builder builder.Builder) *Server {
 	s.TicketValidate = new(ticket.TicketValidateHandler).InitFromBuilder(builder)
 	s.TicketSend = new(ticket.TicketSendHandler).InitFromBuilder(builder)
 
+	s.Migrate = new(migrate.MigrateHandler).InitFromBuilder(builder)
+
 	s.InviteSend = new(invite.InviteSendHandler).InitFromBuilder(builder)
 
 	s.AuthAPI = new(middlewares.AuthUserHandler).InitFromFlags(builder.GetFlags(), builder.GetSharedFlags())
 	s.CorsAPI = new(shared_middlewares.CORSHandler).InitFromFlags()
+
 	return s
 }
 
@@ -53,6 +59,7 @@ func (s *Server) Run() error {
 	{
 		apiV0 := api.Group("/v0")
 		{
+			apiV0.GET("/migrate", errors.ErrorRoute(s.Migrate.Handler))
 			ticketV0 := apiV0.Group("/ticket")
 			{
 				ticketV0.GET("/list/:userid", errors.ErrorRoute(s.TicketList.Handler))
