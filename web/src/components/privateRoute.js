@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { AuthContext } from '../App';
 import Loading from './loading';
+import MainLayout from '../layouts/mainLayout';
 
 export default function PrivateRoute({ admin, children }) {
   const { refresh, loading, authenticated, userData } = useContext(AuthContext);
@@ -18,13 +19,13 @@ export default function PrivateRoute({ admin, children }) {
       const token = userData();
 
       if (token.User.isadmin) {
-        return children ? children : <Outlet />;
+        return children ? <MainLayout>{children}</MainLayout> : <Outlet />;
       } else {
         return <Navigate to={'/404'} state={{ from: location }} replace />;
       }
     }
 
-    return children ? children : <Outlet />;
+    return children ? <MainLayout>{children}</MainLayout> : <Outlet />;
   }
 
   return <Navigate to={'/login'} state={{ from: location }} replace />;

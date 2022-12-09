@@ -4,6 +4,7 @@ import Ticket from '../../components/ticket/ticket';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
 import Loading from '../../components/loading';
+import Header from '../../components/header';
 
 export default function Tickets() {
   const [user, setUser] = useState([]);
@@ -37,10 +38,10 @@ export default function Tickets() {
   if (loading) return <Loading />;
 
   return (
-    <div className="vh-100 m-0 p-4">
-      <p className="h1 text-white pb-4">Meus ingressos</p>
+    <div>
+      <Header title="Meus ingressos" />
 
-      <div className="row gap-4">
+      <div className="row gap-4 m-0">
         {!user.ticketlist || user.ticketlist.length === 0 ? (
           <div className="text-center fs-2">Você não possui nenhum ingresso :(</div>
         ) : (

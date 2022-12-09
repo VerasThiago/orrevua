@@ -18,7 +18,7 @@ import PrivateRoute from './components/privateRoute';
 import AuthProvider from './services/auth';
 
 import 'react-toastify/dist/ReactToastify.min.css';
-import './App.css';
+
 import ResetPassword from './pages/resetPassword';
 import SignUp from './pages/signUp ';
 
@@ -57,8 +57,8 @@ export default function App() {
             exact
             path="/admin/users/:userId"
             element={
-              <PrivateRoute>
-                <AdminUserTickets admin />
+              <PrivateRoute admin>
+                <AdminUserTickets />
               </PrivateRoute>
             }
           />
@@ -66,8 +66,8 @@ export default function App() {
             exact
             path="/admin/users/:userId/ticket/create"
             element={
-              <PrivateRoute>
-                <AdminCreateTicket admin />
+              <PrivateRoute admin>
+                <AdminCreateTicket />
               </PrivateRoute>
             }
           />

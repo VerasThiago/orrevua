@@ -41,8 +41,9 @@ export default function AdminUserTickets() {
   if (loading) return <Loading />;
 
   return (
-    <div className="vh-100 m-0 p-4">
-      <Header title="Ingressos" user={user} />
+    <div>
+      <Header title="Ingressos" />
+
       <div className="d-flex gap-3 justify-content-start mb-4">
         <div>
           <p className="fs-4 fw-bold text-white mb-1">{user.name}</p>
@@ -62,7 +63,7 @@ export default function AdminUserTickets() {
         </div>
       </div>
 
-      <div className="row gap-4">
+      <div className="row gap-4 m-0">
         {!user.ticketlist || user.ticketlist.length === 0 ? (
           <div className="text-center fs-2">Você não possui nenhum ingresso :(</div>
         ) : (
