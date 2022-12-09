@@ -81,7 +81,7 @@ export default function SignUp() {
                   name="name"
                   type="text"
                   value={user.name}
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="name"
                   placeholder="Nome completo"
                   onChange={handleChange}
@@ -94,7 +94,7 @@ export default function SignUp() {
                   name="email"
                   type="email"
                   value={user.email}
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   onChange={handleChange}
@@ -107,7 +107,7 @@ export default function SignUp() {
                   name="cpf"
                   type="text"
                   value={user.cpf}
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="cpf"
                   placeholder="CPF"
                   onChange={handleChange}
@@ -120,7 +120,7 @@ export default function SignUp() {
                   name="password"
                   type="password"
                   value={user.password}
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="password"
                   placeholder="Senha"
                   onChange={handleChange}
@@ -129,9 +129,7 @@ export default function SignUp() {
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 rounded-pill py-3 mt-5 fw-bold">
+                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
                   Cadastrar
                 </button>
               </div>

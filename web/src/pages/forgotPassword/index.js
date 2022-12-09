@@ -42,7 +42,7 @@ export default function ForgotPassword() {
                   id="email"
                   name="email"
                   type="email"
-                  className="form-control rounded-pill p-3 bg-dark"
+                  className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}
@@ -50,9 +50,7 @@ export default function ForgotPassword() {
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 rounded-pill py-3 mt-5 fw-bold">
+                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
                   Enviar
                 </button>
               </div>

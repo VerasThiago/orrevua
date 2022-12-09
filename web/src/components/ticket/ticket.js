@@ -40,7 +40,7 @@ export default function Ticket({ ticket, user, reloadTickets, hideDelete }) {
         </span>
       </div>
       <div className="p-3 pt-4">
-        <button className="btn btn-primary rounded-pill w-100" onClick={showQrCode}>
+        <button className="btn btn-primary py-2 w-100" onClick={showQrCode}>
           <IconMenu className="me-2" />
           <small>QR Code</small>
         </button>
