@@ -4,9 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/verasthiago/tickets-generator/shared/models"
-
 	"github.com/dgrijalva/jwt-go"
+	"github.com/verasthiago/tickets-generator/shared/models"
 )
 
 type JWTClaim struct {
@@ -22,7 +21,9 @@ func GenerateJWT(user *models.User, jwtKey string, expirationTime time.Time) (st
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(jwtKey))
+	tokenString, err := token.SignedString([]byte(jwtKey))
+
+	return tokenString, err
 }
 
 func ValidateToken(signedToken, jwtKey string) error {
@@ -61,9 +62,11 @@ func GetJWTClaimFromToken(signedToken, jwtKey string) (*JWTClaim, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	claims, ok := token.Claims.(*JWTClaim)
 	if !ok {
 		return nil, errors.New("couldn't parse claims")
 	}
+
 	return claims, nil
 }
