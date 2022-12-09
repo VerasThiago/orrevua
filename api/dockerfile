@@ -10,14 +10,19 @@ COPY ./shared ./shared
 RUN cd shared && go mod download
 
 RUN cd api && go mod download
-RUN cd api && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -mod=mod -o /go/bin/api main.go
+RUN cd api && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -mod=mod -o /go/bin/start main.go
 
 FROM alpine
 
-COPY --from=build /go/bin/api /app/
-COPY --from=build /app/api/.env /app/.env
-COPY --from=build /app/shared/.env /app/.env
-
 WORKDIR /app
 
-CMD ["./api"]
+COPY --from=build /go/bin/start /app/api/
+COPY --from=build /app/api/.env/api.docker.env /app/api/.env/
+COPY --from=build /app/api/dockerfile-run.sh /app/
+COPY --from=build /app/shared/.env/shared.docker.env /app/shared/.env/
+COPY --from=build /app/shared/templates /app/shared/templates
+
+ENV ORREVUA_DEPLOY_ENV=docker
+
+RUN chmod +x dockerfile-run.sh
+ENTRYPOINT [ "./dockerfile-run.sh" ]

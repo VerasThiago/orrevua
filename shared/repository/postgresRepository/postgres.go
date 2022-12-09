@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	shared "github.com/verasthiago/tickets-generator/shared/flags"
-	"github.com/verasthiago/tickets-generator/shared/models"
 	"github.com/verasthiago/tickets-generator/shared/repository"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -22,8 +21,6 @@ func (p *PostgresRepository) InitFromFlags(sharedFlags *shared.SharedFlags) repo
 	}
 
 	fmt.Println("Connected to Database!")
-
-	db.AutoMigrate(&models.User{}, &models.Ticket{})
 
 	return &PostgresRepository{
 		db,

@@ -1,17 +1,27 @@
 package flags
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/viper"
 )
 
 const (
-	PRODUCTION Environment = "PRODUCTION"
-	LOCAL      Environment = "LOCAL"
-	DOCKER     Environment = "DOCKER"
-	ENV_NAME   string      = "TICKETS_ENV"
+	DEPLOY_ENV string = "ORREVUA_DEPLOY_ENV"
+
+	ENV_FILE_PATH string = ".env"
+	ENV_FILE_TYPE string = "env"
+
+	SHARED_PACKAGE_NAME = "shared"
+	SHARED_PACKAGE_PATH = "../shared"
 )
+
+var AVAILABLE_ENV_VARS_MAP = map[string]bool{
+	"production": true,
+	"local":      true,
+	"docker":     true,
+}
 
 type SharedFlags struct {
 	AppHost           string `mapstructure:"APP_HOST"`
@@ -31,42 +41,34 @@ type SharedFlags struct {
 	JwtKeyEmail       string `mapstructure:"JWT_KEY_EMAIL"`
 }
 
-type Environment string
-
 type EnvFileConfig struct {
 	Path string
 	Name string
 	Type string
 }
 
-func GetSharedFileConfigFromEnv() *EnvFileConfig {
-	env := Environment(os.Getenv(ENV_NAME))
-	if env == "" {
-		panic("empty TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
+func checkDeployEnv() {
+	env := os.Getenv(DEPLOY_ENV)
+	if _, ok := AVAILABLE_ENV_VARS_MAP[string(env)]; !ok {
+		panic("invalid ORREVUA_DEPLOY_ENV env variable i.e. [production, local, docker]")
+	}
+}
+
+func GetFileEnvConfigFromDeployEnv(serviceName string) *EnvFileConfig {
+	checkDeployEnv()
+
+	var filePath string = ENV_FILE_PATH
+	fileName := fmt.Sprintf("%v.%v.env", serviceName, os.Getenv(DEPLOY_ENV))
+
+	if serviceName == SHARED_PACKAGE_NAME {
+		filePath = fmt.Sprintf("%+v/%+v", SHARED_PACKAGE_PATH, ENV_FILE_PATH)
 	}
 
-	switch env {
-	case PRODUCTION:
-		return &EnvFileConfig{
-			Path: ".env",
-			Name: "shared.production",
-			Type: "env",
-		}
-	case DOCKER:
-		return &EnvFileConfig{
-			Path: ".env",
-			Name: "shared.docker",
-			Type: "env",
-		}
-	case LOCAL:
-		return &EnvFileConfig{
-			Path: "../shared/.env",
-			Name: "shared.local",
-			Type: "env",
-		}
+	return &EnvFileConfig{
+		Path: filePath,
+		Name: fileName,
+		Type: ENV_FILE_TYPE,
 	}
-
-	panic("invalid TICKETS_ENV env variable i.e. [PRODUCTION, LOCAL, DOCKER]")
 }
 
 func (f *SharedFlags) InitFromViper(config *EnvFileConfig) (*SharedFlags, error) {
