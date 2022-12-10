@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { errorsMapping } from './errors';
-import { formatCpf, formatToRequestCpf } from '../../utils';
+import { maskInput, unmaskInput } from './masks';
 
 function FormItem({ dispatch, icon, rules = [], mask, inputs, formName, ...props }) {
   const [value, setValue] = useState('');
@@ -41,29 +41,9 @@ function FormItem({ dispatch, icon, rules = [], mask, inputs, formName, ...props
     dispatch({ type: 'INPUT_IS_VALIDATED', name: props.name });
   }
 
-  function maskInput(value) {
-    if (!mask || mask === '') return value;
-
-    if (mask === 'cpf') {
-      return formatCpf(value);
-    }
-
-    return value;
-  }
-
-  function unmaskInput(value) {
-    if (!mask || mask === '') return value;
-
-    if (mask === 'cpf') {
-      return formatToRequestCpf(value);
-    }
-
-    return value;
-  }
-
   function handleChange(event) {
-    const value = maskInput(event.target.value);
-    dispatch({ type: 'INPUT_SET_UNMASKED', name: props.name, value: unmaskInput(value) });
+    const value = maskInput(mask, event.target.value);
+    dispatch({ type: 'INPUT_SET_UNMASKED', name: props.name, value: unmaskInput(mask, value) });
     setValue(value);
     validateInput(value);
     if (props.onChange) props.onChange(event);
