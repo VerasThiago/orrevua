@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { errorsMapping } from './errors';
+import { formatCpf, formatToRequestCpf } from '../../utils';
 
-function FormItem({ dispatch, icon, rules = [], inputs, formName, ...props }) {
+function FormItem({ dispatch, icon, rules = [], mask, inputs, formName, ...props }) {
   const [value, setValue] = useState('');
 
   useEffect(() => {
@@ -30,7 +31,6 @@ function FormItem({ dispatch, icon, rules = [], inputs, formName, ...props }) {
   }
 
   function validateInput(value) {
-    // dispatch({ type: 'INPUT_HAS_VALIDATED', name: props.name });
     dispatch({ type: 'INPUT_RESET_ERRORS', name: props.name });
     const rules = inputs[props.name].rules;
 
@@ -41,9 +41,31 @@ function FormItem({ dispatch, icon, rules = [], inputs, formName, ...props }) {
     dispatch({ type: 'INPUT_IS_VALIDATED', name: props.name });
   }
 
+  function maskInput(value) {
+    if (!mask || mask === '') return value;
+
+    if (mask === 'cpf') {
+      return formatCpf(value);
+    }
+
+    return value;
+  }
+
+  function unmaskInput(value) {
+    if (!mask || mask === '') return value;
+
+    if (mask === 'cpf') {
+      return formatToRequestCpf(value);
+    }
+
+    return value;
+  }
+
   function handleChange(event) {
-    setValue(event.target.value);
-    validateInput(event.target.value);
+    const value = maskInput(event.target.value);
+    dispatch({ type: 'INPUT_SET_UNMASKED', name: props.name, value: unmaskInput(value) });
+    setValue(value);
+    validateInput(value);
     if (props.onChange) props.onChange(event);
   }
 
@@ -61,7 +83,7 @@ function FormItem({ dispatch, icon, rules = [], inputs, formName, ...props }) {
 
   const inputId = `${formName}_${props.name}`;
 
-  let child = <input id={inputId} {...props} onChange={handleChange} />;
+  let child = <input id={inputId} value={value} {...props} onChange={handleChange} />;
 
   if (icon) {
     const updatedIcon = React.cloneElement(icon, {
@@ -70,7 +92,7 @@ function FormItem({ dispatch, icon, rules = [], inputs, formName, ...props }) {
 
     child = (
       <div style={{ position: 'relative' }}>
-        <input id={inputId} {...props} onChange={handleChange} />
+        <input id={inputId} value={value} {...props} onChange={handleChange} />
         {updatedIcon}
       </div>
     );

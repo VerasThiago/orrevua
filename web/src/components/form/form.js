@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react';
 import { Provider } from 'react-redux';
-import alertMessage from '../alertMessage';
 import store from './store';
 
 export default function Form({ children, onFinish, ...props }) {
@@ -24,16 +23,24 @@ export default function Form({ children, onFinish, ...props }) {
     return canSubmit;
   }
 
+  function unmaskedInputs() {
+    const items = store.getState().inputs;
+    const values = {};
+
+    for (let item in items) {
+      values[item] = items[item].unmaskedValue;
+    }
+
+    return values;
+  }
+
   const onSubmit = async (event) => {
     event.preventDefault();
 
     store.dispatch({ type: 'START_SUBMITTING' });
 
     if (isValid()) {
-      const values = Object.fromEntries(new FormData(event.target));
-      await onFinish(values);
-    } else {
-      alertMessage('error', 'Por favor, verifique os erros no formulário');
+      await onFinish(unmaskedInputs());
     }
 
     store.dispatch({ type: 'STOP_SUBMITTING' });

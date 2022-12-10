@@ -61,6 +61,18 @@ function formReducer(state = { formName: '', submitting: false, inputs: {} }, ac
       }
     };
   }
+  if (action.type === 'INPUT_SET_UNMASKED') {
+    return {
+      ...state,
+      inputs: {
+        ...state.inputs,
+        [action.name]: {
+          ...state.inputs[action.name],
+          unmaskedValue: action.value
+        }
+      }
+    };
+  }
   return state;
 }
 
