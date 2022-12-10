@@ -7,11 +7,18 @@ import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
 import HomeSidebar from '../../components/homeSidebar';
 import { NavLink } from 'react-router-dom';
-import Form from '../../components/form/form';
-import FormItem from '../../components/form/formItem';
-import FormButton from '../../components/form/formButton';
+
+import { useForm } from 'react-hook-form';
+import { Input, Button } from '../../components/form/inputs';
 
 export default function SignUp() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting }
+  } = useForm();
+
   const onFinish = async (values) => {
     values.username = values.cpf;
 
@@ -40,59 +47,90 @@ export default function SignUp() {
             <p>Crie uma conta para garantir os seus ingressos</p>
           </div>
           <div>
-            <Form name="forgot_password" onFinish={onFinish}>
+            <form name="forgot_password" onSubmit={handleSubmit(onFinish)}>
               <div className="mb-4">
-                <FormItem
+                <Input
                   name="name"
                   type="text"
                   className="form-control"
                   aria-describedby="name"
                   placeholder="Nome completo"
                   icon={<IconName />}
-                  rules={[{ type: 'required' }]}
+                  {...register('name', { required: 'Este campo é obrigatório' })}
+                  errors={errors}
                 />
               </div>
               <div className="mb-4">
-                <FormItem
+                <Input
                   name="email"
                   type="email"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}
-                  rules={[{ type: 'required' }]}
+                  {...register('email', { required: 'Este campo é obrigatório' })}
+                  errors={errors}
                 />
               </div>
               <div className="mb-4">
-                <FormItem
+                <Input
                   name="cpf"
                   type="text"
                   className="form-control"
                   aria-describedby="cpf"
                   placeholder="CPF"
                   icon={<IconCpf />}
-                  rules={[{ type: 'required' }]}
-                  mask="cpf"
+                  {...register('cpf', { required: 'Este campo é obrigatório' })}
+                  errors={errors}
                 />
               </div>
-              <div>
-                <FormItem
+              <div className="mb-4">
+                <Input
                   name="password"
                   type="password"
                   className="form-control"
                   aria-describedby="password"
                   placeholder="Senha"
                   icon={<IconPassowrd />}
-                  rules={[{ type: 'length', min: 6, max: 32 }]}
+                  {...register('password', {
+                    required: 'Este campo é obrigatório',
+                    maxLength: {
+                      value: 32,
+                      message: 'Sua senha pode conter no máximo 32 caracteres'
+                    },
+                    minLength: { value: 6, message: 'Sua senha deve conter no mínimo 6 caracteres' }
+                  })}
+                  errors={errors}
+                />
+              </div>
+              <div>
+                <Input
+                  name="password_confirmation"
+                  type="password"
+                  className="form-control"
+                  aria-describedby="password_confirmation"
+                  placeholder="Confirme sua senha"
+                  icon={<IconPassowrd />}
+                  {...register('password_confirmation', {
+                    validate: (val) => {
+                      if (watch('password') != val) {
+                        return 'As senhas devem ser iguais';
+                      }
+                    }
+                  })}
+                  errors={errors}
                 />
               </div>
 
               <div>
-                <FormButton type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  className="btn btn-primary w-100 mt-5 fw-bold">
                   Cadastrar
-                </FormButton>
+                </Button>
               </div>
-            </Form>
+            </form>
             <p className="text-center my-5">
               Já tem conta?
               <NavLink to={'/login'} className="mx-2 text-decoration-none fw-bold">

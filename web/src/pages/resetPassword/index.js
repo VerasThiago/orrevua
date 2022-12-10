@@ -3,14 +3,21 @@ import { ReactComponent as IconVisibilityPassword } from '../../images/visibilit
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
 import HomeSidebar from '../../components/homeSidebar';
-import Form from '../../components/form/form';
-import FormItem from '../../components/form/formItem';
-import FormButton from '../../components/form/formButton';
+
+import { useForm } from 'react-hook-form';
+import { Input, Button } from '../../components/form/inputs';
 
 export default function ResetPassword() {
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [userToken, setUserToken] = useState('');
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting }
+  } = useForm();
 
   useEffect(() => {
     const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -63,36 +70,54 @@ export default function ResetPassword() {
             </p>
           </div>
           <div>
-            <Form name="forgot_password" onFinish={onFinish}>
+            <form name="forgot_password" onSubmit={handleSubmit(onFinish)}>
               <div className="mb-4">
-                <FormItem
+                <Input
                   name="password"
                   type={showPw ? 'text' : 'password'}
                   className="form-control"
                   aria-describedby="password"
                   placeholder="Nova senha"
                   icon={<IconVisibilityPassword onClick={toggleShowPassword} />}
-                  rules={[{ type: 'required' }]}
+                  {...register('password', {
+                    required: 'Este campo é obrigatório',
+                    maxLength: {
+                      value: 32,
+                      message: 'Sua senha pode conter no máximo 32 caracteres'
+                    },
+                    minLength: { value: 6, message: 'Sua senha deve conter no mínimo 6 caracteres' }
+                  })}
+                  errors={errors}
                 />
               </div>
               <div>
-                <FormItem
-                  name="confirmPassword"
+                <Input
+                  name="password_confirmation"
                   type={showConfirmPw ? 'text' : 'password'}
                   className="form-control"
-                  aria-describedby="confirm-password"
-                  placeholder="Confirme nova senha"
+                  aria-describedby="password_confirmation"
+                  placeholder="Confirme sua senha"
                   icon={<IconVisibilityPassword onClick={toggleShowConfirmPassword} />}
-                  rules={[{ type: 'required' }]}
+                  {...register('password_confirmation', {
+                    validate: (val) => {
+                      if (watch('password') != val) {
+                        return 'As senhas devem ser iguais';
+                      }
+                    }
+                  })}
+                  errors={errors}
                 />
               </div>
 
               <div>
-                <FormButton type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  className="btn btn-primary w-100 mt-5 fw-bold">
                   Salvar senha
-                </FormButton>
+                </Button>
               </div>
-            </Form>
+            </form>
           </div>
         </div>
       </div>

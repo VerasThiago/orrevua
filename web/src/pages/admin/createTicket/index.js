@@ -9,14 +9,20 @@ import Loading from '../../../components/loading';
 import { formatCpf } from '../../../utils';
 import InputIcon from '../../../components/inputIcon';
 import Header from '../../../components/header';
-import Form from '../../../components/form/form';
-import FormItem from '../../../components/form/formItem';
-import FormButton from '../../../components/form/formButton';
+
+import { useForm } from 'react-hook-form';
+import { Input, Button } from '../../../components/form/inputs';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm();
 
   useEffect(() => {
     reloadTickets();
@@ -86,47 +92,55 @@ export default function AdminUserTickets() {
         </div>
         <div className="col-md-12 col-lg-6">
           <p className="fs-4 mb-4">Conta do usuário</p>
-          <Form name="new_ticket" onFinish={onFinish} className="d-flex flex-column gap-4">
+          <form
+            name="new_ticket"
+            onSubmit={handleSubmit(onFinish)}
+            className="d-flex flex-column gap-4">
             <div style={{ maxWidth: '400px' }}>
-              <FormItem
+              <Input
                 name="name"
                 type="text"
                 className="form-control"
                 aria-describedby="name"
                 placeholder="Nome"
                 icon={<IconUser />}
-                rules={[{ type: 'required' }]}
+                {...register('name', { required: 'Este campo é obrigatório' })}
+                errors={errors}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <FormItem
+              <Input
                 name="email"
                 type="email"
                 className="form-control"
                 aria-describedby="email"
                 placeholder="E-mail"
                 icon={<IconEmail />}
-                rules={[{ type: 'required' }]}
+                {...register('email', { required: 'Este campo é obrigatório' })}
+                errors={errors}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <FormItem
+              <Input
                 name="cpf"
                 type="text"
                 className="form-control"
                 aria-describedby="cpf"
                 placeholder="CPF"
                 icon={<IconBadge />}
-                rules={[{ type: 'required' }]}
-                mask="cpf"
+                {...register('cpf', { required: 'Este campo é obrigatório' })}
+                errors={errors}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <FormButton type="submit" className="btn btn-primary w-100 mt-3 fw-bold">
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                className="btn btn-primary w-100 mt-3 fw-bold">
                 Criar ingresso
-              </FormButton>
+              </Button>
             </div>
-          </Form>
+          </form>
         </div>
       </div>
     </div>

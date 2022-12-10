@@ -5,14 +5,20 @@ import { ReactComponent as IconPassword } from '../../images/password.svg';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import HomeSidebar from '../../components/homeSidebar';
-import Form from '../../components/form/form';
-import FormItem from '../../components/form/formItem';
-import FormButton from '../../components/form/formButton';
+
+import { useForm } from 'react-hook-form';
+import { Input, Button } from '../../components/form/inputs';
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm();
 
   const onFinish = async (values) => {
     const result = await login(values);
@@ -31,27 +37,36 @@ export default function Login() {
             <p>Sentimos sua falta! Faça o login para começar</p>
           </div>
           <div>
-            <Form name="login" onFinish={onFinish}>
+            <form name="login" onSubmit={handleSubmit(onFinish)}>
               <div className="mb-3">
-                <FormItem
+                <Input
                   name="email"
                   type="email"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconUser />}
-                  rules={[{ type: 'required' }]}
+                  {...register('email', { required: 'Este campo é obrigatório' })}
+                  errors={errors}
                 />
               </div>
               <div>
-                <FormItem
+                <Input
                   name="password"
                   type="password"
                   className="form-control"
                   aria-describedby="password"
                   placeholder="Senha"
                   icon={<IconPassword />}
-                  rules={[{ type: 'length', min: 6, max: 32 }]}
+                  {...register('password', {
+                    required: 'Este campo é obrigatório',
+                    maxLength: {
+                      value: 32,
+                      message: 'Sua senha pode conter no máximo 32 caracteres'
+                    },
+                    minLength: { value: 6, message: 'Sua senha deve conter no mínimo 6 caracteres' }
+                  })}
+                  errors={errors}
                 />
               </div>
               <div className="d-flex justify-content-end my-3">
@@ -62,9 +77,12 @@ export default function Login() {
                 </NavLink>
               </div>
               <div>
-                <FormButton type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  className="btn btn-primary w-100 mt-5 fw-bold">
                   Entrar
-                </FormButton>
+                </Button>
                 <div className="d-flex justify-content-center p-5">
                   <p className="login-signup-forms">
                     Não tem conta?
@@ -74,7 +92,7 @@ export default function Login() {
                   </p>
                 </div>
               </div>
-            </Form>
+            </form>
           </div>
         </div>
       </div>
