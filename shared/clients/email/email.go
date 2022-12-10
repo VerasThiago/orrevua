@@ -28,6 +28,7 @@ type InviteTemplateData struct {
 }
 
 type ForgotPasswordTemplateData struct {
+	Name  string
 	Email string
 	Title string
 	Url   string
@@ -37,6 +38,7 @@ type VerifyEmailTemplateData struct {
 	Email string
 	Title string
 	Url   string
+	Name  string
 }
 
 func (s *SMTP) SendInviteToUser(user *models.User) error {
@@ -91,6 +93,7 @@ func (s *SMTP) SendTicketsToUser(user *models.User, tickets []*models.Ticket) er
 
 func (s *SMTP) SendForgotPasswordURLToUserByEmail(user *models.User, url string) error {
 	forgotPasswordTemplateData := ForgotPasswordTemplateData{
+		Name:  user.Name,
 		Email: user.Email,
 		Title: RESET_PASSOWRD_TITLE,
 		Url:   url,
@@ -113,6 +116,7 @@ func (s *SMTP) SendVerifyEmailToUser(user *models.User, url string) error {
 		Email: user.Email,
 		Title: VERIFY_EMAIL_TITLE,
 		Url:   url,
+		Name:  user.Name,
 	}
 
 	body, err := parseTemplate(confirmEmailTemplateData, VERIFY_EMAIL_TEMPLATE_PATH)
