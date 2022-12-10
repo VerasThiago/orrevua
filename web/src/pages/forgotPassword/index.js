@@ -2,19 +2,17 @@ import React from 'react';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import InputIcon from '../../components/inputIcon';
 import HomeSidebar from '../../components/homeSidebar';
+import Form from '../../components/form/form';
+import FormItem from '../../components/form/formItem';
+import FormButton from '../../components/form/formButton';
 
 export default function ForgotPassword() {
-  const onFinish = async (event) => {
-    event.preventDefault();
-    const values = Object.fromEntries(new FormData(event.target));
-
-    apiRequest('login', 'login/v0/user/password/forget', 'post', { email: values.email })
+  const onFinish = async (values) => {
+    await apiRequest('login', 'login/v0/user/password/forget', 'post', values)
       .then(async (response) => {
         if (response.ok) {
           alertMessage('success', 'Você recebeu um email com instruções para trocar sua senha');
-          event.target.reset();
         } else {
           alertMessage('error', 'Ocorreu um erro inesperado');
         }
@@ -36,25 +34,25 @@ export default function ForgotPassword() {
             <p>Informe seu e-mail e enviaremos instruções para você criar sua nova senha.</p>
           </div>
           <div>
-            <form id="forgot_password" onSubmit={onFinish}>
+            <Form name="forgot_password" onFinish={onFinish}>
               <div>
-                <InputIcon
-                  id="email"
+                <FormItem
                   name="email"
                   type="email"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}
+                  rules={[{ type: 'required' }]}
                 />
               </div>
 
               <div>
-                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <FormButton type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
                   Enviar
-                </button>
+                </FormButton>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>

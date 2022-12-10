@@ -9,6 +9,9 @@ import Loading from '../../../components/loading';
 import { formatCpf } from '../../../utils';
 import InputIcon from '../../../components/inputIcon';
 import Header from '../../../components/header';
+import Form from '../../../components/form/form';
+import FormItem from '../../../components/form/formItem';
+import FormButton from '../../../components/form/formButton';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
@@ -38,17 +41,14 @@ export default function AdminUserTickets() {
       });
   };
 
-  const onFinish = async (event) => {
-    event.preventDefault();
-    const values = Object.fromEntries(new FormData(event.target));
+  const onFinish = async (values) => {
     values.ownerid = userId;
 
-    apiRequest('api', 'api/v0/ticket/create', 'post', values)
+    await apiRequest('api', 'api/v0/ticket/create', 'post', values)
       .then(async (response) => {
         const parsedResponse = await response.json();
         if (response.ok) {
           alertMessage('success', 'Ingresso criado com sucesso!');
-          event.target.reset();
         } else {
           if (parsedResponse.message) alertMessage('error', parsedResponse.message);
           else alertMessage('error', 'Ocorreu um erro inesperado');
@@ -71,12 +71,11 @@ export default function AdminUserTickets() {
         <div className="col-md-12 col-lg-6" style={{ maxWidth: '300px' }}>
           <p className="fs-4 mb-4">Conta do usuário</p>
           <InputIcon
-            id="email"
-            name="email"
-            type="email"
+            name="show_cpf"
+            type="text"
             className="form-control"
-            aria-describedby="email"
-            placeholder="E-mail"
+            aria-describedby="show_cpf"
+            placeholder="CPF"
             value={formatCpf(user.cpf)}
             readOnly
             icon={<IconBadge />}
@@ -87,46 +86,47 @@ export default function AdminUserTickets() {
         </div>
         <div className="col-md-12 col-lg-6">
           <p className="fs-4 mb-4">Conta do usuário</p>
-          <form id="new_ticket" onSubmit={onFinish} className="d-flex flex-column gap-4">
+          <Form name="new_ticket" onFinish={onFinish} className="d-flex flex-column gap-4">
             <div style={{ maxWidth: '400px' }}>
-              <InputIcon
-                id="name"
+              <FormItem
                 name="name"
                 type="text"
                 className="form-control"
                 aria-describedby="name"
                 placeholder="Nome"
                 icon={<IconUser />}
+                rules={[{ type: 'required' }]}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <InputIcon
-                id="email"
+              <FormItem
                 name="email"
                 type="email"
                 className="form-control"
                 aria-describedby="email"
                 placeholder="E-mail"
                 icon={<IconEmail />}
+                rules={[{ type: 'required' }]}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <InputIcon
-                id="cpf"
+              <FormItem
                 name="cpf"
                 type="text"
                 className="form-control"
                 aria-describedby="cpf"
                 placeholder="CPF"
                 icon={<IconBadge />}
+                rules={[{ type: 'required' }]}
+                mask="cpf"
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <button type="submit" className="btn btn-primary w-100 mt-3 fw-bold">
+              <FormButton type="submit" className="btn btn-primary w-100 mt-3 fw-bold">
                 Criar ingresso
-              </button>
+              </FormButton>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
