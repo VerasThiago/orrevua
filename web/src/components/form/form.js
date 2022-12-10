@@ -12,12 +12,16 @@ export default function Form({ children, onFinish, ...props }) {
 
   function isValid() {
     const items = store.getState().inputs;
+    let canSubmit = true;
 
     for (let item in items) {
-      if (items[item].errors.length > 0) return false;
+      store.dispatch({ type: 'INPUT_HAS_VALIDATED', name: item });
+      if (items[item].errors.length > 0 || items[item].hasValidated === false) {
+        canSubmit = false;
+      }
     }
 
-    return true;
+    return canSubmit;
   }
 
   const onSubmit = async (event) => {

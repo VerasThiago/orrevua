@@ -1,16 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { errorsMapping } from './errors';
 
 function FormItem({ dispatch, icon, rules = [], inputs, formName, ...props }) {
+  const [value, setValue] = useState('');
+
   useEffect(() => {
     const itemAttributes = {
       rules: rules,
-      errors: []
+      errors: [],
+      hasValidated: false
     };
 
     dispatch({ type: 'ADD_INPUT', name: props.name, value: itemAttributes });
   }, []);
+
+  useEffect(() => {
+    if (inputs[props.name]?.hasValidated === true) {
+      validateInput(value);
+    }
+  }, [inputs[props.name]?.hasValidated]);
 
   function validateRule(rule, value) {
     const error = errorsMapping[rule.type](value, rule);
@@ -21,15 +30,19 @@ function FormItem({ dispatch, icon, rules = [], inputs, formName, ...props }) {
   }
 
   function validateInput(value) {
+    // dispatch({ type: 'INPUT_HAS_VALIDATED', name: props.name });
     dispatch({ type: 'INPUT_RESET_ERRORS', name: props.name });
     const rules = inputs[props.name].rules;
 
     for (let rule of rules) {
       validateRule(rule, value);
     }
+
+    dispatch({ type: 'INPUT_IS_VALIDATED', name: props.name });
   }
 
   function handleChange(event) {
+    setValue(event.target.value);
     validateInput(event.target.value);
     if (props.onChange) props.onChange(event);
   }

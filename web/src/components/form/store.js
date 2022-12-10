@@ -49,6 +49,18 @@ function formReducer(state = { formName: '', submitting: false, inputs: {} }, ac
       }
     };
   }
+  if (action.type === 'INPUT_HAS_VALIDATED') {
+    return {
+      ...state,
+      inputs: {
+        ...state.inputs,
+        [action.name]: {
+          ...state.inputs[action.name],
+          hasValidated: true
+        }
+      }
+    };
+  }
   return state;
 }
 
