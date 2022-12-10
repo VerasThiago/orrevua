@@ -4,7 +4,7 @@ import React from 'react';
 export const Input = React.forwardRef(({ icon, errors, ...props }, ref) => {
   function renderErrors(errors, name) {
     if (errors && errors[name]) {
-      return <span>{errors[name].message}</span>;
+      return <span className="text-danger fs-6 ps-3">{errors[name].message}</span>;
     }
   }
 
@@ -15,7 +15,12 @@ export const Input = React.forwardRef(({ icon, errors, ...props }, ref) => {
   return (
     <div>
       <div style={{ position: 'relative' }}>
-        <input ref={ref} {...props} />
+        <input
+          ref={ref}
+          {...props}
+          aria-invalid={errors[props.name] ? 'true' : 'false'}
+          className={errors[props.name] ? props.className + ' border-danger' : props.className}
+        />
         {updatedIcon}
       </div>
       {renderErrors(errors, props.name)}
