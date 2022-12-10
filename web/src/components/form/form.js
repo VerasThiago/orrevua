@@ -20,14 +20,14 @@ export default function Form({ children, onFinish, ...props }) {
     return true;
   }
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
     store.dispatch({ type: 'START_SUBMITTING' });
 
     if (isValid()) {
       const values = Object.fromEntries(new FormData(event.target));
-      onFinish(values);
+      await onFinish(values);
     } else {
       alertMessage('error', 'Por favor, verifique os erros no formulário');
     }
