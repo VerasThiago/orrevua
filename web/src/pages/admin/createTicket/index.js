@@ -7,11 +7,10 @@ import { apiRequest } from '../../../services/api';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
 import { formatCpf, unformatCpf } from '../../../utils';
-import InputIcon from '../../../components/inputIcon';
 import Header from '../../../components/header';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button } from '../../../components/form/inputs';
+import { Input, InputIcon, Button } from '../../../components/form/inputs';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
@@ -77,16 +76,17 @@ export default function AdminUserTickets() {
       <div className="d-flex row gap-3 justify-content-start mb-4">
         <div className="col-md-12 col-lg-6" style={{ maxWidth: '300px' }}>
           <p className="fs-4 mb-4">Conta do usuário</p>
-          <InputIcon
-            name="show_cpf"
-            type="text"
-            className="form-control"
-            aria-describedby="show_cpf"
-            placeholder="CPF"
-            value={formatCpf(user.cpf)}
-            readOnly
-            icon={<IconBadge />}
-          />
+          <InputIcon icon={<IconBadge />}>
+            <input
+              name="show_cpf"
+              type="text"
+              className="form-control"
+              aria-describedby="show_cpf"
+              placeholder="CPF"
+              value={formatCpf(user.cpf)}
+              readOnly
+            />
+          </InputIcon>
           <p className="fs-4 mt-4 mb-1">{user.name}</p>
           <p className="mb-1">{formatCpf(user.cpf)}</p>
           <p>{user.email}</p>

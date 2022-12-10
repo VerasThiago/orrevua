@@ -8,25 +8,37 @@ export const Input = React.forwardRef(({ icon, errors, ...props }, ref) => {
     }
   }
 
-  const updatedIcon = React.cloneElement(icon, {
-    style: { ...icon.props.style, position: 'absolute', right: '1.5rem', bottom: '1.15rem' }
-  });
-
   return (
     <div>
       <div style={{ position: 'relative' }}>
-        <input
-          ref={ref}
-          {...props}
-          aria-invalid={errors[props.name] ? 'true' : 'false'}
-          className={errors[props.name] ? props.className + ' border-danger' : props.className}
-        />
-        {updatedIcon}
+        <InputIcon icon={icon}>
+          <input
+            ref={ref}
+            {...props}
+            aria-invalid={errors[props.name] ? 'true' : 'false'}
+            className={errors[props.name] ? props.className + ' border-danger' : props.className}
+          />
+        </InputIcon>
       </div>
       {renderErrors(errors, props.name)}
     </div>
   );
 });
+
+export function InputIcon({ icon, children }) {
+  if (!icon) return children;
+
+  const updatedIcon = React.cloneElement(icon, {
+    style: { ...icon.props.style, position: 'absolute', right: '1.5rem', bottom: '1.15rem' }
+  });
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {children}
+      {updatedIcon}
+    </div>
+  );
+}
 
 export function Button({ loading, children, ...props }) {
   if (loading)
