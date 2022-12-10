@@ -10,12 +10,14 @@ import { NavLink } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button } from '../../components/form/inputs';
+import { formatCpf, unformatCpf } from '../../utils';
 
 export default function SignUp() {
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm();
 
@@ -80,7 +82,11 @@ export default function SignUp() {
                   aria-describedby="cpf"
                   placeholder="CPF"
                   icon={<IconCpf />}
-                  {...register('cpf', { required: 'Este campo é obrigatório' })}
+                  {...register('cpf', {
+                    required: 'Este campo é obrigatório',
+                    setValueAs: (v) => unformatCpf(v),
+                    onChange: (e) => setValue('cpf', formatCpf(e.target.value))
+                  })}
                   errors={errors}
                 />
               </div>

@@ -6,7 +6,7 @@ import { ReactComponent as IconUser } from '../../../images/user.svg';
 import { apiRequest } from '../../../services/api';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
-import { formatCpf } from '../../../utils';
+import { formatCpf, unformatCpf } from '../../../utils';
 import InputIcon from '../../../components/inputIcon';
 import Header from '../../../components/header';
 
@@ -21,6 +21,7 @@ export default function AdminUserTickets() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm();
 
@@ -128,7 +129,11 @@ export default function AdminUserTickets() {
                 aria-describedby="cpf"
                 placeholder="CPF"
                 icon={<IconBadge />}
-                {...register('cpf', { required: 'Este campo é obrigatório' })}
+                {...register('cpf', {
+                  required: 'Este campo é obrigatório',
+                  setValueAs: (v) => unformatCpf(v),
+                  onChange: (e) => setValue('cpf', formatCpf(e.target.value))
+                })}
                 errors={errors}
               />
             </div>
