@@ -1,36 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './index.scss';
 import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconPassword } from '../../images/password.svg';
-import InputIcon from '../../components/inputIcon';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import HomeSidebar from '../../components/homeSidebar';
-import alertMessage from '../../components/alertMessage';
+import Form from '../../components/form/form';
+import FormItem from '../../components/form/formItem';
+import FormButton from '../../components/form/formButton';
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);
-  const [user, setUser] = useState({ email: '', password: '' });
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setUser({
-      ...user,
-      [event.target.name]: value
-    });
-  };
 
-  const onFinish = async (event) => {
-    event.preventDefault();
-    if (user.email === '') {
-      alertMessage('error', 'Insira seu e-mail!');
-    } else if (user.password.length < 6) {
-      alertMessage('error', 'Sua senha deve ter no mínimo 6 caracteres');
-    } else {
-      const result = await login(user);
-      if (result) navigate('/tickets', { replace: true, state: { from: location } });
-    }
+  const onFinish = async (values) => {
+    const result = await login(values);
+    if (result) navigate('/tickets', { replace: true, state: { from: location } });
   };
 
   return (
@@ -45,29 +31,27 @@ export default function Login() {
             <p>Sentimos sua falta! Faça o login para começar</p>
           </div>
           <div>
-            <form id="login" onSubmit={onFinish}>
+            <Form name="login" onFinish={onFinish}>
               <div className="mb-3">
-                <InputIcon
-                  id="email"
+                <FormItem
                   name="email"
                   type="email"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
-                  onChange={handleChange}
                   icon={<IconUser />}
+                  rules={[{ type: 'required' }]}
                 />
               </div>
               <div>
-                <InputIcon
-                  id="password"
+                <FormItem
                   name="password"
                   type="password"
                   className="form-control"
                   aria-describedby="password"
                   placeholder="Senha"
-                  onChange={handleChange}
                   icon={<IconPassword />}
+                  rules={[{ type: 'length', min: 6, max: 32 }]}
                 />
               </div>
               <div className="d-flex justify-content-end my-3">
@@ -78,9 +62,9 @@ export default function Login() {
                 </NavLink>
               </div>
               <div>
-                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <FormButton type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
                   Entrar
-                </button>
+                </FormButton>
                 <div className="d-flex justify-content-center p-5">
                   <p className="login-signup-forms">
                     Não tem conta?
@@ -90,7 +74,7 @@ export default function Login() {
                   </p>
                 </div>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>
