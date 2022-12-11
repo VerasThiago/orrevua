@@ -2,6 +2,16 @@ import React from 'react';
 
 export const emailPattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
+export const errorMessages = {
+  required: 'Este campo é obrigatório',
+  emailPattern: 'Insira um email válido',
+  passwordMinLength: 'Sua senha deve conter no mínimo 6 caracteres',
+  passwordMaxLength: 'Sua senha pode conter no máximo 32 caracteres',
+  passwordConfirmation: 'As senhas devem ser iguais',
+  emailConfirmation: 'Os emails devem ser iguais',
+  cpf: 'Não é um CPF válido'
+};
+
 // eslint-disable-next-line react/display-name
 export const Input = React.forwardRef(({ icon, errors, ...props }, ref) => {
   function renderErrors(errors, name) {

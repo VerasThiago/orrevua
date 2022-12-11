@@ -5,7 +5,7 @@ import alertMessage from '../../components/alertMessage';
 import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button } from '../../components/form/inputs';
+import { Input, Button, errorMessages } from '../../components/form/inputs';
 
 export default function ResetPassword() {
   const [showPw, setShowPw] = useState(false);
@@ -80,12 +80,12 @@ export default function ResetPassword() {
                   placeholder="Nova senha"
                   icon={<IconVisibilityPassword onClick={toggleShowPassword} />}
                   {...register('password', {
-                    required: 'Este campo é obrigatório',
+                    required: errorMessages.required,
                     maxLength: {
                       value: 32,
-                      message: 'Sua senha pode conter no máximo 32 caracteres'
+                      message: errorMessages.passwordMaxLength
                     },
-                    minLength: { value: 6, message: 'Sua senha deve conter no mínimo 6 caracteres' }
+                    minLength: { value: 6, message: errorMessages.passwordMinLength }
                   })}
                   errors={errors}
                 />
@@ -101,7 +101,7 @@ export default function ResetPassword() {
                   {...register('password_confirmation', {
                     validate: (val) => {
                       if (watch('password') != val) {
-                        return 'As senhas devem ser iguais';
+                        return errorMessages.passwordConfirmation;
                       }
                     }
                   })}

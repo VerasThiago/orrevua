@@ -10,7 +10,13 @@ import { formatCpf, unformatCpf } from '../../../utils';
 import Header from '../../../components/header';
 
 import { useForm } from 'react-hook-form';
-import { Input, InputIcon, Button, emailPattern } from '../../../components/form/inputs';
+import {
+  Input,
+  InputIcon,
+  Button,
+  emailPattern,
+  errorMessages
+} from '../../../components/form/inputs';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
@@ -105,7 +111,7 @@ export default function AdminUserTickets() {
                 aria-describedby="name"
                 placeholder="Nome"
                 icon={<IconUser />}
-                {...register('name', { required: 'Este campo é obrigatório' })}
+                {...register('name', { required: errorMessages.required })}
                 errors={errors}
               />
             </div>
@@ -118,10 +124,10 @@ export default function AdminUserTickets() {
                 placeholder="E-mail"
                 icon={<IconEmail />}
                 {...register('email', {
-                  required: 'Este campo é obrigatório',
+                  required: errorMessages.required,
                   pattern: {
                     value: emailPattern,
-                    message: 'Insira um email válido'
+                    message: errorMessages.emailPattern
                   }
                 })}
                 errors={errors}
@@ -136,10 +142,10 @@ export default function AdminUserTickets() {
                 placeholder="CPF"
                 icon={<IconBadge />}
                 {...register('cpf', {
-                  required: 'Este campo é obrigatório',
+                  required: errorMessages.required,
                   validate: (val) => {
                     if (!val || val.length !== 11) {
-                      return 'Não é um CPF válido';
+                      return errorMessages.cpf;
                     }
                   },
                   setValueAs: (v) => unformatCpf(v),

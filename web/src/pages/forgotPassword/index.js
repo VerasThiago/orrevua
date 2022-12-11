@@ -5,7 +5,7 @@ import alertMessage from '../../components/alertMessage';
 import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button, emailPattern } from '../../components/form/inputs';
+import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
 
 export default function ForgotPassword() {
   const {
@@ -50,10 +50,10 @@ export default function ForgotPassword() {
                   placeholder="E-mail"
                   icon={<IconEmail />}
                   {...register('email', {
-                    required: 'Este campo é obrigatório',
+                    required: errorMessages.required,
                     pattern: {
                       value: emailPattern,
-                      message: 'Insira um email válido'
+                      message: errorMessages.emailPattern
                     }
                   })}
                   errors={errors}

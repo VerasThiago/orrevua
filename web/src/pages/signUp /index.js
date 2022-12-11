@@ -9,7 +9,7 @@ import HomeSidebar from '../../components/homeSidebar';
 import { NavLink } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button, emailPattern } from '../../components/form/inputs';
+import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
 import { formatCpf, unformatCpf } from '../../utils';
 
 export default function SignUp() {
@@ -58,7 +58,7 @@ export default function SignUp() {
                   aria-describedby="name"
                   placeholder="Nome completo"
                   icon={<IconName />}
-                  {...register('name', { required: 'Este campo é obrigatório' })}
+                  {...register('name', { required: errorMessages.required })}
                   errors={errors}
                 />
               </div>
@@ -71,10 +71,10 @@ export default function SignUp() {
                   placeholder="E-mail"
                   icon={<IconEmail />}
                   {...register('email', {
-                    required: 'Este campo é obrigatório',
+                    required: errorMessages.required,
                     pattern: {
                       value: emailPattern,
-                      message: 'Insira um email válido'
+                      message: errorMessages.emailPattern
                     }
                   })}
                   errors={errors}
@@ -91,7 +91,7 @@ export default function SignUp() {
                   {...register('email_confirmation', {
                     validate: (val) => {
                       if (watch('email') != val) {
-                        return 'Os emails devem ser iguais';
+                        return errorMessages.emailConfirmation;
                       }
                     }
                   })}
@@ -107,10 +107,10 @@ export default function SignUp() {
                   placeholder="CPF"
                   icon={<IconCpf />}
                   {...register('cpf', {
-                    required: 'Este campo é obrigatório',
+                    required: errorMessages.required,
                     validate: (val) => {
                       if (!val || val.length !== 11) {
-                        return 'Não é um CPF válido';
+                        return errorMessages.cpf;
                       }
                     },
                     setValueAs: (v) => unformatCpf(v),
@@ -128,12 +128,12 @@ export default function SignUp() {
                   placeholder="Senha"
                   icon={<IconPassowrd />}
                   {...register('password', {
-                    required: 'Este campo é obrigatório',
+                    required: errorMessages.required,
                     maxLength: {
                       value: 32,
-                      message: 'Sua senha pode conter no máximo 32 caracteres'
+                      message: errorMessages.passwordMaxLength
                     },
-                    minLength: { value: 6, message: 'Sua senha deve conter no mínimo 6 caracteres' }
+                    minLength: { value: 6, message: errorMessages.passwordMinLength }
                   })}
                   errors={errors}
                 />
@@ -149,7 +149,7 @@ export default function SignUp() {
                   {...register('password_confirmation', {
                     validate: (val) => {
                       if (watch('password') != val) {
-                        return 'As senhas devem ser iguais';
+                        return errorMessages.passwordConfirmation;
                       }
                     }
                   })}

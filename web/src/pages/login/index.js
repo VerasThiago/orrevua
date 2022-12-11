@@ -7,7 +7,7 @@ import { AuthContext } from '../../App';
 import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button, emailPattern } from '../../components/form/inputs';
+import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -47,10 +47,10 @@ export default function Login() {
                   placeholder="E-mail"
                   icon={<IconUser />}
                   {...register('email', {
-                    required: 'Este campo é obrigatório',
+                    required: errorMessages.requried,
                     pattern: {
                       value: emailPattern,
-                      message: 'Insira um email válido'
+                      message: errorMessages.emailPattern
                     }
                   })}
                   errors={errors}
@@ -65,12 +65,12 @@ export default function Login() {
                   placeholder="Senha"
                   icon={<IconPassword />}
                   {...register('password', {
-                    required: 'Este campo é obrigatório',
+                    required: errorMessages.required,
                     maxLength: {
                       value: 32,
-                      message: 'Sua senha pode conter no máximo 32 caracteres'
+                      message: errorMessages.passwordMaxLength
                     },
-                    minLength: { value: 6, message: 'Sua senha deve conter no mínimo 6 caracteres' }
+                    minLength: { value: 6, message: errorMessages.passwordMinLength }
                   })}
                   errors={errors}
                 />
