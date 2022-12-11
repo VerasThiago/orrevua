@@ -29,21 +29,28 @@ export default function TableUsers({ data }) {
     <div>
       <table className="table border-dark">
         <tbody>
-          <tr>
-            <th className="text-white fw-bold">Nome</th>
-            <th className="text-white fw-bold">E-mail</th>
-            <th className="text-white fw-bold">CPF</th>
+          <tr className="fw-bold">
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>CPF</th>
             <th></th>
           </tr>
           {data
             .slice(currentPage * usersPerPage - usersPerPage, usersPerPage * currentPage)
             .map((item, index) => (
               <tr key={index}>
-                <td className="text-white">{item.name}</td>
-                <td className="text-white">{item.email}</td>
-                <td className="text-white">{formatCpf(item.cpf)}</td>
-                <td className="">
-                  <NavLink to={`/admin/users/${item.id}`}>
+                <td>
+                  <NavLink
+                    className="text-decoration-none text-white"
+                    to={`/admin/users/${item.id}`}>
+                    {item.name}
+                  </NavLink>
+                </td>
+
+                <td>{item.email}</td>
+                <td>{formatCpf(item.cpf)}</td>
+                <td>
+                  <NavLink to={`/admin/users/${item.id}/ticket/create`}>
                     <AddBtn />
                   </NavLink>
                 </td>

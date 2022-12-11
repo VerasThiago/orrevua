@@ -7,12 +7,12 @@ export default function Header({ title, subTitle }) {
   const user = userData().User;
 
   return (
-    <div className="d-flex justify-content-between align-items-center mb-5 layout-header">
+    <div className="d-flex justify-content-between align-items-center mb-5">
       <div>
-        <div className="fs-2 fw-bold">{title}</div>
-        {subTitle && <div>{subTitle}</div>}
+        <div className="fs-2 fw-bold text-center text-lg-start">{title}</div>
+        {subTitle && <div className="text-center text-lg-start">{subTitle}</div>}
       </div>
-      <div className="row align-items-center">
+      <div className="row align-items-center d-none d-lg-flex">
         <div className="col-2">
           <CircleAvatar userName={user.name} />
         </div>

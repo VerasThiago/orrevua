@@ -50,7 +50,7 @@ export default function Users() {
       <div className="form-group">
         <div className="input-group w-25 mx-5">
           <input
-            className="form-control "
+            className="form-control"
             type="text"
             placeholder="Buscar nome, e-mail ou cpf"
             onChange={(e) => setQuery(e.target.value)}
