@@ -10,6 +10,10 @@ import (
 const (
 	DEPLOY_ENV string = "ORREVUA_DEPLOY_ENV"
 
+	DEPLOY_LOCAL      string = "local"
+	DEPLOY_DOCKER     string = "docker"
+	DEPLOY_PRODUCTION string = "production"
+
 	ENV_FILE_PATH string = ".env"
 	ENV_FILE_TYPE string = "env"
 
@@ -24,6 +28,7 @@ var AVAILABLE_ENV_VARS_MAP = map[string]bool{
 }
 
 type SharedFlags struct {
+	Deploy            string
 	AppHost           string `mapstructure:"APP_HOST"`
 	DatabaseHost      string `mapstructure:"DB_HOST"`
 	DatabasePort      string `mapstructure:"DB_PORT"`
@@ -47,18 +52,19 @@ type EnvFileConfig struct {
 	Type string
 }
 
-func checkDeployEnv() {
+func getDeployEnv() string {
 	env := os.Getenv(DEPLOY_ENV)
 	if _, ok := AVAILABLE_ENV_VARS_MAP[string(env)]; !ok {
 		panic("invalid ORREVUA_DEPLOY_ENV env variable i.e. [production, local, docker]")
 	}
+	return env
 }
 
 func GetFileEnvConfigFromDeployEnv(serviceName string) *EnvFileConfig {
-	checkDeployEnv()
+	deployEnv := getDeployEnv()
 
 	var filePath string = ENV_FILE_PATH
-	fileName := fmt.Sprintf("%v.%v.env", serviceName, os.Getenv(DEPLOY_ENV))
+	fileName := fmt.Sprintf("%v.%v.env", serviceName, deployEnv)
 
 	if serviceName == SHARED_PACKAGE_NAME {
 		filePath = fmt.Sprintf("%+v/%+v", SHARED_PACKAGE_PATH, ENV_FILE_PATH)
@@ -87,6 +93,8 @@ func (f *SharedFlags) InitFromViper(config *EnvFileConfig) (*SharedFlags, error)
 	if err := viper.Unmarshal(&flags); err != nil {
 		return nil, err
 	}
+
+	flags.Deploy = getDeployEnv()
 
 	return &flags, nil
 }
