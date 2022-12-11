@@ -131,6 +131,11 @@ export default function AdminUserTickets() {
                 icon={<IconBadge />}
                 {...register('cpf', {
                   required: 'Este campo é obrigatório',
+                  validate: (val) => {
+                    if (!val || val.length !== 11) {
+                      return 'Não é um CPF válido';
+                    }
+                  },
                   setValueAs: (v) => unformatCpf(v),
                   onChange: (e) => setValue('cpf', formatCpf(e.target.value))
                 })}

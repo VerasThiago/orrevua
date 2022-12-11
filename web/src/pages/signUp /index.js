@@ -76,6 +76,24 @@ export default function SignUp() {
               </div>
               <div className="mb-4">
                 <Input
+                  name="email_confirmation"
+                  type="email"
+                  className="form-control"
+                  aria-describedby="email_confirmation"
+                  placeholder="Confirme seu email"
+                  icon={<IconEmail />}
+                  {...register('email_confirmation', {
+                    validate: (val) => {
+                      if (watch('email') != val) {
+                        return 'Os emails devem ser iguais';
+                      }
+                    }
+                  })}
+                  errors={errors}
+                />
+              </div>
+              <div className="mb-4">
+                <Input
                   name="cpf"
                   type="text"
                   className="form-control"
@@ -84,6 +102,11 @@ export default function SignUp() {
                   icon={<IconCpf />}
                   {...register('cpf', {
                     required: 'Este campo é obrigatório',
+                    validate: (val) => {
+                      if (!val || val.length !== 11) {
+                        return 'Não é um CPF válido';
+                      }
+                    },
                     setValueAs: (v) => unformatCpf(v),
                     onChange: (e) => setValue('cpf', formatCpf(e.target.value))
                   })}
