@@ -15,7 +15,7 @@ export default function Menu() {
 
   const menuItems = [
     {
-      title: 'Meus ingressos',
+      title: 'Ingressos',
       icon: <TicketIcon />,
       path: '/tickets',
       active: location.pathname.includes('/tickets'),
