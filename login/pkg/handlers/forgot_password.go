@@ -7,6 +7,7 @@ import (
 
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	"github.com/verasthiago/tickets-generator/shared/errors"
+	"github.com/verasthiago/tickets-generator/shared/flags"
 	"github.com/verasthiago/tickets-generator/shared/models"
 
 	"github.com/gin-gonic/gin"
@@ -28,8 +29,11 @@ func (f *ForgotPasswordHandler) InitFromBuilder(builder builder.Builder) *Forgot
 	return f
 }
 
-func GeneratePasswordResetUrl(host string, token string) string {
-	return fmt.Sprintf("%s/password/reset?token=%s", host, token)
+func GeneratePasswordResetUrl(sharedFlags *flags.SharedFlags, apiFlags *builder.Flags, token string) string {
+	if sharedFlags.Deploy == flags.DEPLOY_LOCAL {
+		return fmt.Sprintf("%s:%s/password/reset?token=%s", sharedFlags.AppHost, apiFlags.WebPort, token)
+	}
+	return fmt.Sprintf("%s/password/reset?token=%s", sharedFlags.AppHost, token)
 }
 
 func (f *ForgotPasswordHandler) Handler(context *gin.Context) error {
@@ -49,8 +53,7 @@ func (f *ForgotPasswordHandler) Handler(context *gin.Context) error {
 		return err
 	}
 
-	url := GeneratePasswordResetUrl(f.GetSharedFlags().AppHost, tokenString)
-
+	url := GeneratePasswordResetUrl(f.GetSharedFlags(), f.GetFlags(), tokenString)
 	if err := f.GetEmailClient().SendForgotPasswordURLToUserByEmail(&models.User{Email: request.Email}, url); err != nil {
 		return err
 	}

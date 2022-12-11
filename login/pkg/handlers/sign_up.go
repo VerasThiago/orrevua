@@ -11,6 +11,7 @@ import (
 	"github.com/verasthiago/tickets-generator/login/pkg/validator"
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	"github.com/verasthiago/tickets-generator/shared/errors"
+	"github.com/verasthiago/tickets-generator/shared/flags"
 )
 
 type CreateUserAPI interface {
@@ -26,8 +27,11 @@ func (c *CreateUserHandler) InitFromBuilder(builder builder.Builder) *CreateUser
 	return c
 }
 
-func GenerateVerifyEmailUrl(host string, token string) string {
-	return fmt.Sprintf("%s/email/verify?token=%s", host, token)
+func GenerateVerifyEmailUrl(sharedFlags *flags.SharedFlags, apiFlags *builder.Flags, token string) string {
+	if sharedFlags.Deploy == flags.DEPLOY_LOCAL {
+		return fmt.Sprintf("%s:%s/email/verify?token=%s", sharedFlags.AppHost, apiFlags.WebPort, token)
+	}
+	return fmt.Sprintf("%s/email/verify?token=%s", sharedFlags.AppHost, token)
 }
 
 func (c *CreateUserHandler) Handler(context *gin.Context) error {
@@ -55,7 +59,7 @@ func (c *CreateUserHandler) Handler(context *gin.Context) error {
 		return err
 	}
 
-	url := GenerateVerifyEmailUrl(c.GetSharedFlags().AppHost, tokenString)
+	url := GenerateVerifyEmailUrl(c.GetSharedFlags(), c.GetFlags(), tokenString)
 	if err := c.GetEmailClient().SendVerifyEmailToUser(request.User, url); err != nil {
 		return err
 	}
