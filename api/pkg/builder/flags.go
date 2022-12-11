@@ -7,7 +7,8 @@ import (
 )
 
 type Flags struct {
-	Port string `mapstructure:"API_PORT"`
+	Port    string `mapstructure:"API_PORT"`
+	WebPort string `mapstructure:"WEB_PORT"`
 }
 
 func (f *Flags) InitFromViper(envConfigFile *shared.EnvFileConfig) (*Flags, error) {
