@@ -1,6 +1,7 @@
 package ticket
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,6 +9,8 @@ import (
 	"github.com/verasthiago/tickets-generator/api/pkg/validator/ticket"
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	"github.com/verasthiago/tickets-generator/shared/errors"
+	"github.com/verasthiago/tickets-generator/shared/flags"
+	"github.com/verasthiago/tickets-generator/shared/models"
 )
 
 type TicketCreateAPI interface {
@@ -23,8 +26,16 @@ func (c *TicketCreateHandler) InitFromBuilder(builder builder.Builder) *TicketCr
 	return c
 }
 
+func GenerateNewTicketUrl(sharedFlags *flags.SharedFlags, apiFlags *builder.Flags) string {
+	if sharedFlags.Deploy == flags.DEPLOY_LOCAL {
+		return fmt.Sprintf("%s:%s/tickets", sharedFlags.AppHost, apiFlags.WebPort)
+	}
+	return fmt.Sprintf("%s/tickets", sharedFlags.AppHost)
+}
+
 func (c *TicketCreateHandler) Handler(context *gin.Context) error {
 	var err error
+	var user *models.User
 	var request *ticket.CreateRequest
 
 	if err = context.ShouldBindJSON(&request); err != nil {
@@ -43,12 +54,19 @@ func (c *TicketCreateHandler) Handler(context *gin.Context) error {
 		return errors.CreateGenericErrorFromValidateError(errList)
 	}
 
-	request.ID = request.Token.User.ID
+	if user, err = c.GetRepository().GetUserByID(request.Ticket.OwnerID); err != nil {
+		return err
+	}
 
 	if err = c.GetRepository().CreateTicket(request.Ticket); err != nil {
 		return err
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"status": "success", "id": request.ID})
+	url := GenerateNewTicketUrl(c.GetSharedFlags(), c.GetFlags())
+	if err = c.GetEmailClient().SendNewTicketToUser(user, request.Ticket, url); err != nil {
+		return err
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"status": "success", "id": request.Ticket.ID})
 	return nil
 }
