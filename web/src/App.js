@@ -9,6 +9,7 @@ import ForgotPassword from './pages/forgotPassword';
 import Tickets from './pages/tickets';
 import NotFound from './pages/notFound';
 import Users from './pages/admin/users';
+import VerifyEmail from './pages/verifyEmail';
 
 import AdminCreateTicket from './pages/admin/createTicket';
 import AdminUserTickets from './pages/admin/userTickets';
@@ -70,6 +71,8 @@ export default function App() {
             }
           />
           <Route exact path="/password/reset" element={<ResetPassword />} />
+          <Route exact path="/email/verify" element={<VerifyEmail />} />
+
           <Route exact path="/signup" element={<SignUp />} />
 
           <Route path="*" element={<NotFound />} />
