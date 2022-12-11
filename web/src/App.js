@@ -18,8 +18,6 @@ import PrivateRoute from './components/privateRoute';
 
 import AuthProvider from './services/auth';
 
-import 'react-toastify/dist/ReactToastify.min.css';
-
 import ResetPassword from './pages/resetPassword';
 import SignUp from './pages/signUp ';
 

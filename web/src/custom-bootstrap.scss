@@ -31,3 +31,11 @@ $btn-padding-y: 1rem;
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+@import 'react-toastify/dist/ReactToastify.min.css';
+
+:root {
+  --toastify-font-family: var(--bs-body-font-family);
+  --toastify-color-success: var(--bs-primary);
+  --toastify-color-progress-success: var(--bs-primary);
+}

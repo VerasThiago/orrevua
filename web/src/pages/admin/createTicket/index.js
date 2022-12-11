@@ -6,14 +6,29 @@ import { ReactComponent as IconUser } from '../../../images/user.svg';
 import { apiRequest } from '../../../services/api';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
-import { formatCpf } from '../../../utils';
-import InputIcon from '../../../components/inputIcon';
+import { formatCpf, unformatCpf } from '../../../utils';
 import Header from '../../../components/header';
+
+import { useForm } from 'react-hook-form';
+import {
+  Input,
+  InputIcon,
+  Button,
+  emailPattern,
+  errorMessages
+} from '../../../components/form/inputs';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting }
+  } = useForm();
 
   useEffect(() => {
     reloadTickets();
@@ -38,17 +53,14 @@ export default function AdminUserTickets() {
       });
   };
 
-  const onFinish = async (event) => {
-    event.preventDefault();
-    const values = Object.fromEntries(new FormData(event.target));
+  const onFinish = async (values) => {
     values.ownerid = userId;
 
-    apiRequest('api', 'api/v0/ticket/create', 'post', values)
+    await apiRequest('api', 'api/v0/ticket/create', 'post', values)
       .then(async (response) => {
         const parsedResponse = await response.json();
         if (response.ok) {
           alertMessage('success', 'Ingresso criado com sucesso!');
-          event.target.reset();
         } else {
           if (parsedResponse.message) alertMessage('error', parsedResponse.message);
           else alertMessage('error', 'Ocorreu um erro inesperado');
@@ -70,61 +82,85 @@ export default function AdminUserTickets() {
       <div className="d-flex row gap-3 justify-content-start mb-4">
         <div className="col-md-12 col-lg-6" style={{ maxWidth: '300px' }}>
           <p className="fs-4 mb-4">Conta do usuário</p>
-          <InputIcon
-            id="email"
-            name="email"
-            type="email"
-            className="form-control"
-            aria-describedby="email"
-            placeholder="E-mail"
-            value={formatCpf(user.cpf)}
-            readOnly
-            icon={<IconBadge />}
-          />
+          <InputIcon icon={<IconBadge />}>
+            <input
+              name="show_cpf"
+              type="text"
+              className="form-control"
+              aria-describedby="show_cpf"
+              placeholder="CPF"
+              value={formatCpf(user.cpf)}
+              readOnly
+            />
+          </InputIcon>
           <p className="fs-4 mt-4 mb-1">{user.name}</p>
           <p className="mb-1">{formatCpf(user.cpf)}</p>
           <p>{user.email}</p>
         </div>
         <div className="col-md-12 col-lg-6">
           <p className="fs-4 mb-4">Conta do usuário</p>
-          <form id="new_ticket" onSubmit={onFinish} className="d-flex flex-column gap-4">
+          <form
+            name="new_ticket"
+            onSubmit={handleSubmit(onFinish)}
+            className="d-flex flex-column gap-4">
             <div style={{ maxWidth: '400px' }}>
-              <InputIcon
-                id="name"
+              <Input
                 name="name"
                 type="text"
                 className="form-control"
                 aria-describedby="name"
                 placeholder="Nome"
                 icon={<IconUser />}
+                {...register('name', { required: errorMessages.required })}
+                errors={errors}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <InputIcon
-                id="email"
+              <Input
                 name="email"
-                type="email"
+                type="text"
                 className="form-control"
                 aria-describedby="email"
                 placeholder="E-mail"
                 icon={<IconEmail />}
+                {...register('email', {
+                  required: errorMessages.required,
+                  pattern: {
+                    value: emailPattern,
+                    message: errorMessages.emailPattern
+                  }
+                })}
+                errors={errors}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <InputIcon
-                id="cpf"
+              <Input
                 name="cpf"
                 type="text"
                 className="form-control"
                 aria-describedby="cpf"
                 placeholder="CPF"
                 icon={<IconBadge />}
+                {...register('cpf', {
+                  required: errorMessages.required,
+                  validate: (val) => {
+                    if (!val || val.length !== 11) {
+                      return errorMessages.cpf;
+                    }
+                  },
+                  setValueAs: (v) => unformatCpf(v),
+                  onChange: (e) => setValue('cpf', formatCpf(e.target.value))
+                })}
+                errors={errors}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
-              <button type="submit" className="btn btn-primary w-100 mt-3 fw-bold">
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                className="btn btn-primary w-100 mt-3 fw-bold">
                 Criar ingresso
-              </button>
+              </Button>
             </div>
           </form>
         </div>

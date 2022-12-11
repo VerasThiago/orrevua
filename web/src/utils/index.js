@@ -23,6 +23,6 @@ export function formatCpf(cpf) {
     .replace(/(-\d{2})\d+?$/, '$1');
 }
 
-export function formatToRequestCpf(cpf) {
+export function unformatCpf(cpf) {
   return cpf.split('.').join('').replace('-', '');
 }

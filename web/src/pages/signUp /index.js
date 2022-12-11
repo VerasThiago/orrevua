@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { ReactComponent as IconName } from '../../images/name_icon.svg';
 import { ReactComponent as IconCpf } from '../../images/badge.svg';
@@ -6,60 +5,36 @@ import { ReactComponent as IconPassowrd } from '../../images/password.svg';
 
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import InputIcon from '../../components/inputIcon';
 import HomeSidebar from '../../components/homeSidebar';
-import { formatCpf, formatToRequestCpf } from '../../utils';
 import { NavLink } from 'react-router-dom';
 
+import { useForm } from 'react-hook-form';
+import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
+import { formatCpf, unformatCpf } from '../../utils';
+
 export default function SignUp() {
-  const [user, setUser] = useState({ name: '', cpf: '', email: '', password: '' });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting }
+  } = useForm();
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    if (event.target.name === 'cpf') {
-      setUser({
-        ...user,
-        [event.target.name]: formatCpf(value)
-      });
-    } else {
-      setUser({
-        ...user,
-        [event.target.name]: value
-      });
-    }
-  };
+  const onFinish = async (values) => {
+    values.username = values.cpf;
 
-  const onFinish = async (event) => {
-    event.preventDefault();
-    console.log(formatToRequestCpf(user.cpf));
-    if (user.name === '') {
-      alertMessage('error', 'Informe seu nome!');
-    } else if (user.email === '') {
-      alertMessage('error', 'Informe seu email!');
-    } else if (user.password === '') {
-      alertMessage('error', 'Insira uma senha');
-    } else if (user.cpf === '') {
-      alertMessage('error', 'Informe seu cpf!');
-    } else {
-      apiRequest('login', 'login/v0/user/signup', 'post', {
-        name: user.name,
-        username: formatToRequestCpf(user.cpf),
-        email: user.email,
-        cpf: formatToRequestCpf(user.cpf),
-        password: user.password
-      })
-        .then(async (response) => {
-          if (response.ok) {
-            alertMessage('success', 'Você recebeu um email para confirmar sua conta!');
-            event.target.reset();
-          } else {
-            alertMessage('error', 'Ocorreu um erro inesperado');
-          }
-        })
-        .catch(() => {
+    await apiRequest('login', 'login/v0/user/signup', 'post', values)
+      .then(async (response) => {
+        if (response.ok) {
+          alertMessage('success', 'Você recebeu um email para confirmar sua conta!');
+        } else {
           alertMessage('error', 'Ocorreu um erro inesperado');
-        });
-    }
+        }
+      })
+      .catch(() => {
+        alertMessage('error', 'Ocorreu um erro inesperado');
+      });
   };
 
   return (
@@ -74,64 +49,121 @@ export default function SignUp() {
             <p>Crie uma conta para garantir os seus ingressos</p>
           </div>
           <div>
-            <form id="forgot_password" onSubmit={onFinish}>
+            <form name="forgot_password" onSubmit={handleSubmit(onFinish)}>
               <div className="mb-4">
-                <InputIcon
-                  id="name"
+                <Input
                   name="name"
                   type="text"
-                  value={user.name}
                   className="form-control"
                   aria-describedby="name"
                   placeholder="Nome completo"
-                  onChange={handleChange}
                   icon={<IconName />}
+                  {...register('name', { required: errorMessages.required })}
+                  errors={errors}
                 />
               </div>
               <div className="mb-4">
-                <InputIcon
-                  id="email"
+                <Input
                   name="email"
-                  type="email"
-                  value={user.email}
+                  type="text"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
-                  onChange={handleChange}
                   icon={<IconEmail />}
+                  {...register('email', {
+                    required: errorMessages.required,
+                    pattern: {
+                      value: emailPattern,
+                      message: errorMessages.emailPattern
+                    }
+                  })}
+                  errors={errors}
                 />
               </div>
               <div className="mb-4">
-                <InputIcon
-                  id="cpf"
+                <Input
+                  name="email_confirmation"
+                  type="text"
+                  className="form-control"
+                  aria-describedby="email_confirmation"
+                  placeholder="Confirme seu email"
+                  icon={<IconEmail />}
+                  {...register('email_confirmation', {
+                    validate: (val) => {
+                      if (watch('email') != val) {
+                        return errorMessages.emailConfirmation;
+                      }
+                    }
+                  })}
+                  errors={errors}
+                />
+              </div>
+              <div className="mb-4">
+                <Input
                   name="cpf"
                   type="text"
-                  value={user.cpf}
                   className="form-control"
                   aria-describedby="cpf"
                   placeholder="CPF"
-                  onChange={handleChange}
                   icon={<IconCpf />}
+                  {...register('cpf', {
+                    required: errorMessages.required,
+                    validate: (val) => {
+                      if (!val || val.length !== 11) {
+                        return errorMessages.cpf;
+                      }
+                    },
+                    setValueAs: (v) => unformatCpf(v),
+                    onChange: (e) => setValue('cpf', formatCpf(e.target.value))
+                  })}
+                  errors={errors}
                 />
               </div>
-              <div>
-                <InputIcon
-                  id="password"
+              <div className="mb-4">
+                <Input
                   name="password"
                   type="password"
-                  value={user.password}
                   className="form-control"
                   aria-describedby="password"
                   placeholder="Senha"
-                  onChange={handleChange}
                   icon={<IconPassowrd />}
+                  {...register('password', {
+                    required: errorMessages.required,
+                    maxLength: {
+                      value: 32,
+                      message: errorMessages.passwordMaxLength
+                    },
+                    minLength: { value: 6, message: errorMessages.passwordMinLength }
+                  })}
+                  errors={errors}
+                />
+              </div>
+              <div>
+                <Input
+                  name="password_confirmation"
+                  type="password"
+                  className="form-control"
+                  aria-describedby="password_confirmation"
+                  placeholder="Confirme sua senha"
+                  icon={<IconPassowrd />}
+                  {...register('password_confirmation', {
+                    validate: (val) => {
+                      if (watch('password') != val) {
+                        return errorMessages.passwordConfirmation;
+                      }
+                    }
+                  })}
+                  errors={errors}
                 />
               </div>
 
               <div>
-                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  className="btn btn-primary w-100 mt-5 fw-bold">
                   Cadastrar
-                </button>
+                </Button>
               </div>
             </form>
             <p className="text-center my-5">

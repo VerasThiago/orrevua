@@ -1,36 +1,28 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import './index.scss';
 import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconPassword } from '../../images/password.svg';
-import InputIcon from '../../components/inputIcon';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../App';
 import HomeSidebar from '../../components/homeSidebar';
-import alertMessage from '../../components/alertMessage';
+
+import { useForm } from 'react-hook-form';
+import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);
-  const [user, setUser] = useState({ email: '', password: '' });
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setUser({
-      ...user,
-      [event.target.name]: value
-    });
-  };
 
-  const onFinish = async (event) => {
-    event.preventDefault();
-    if (user.email === '') {
-      alertMessage('error', 'Insira seu e-mail!');
-    } else if (user.password.length < 6) {
-      alertMessage('error', 'Sua senha deve ter no mínimo 6 caracteres');
-    } else {
-      const result = await login(user);
-      if (result) navigate('/tickets', { replace: true, state: { from: location } });
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm();
+
+  const onFinish = async (values) => {
+    const result = await login(values);
+    if (result) navigate('/tickets', { replace: true, state: { from: location } });
   };
 
   return (
@@ -45,29 +37,42 @@ export default function Login() {
             <p>Sentimos sua falta! Faça o login para começar</p>
           </div>
           <div>
-            <form id="login" onSubmit={onFinish}>
+            <form name="login" onSubmit={handleSubmit(onFinish)}>
               <div className="mb-3">
-                <InputIcon
-                  id="email"
+                <Input
                   name="email"
-                  type="email"
+                  type="text"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
-                  onChange={handleChange}
                   icon={<IconUser />}
+                  {...register('email', {
+                    required: errorMessages.requried,
+                    pattern: {
+                      value: emailPattern,
+                      message: errorMessages.emailPattern
+                    }
+                  })}
+                  errors={errors}
                 />
               </div>
               <div>
-                <InputIcon
-                  id="password"
+                <Input
                   name="password"
                   type="password"
                   className="form-control"
                   aria-describedby="password"
                   placeholder="Senha"
-                  onChange={handleChange}
                   icon={<IconPassword />}
+                  {...register('password', {
+                    required: errorMessages.required,
+                    maxLength: {
+                      value: 32,
+                      message: errorMessages.passwordMaxLength
+                    },
+                    minLength: { value: 6, message: errorMessages.passwordMinLength }
+                  })}
+                  errors={errors}
                 />
               </div>
               <div className="d-flex justify-content-end my-3">
@@ -78,9 +83,12 @@ export default function Login() {
                 </NavLink>
               </div>
               <div>
-                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  className="btn btn-primary w-100 mt-5 fw-bold">
                   Entrar
-                </button>
+                </Button>
                 <div className="d-flex justify-content-center p-5">
                   <p className="login-signup-forms">
                     Não tem conta?

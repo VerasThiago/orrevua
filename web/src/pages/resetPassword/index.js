@@ -2,14 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import InputIcon from '../../components/inputIcon';
 import HomeSidebar from '../../components/homeSidebar';
 
+import { useForm } from 'react-hook-form';
+import { Input, Button, errorMessages } from '../../components/form/inputs';
+
 export default function ResetPassword() {
-  const [formData, setFormData] = useState({ password: '', confirmPassword: '' });
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [userToken, setUserToken] = useState('');
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting }
+  } = useForm();
 
   useEffect(() => {
     const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -19,14 +27,6 @@ export default function ResetPassword() {
     setUserToken(token);
   }, []);
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setFormData({
-      ...formData,
-      [event.target.name]: value
-    });
-  };
-
   const toggleShowPassword = () => {
     setShowPw(!showPw);
   };
@@ -35,36 +35,24 @@ export default function ResetPassword() {
     setShowConfirmPw(!showConfirmPw);
   };
 
-  const onFinish = async (event) => {
-    event.preventDefault();
-    if (formData.password === '') {
-      alertMessage('error', 'Insira uma senha!');
-    } else if (formData.password.length < 6) {
-      alertMessage('error', 'Sua senha deve ter no mínimo 6 caracteres');
-    } else if (formData.confirmPassword === '') {
-      alertMessage('error', 'Confirme sua senha!');
-    } else if (formData.password != formData.confirmPassword) {
-      alertMessage('error', 'As senhas devem ser iguais!');
-    } else {
-      apiRequest(
-        'login',
-        'login/v0/user/password/update',
-        'PATCH',
-        { password: formData.password },
-        { Authorization: userToken }
-      )
-        .then(async (response) => {
-          if (response.ok) {
-            alertMessage('success', 'Senha configurada com sucesso');
-            event.target.reset();
-          } else {
-            alertMessage('error', 'Ocorreu um erro inesperado');
-          }
-        })
-        .catch(() => {
+  const onFinish = async (values) => {
+    await apiRequest(
+      'login',
+      'login/v0/user/password/update',
+      'PATCH',
+      { password: values.password },
+      { Authorization: userToken }
+    )
+      .then(async (response) => {
+        if (response.ok) {
+          alertMessage('success', 'Senha configurada com sucesso');
+        } else {
           alertMessage('error', 'Ocorreu um erro inesperado');
-        });
-    }
+        }
+      })
+      .catch(() => {
+        alertMessage('error', 'Ocorreu um erro inesperado');
+      });
   };
 
   return (
@@ -82,36 +70,52 @@ export default function ResetPassword() {
             </p>
           </div>
           <div>
-            <form id="forgot_password" onSubmit={onFinish}>
+            <form name="forgot_password" onSubmit={handleSubmit(onFinish)}>
               <div className="mb-4">
-                <InputIcon
-                  id="password"
+                <Input
                   name="password"
                   type={showPw ? 'text' : 'password'}
                   className="form-control"
                   aria-describedby="password"
                   placeholder="Nova senha"
-                  onChange={handleChange}
                   icon={<IconVisibilityPassword onClick={toggleShowPassword} />}
+                  {...register('password', {
+                    required: errorMessages.required,
+                    maxLength: {
+                      value: 32,
+                      message: errorMessages.passwordMaxLength
+                    },
+                    minLength: { value: 6, message: errorMessages.passwordMinLength }
+                  })}
+                  errors={errors}
                 />
               </div>
               <div>
-                <InputIcon
-                  id="confirm-password"
-                  name="confirmPassword"
+                <Input
+                  name="password_confirmation"
                   type={showConfirmPw ? 'text' : 'password'}
                   className="form-control"
-                  aria-describedby="confirm-password"
-                  placeholder="Confirme nova senha"
-                  onChange={handleChange}
+                  aria-describedby="password_confirmation"
+                  placeholder="Confirme sua senha"
                   icon={<IconVisibilityPassword onClick={toggleShowConfirmPassword} />}
+                  {...register('password_confirmation', {
+                    validate: (val) => {
+                      if (watch('password') != val) {
+                        return errorMessages.passwordConfirmation;
+                      }
+                    }
+                  })}
+                  errors={errors}
                 />
               </div>
 
               <div>
-                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  className="btn btn-primary w-100 mt-5 fw-bold">
                   Salvar senha
-                </button>
+                </Button>
               </div>
             </form>
           </div>

@@ -2,19 +2,23 @@ import React from 'react';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import InputIcon from '../../components/inputIcon';
 import HomeSidebar from '../../components/homeSidebar';
 
-export default function ForgotPassword() {
-  const onFinish = async (event) => {
-    event.preventDefault();
-    const values = Object.fromEntries(new FormData(event.target));
+import { useForm } from 'react-hook-form';
+import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
 
-    apiRequest('login', 'login/v0/user/password/forget', 'post', { email: values.email })
+export default function ForgotPassword() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm();
+
+  const onFinish = async (values) => {
+    await apiRequest('login', 'login/v0/user/password/forget', 'post', values)
       .then(async (response) => {
         if (response.ok) {
           alertMessage('success', 'Você recebeu um email com instruções para trocar sua senha');
-          event.target.reset();
         } else {
           alertMessage('error', 'Ocorreu um erro inesperado');
         }
@@ -36,23 +40,33 @@ export default function ForgotPassword() {
             <p>Informe seu e-mail e enviaremos instruções para você criar sua nova senha.</p>
           </div>
           <div>
-            <form id="forgot_password" onSubmit={onFinish}>
+            <form name="forgot_password" onSubmit={handleSubmit(onFinish)}>
               <div>
-                <InputIcon
-                  id="email"
+                <Input
                   name="email"
-                  type="email"
+                  type="text"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}
+                  {...register('email', {
+                    required: errorMessages.required,
+                    pattern: {
+                      value: emailPattern,
+                      message: errorMessages.emailPattern
+                    }
+                  })}
+                  errors={errors}
                 />
               </div>
 
               <div>
-                <button type="submit" className="btn btn-primary w-100 mt-5 fw-bold">
+                <Button
+                  type="submit"
+                  loading={isSubmitting}
+                  className="btn btn-primary w-100 mt-5 fw-bold">
                   Enviar
-                </button>
+                </Button>
               </div>
             </form>
           </div>
