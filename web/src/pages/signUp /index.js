@@ -9,7 +9,7 @@ import HomeSidebar from '../../components/homeSidebar';
 import { NavLink } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button } from '../../components/form/inputs';
+import { Input, Button, emailPattern } from '../../components/form/inputs';
 import { formatCpf, unformatCpf } from '../../utils';
 
 export default function SignUp() {
@@ -65,19 +65,25 @@ export default function SignUp() {
               <div className="mb-4">
                 <Input
                   name="email"
-                  type="email"
+                  type="text"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}
-                  {...register('email', { required: 'Este campo é obrigatório' })}
+                  {...register('email', {
+                    required: 'Este campo é obrigatório',
+                    pattern: {
+                      value: emailPattern,
+                      message: 'Insira um email válido'
+                    }
+                  })}
                   errors={errors}
                 />
               </div>
               <div className="mb-4">
                 <Input
                   name="email_confirmation"
-                  type="email"
+                  type="text"
                   className="form-control"
                   aria-describedby="email_confirmation"
                   placeholder="Confirme seu email"

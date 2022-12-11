@@ -1,5 +1,7 @@
 import React from 'react';
 
+export const emailPattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 // eslint-disable-next-line react/display-name
 export const Input = React.forwardRef(({ icon, errors, ...props }, ref) => {
   function renderErrors(errors, name) {

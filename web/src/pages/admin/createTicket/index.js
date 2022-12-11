@@ -10,7 +10,7 @@ import { formatCpf, unformatCpf } from '../../../utils';
 import Header from '../../../components/header';
 
 import { useForm } from 'react-hook-form';
-import { Input, InputIcon, Button } from '../../../components/form/inputs';
+import { Input, InputIcon, Button, emailPattern } from '../../../components/form/inputs';
 
 export default function AdminUserTickets() {
   const { userId } = useParams();
@@ -112,12 +112,18 @@ export default function AdminUserTickets() {
             <div style={{ maxWidth: '400px' }}>
               <Input
                 name="email"
-                type="email"
+                type="text"
                 className="form-control"
                 aria-describedby="email"
                 placeholder="E-mail"
                 icon={<IconEmail />}
-                {...register('email', { required: 'Este campo é obrigatório' })}
+                {...register('email', {
+                  required: 'Este campo é obrigatório',
+                  pattern: {
+                    value: emailPattern,
+                    message: 'Insira um email válido'
+                  }
+                })}
                 errors={errors}
               />
             </div>

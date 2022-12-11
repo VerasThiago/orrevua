@@ -7,7 +7,7 @@ import { AuthContext } from '../../App';
 import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button } from '../../components/form/inputs';
+import { Input, Button, emailPattern } from '../../components/form/inputs';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -41,12 +41,18 @@ export default function Login() {
               <div className="mb-3">
                 <Input
                   name="email"
-                  type="email"
+                  type="text"
                   className="form-control"
                   aria-describedby="email"
                   placeholder="E-mail"
                   icon={<IconUser />}
-                  {...register('email', { required: 'Este campo é obrigatório' })}
+                  {...register('email', {
+                    required: 'Este campo é obrigatório',
+                    pattern: {
+                      value: emailPattern,
+                      message: 'Insira um email válido'
+                    }
+                  })}
                   errors={errors}
                 />
               </div>
