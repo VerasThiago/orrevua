@@ -7,6 +7,8 @@ import { ReactComponent as SettingsIcon } from '../images/settings.svg';
 import { ReactComponent as UserIcon } from '../images/user.svg';
 import { AuthContext } from '../App';
 
+import 'bootstrap/js/src/collapse.js';
+
 export default function Menu() {
   const { logout, userData } = useContext(AuthContext);
   const location = useLocation();
@@ -36,39 +38,62 @@ export default function Menu() {
   ];
 
   return (
-    <div className="d-flex flex-column h-100 bg-dark gap-2 justify-content-between">
-      <div>
-        <div className="d-flex justify-content-center align-items-center gap-2 py-2 py-lg-5">
-          <LogoIcon />
-          <span className="fw-bold fs-2">orrevuá</span>
-        </div>
-        <nav className="navbar d-flex flex-column align-items-center gap-3">
-          {menuItems.map((menuItem, index) => {
-            if (menuItem.admin && !userData().User.isadmin === true) return null;
+    <div>
+      <nav className="navbar navbar-dark navbar-expand-lg">
+        <div className="container-fluid flex-lg-wrap justify-content-lg-center">
+          <div className="d-flex align-items-center gap-2 py-2 py-lg-5">
+            <LogoIcon />
+            <Link to="/tickets" state={{ from: location }} className="navbar-brand fs-3">
+              orrevuá
+            </Link>
+          </div>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#menuNav"
+            aria-controls="menuNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation menu">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="menuNav">
+            <ul className="navbar-nav d-flex flex-column">
+              {menuItems.map((menuItem, index) => {
+                if (menuItem.admin && !userData().User.isadmin === true) return null;
 
-            return (
-              <Link
-                key={`menu_${index}`}
-                to={menuItem.path}
-                state={{ from: location }}
-                className="text-decoration-none text-white">
-                <div
-                  className={`${menuItem.active && 'bg-primary'} px-4 py-2 rounded-pill`}
-                  role="button">
-                  <span className="ms-2">
-                    {menuItem.icon}
-                    <span className="ms-2">{menuItem.title}</span>
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
-      <div className="d-flex justify-content-center mb-5" role="button" onClick={() => logout()}>
-        <LogoutIcon className="me-2" />
-        <span>Sair</span>
-      </div>
+                return (
+                  <li key={`menu_${index}`} className="nav-item">
+                    <Link
+                      to={menuItem.path}
+                      state={{ from: location }}
+                      className={`nav-link${menuItem.active ? ' active' : ''}`}>
+                      <div
+                        className={`${menuItem.active && 'bg-primary'} px-4 py-2 rounded-pill`}
+                        role="button">
+                        <span>
+                          {menuItem.icon}
+                          <span className="ms-2">{menuItem.title}</span>
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+              <li key="menu_logout" className="nav-item">
+                <a className="nav-link">
+                  <div className="px-4 py-2 rounded-pill" role="button" onClick={() => logout()}>
+                    <span>
+                      <LogoutIcon />
+                      <span className="ms-2">Sair</span>
+                    </span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </div>
   );
 }
