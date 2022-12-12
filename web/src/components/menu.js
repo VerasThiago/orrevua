@@ -71,7 +71,7 @@ export default function Menu() {
                       <div
                         className={`${menuItem.active && 'bg-primary'} px-4 py-2 rounded-pill`}
                         role="button">
-                        <span>
+                        <span className="text-nowrap">
                           {menuItem.icon}
                           <span className="ms-2">{menuItem.title}</span>
                         </span>

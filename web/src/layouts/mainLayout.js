@@ -7,7 +7,7 @@ export default function MainLayout({ children }) {
       <div className="col-lg-2 p-0 m-0">
         <Menu />
       </div>
-      <div className="col-lg-10 m-0 p-4 bg-secondary layout-container">{children}</div>
+      <div className="col-lg-10 m-0 p-4 bg-secondary h-100 layout-container">{children}</div>
     </div>
   );
 }
