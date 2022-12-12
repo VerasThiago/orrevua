@@ -28,7 +28,9 @@ export default function TicketDesktop({
           />
         </div>
       ) : (
-        <img src={ticketImg} alt="ticket image" className="img-fluid" />
+        <div className="d-flex align-items-center" style={{ minHeight: '256px' }}>
+          <img src={ticketImg} alt="ticket image" className="img-fluid" />
+        </div>
       )}
 
       <div className="p-3">
