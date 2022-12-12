@@ -15,10 +15,10 @@ import (
 
 const (
 	VERIFY_EMAIL_TEMPLATE_PATH   = "../shared/templates/verify_email.html"
-	QR_CODE_TEMPLATE_PATH        = "../shared/templates/email.html"
+	NEW_TICKET_TEMPLATE_PATH     = "../shared/templates/new_ticket.html"
 	RESET_PASSWORD_TEMPLATE_PATH = "../shared/templates/forgot_password.html"
 	INVITE_TITLE                 = "Despedida Veras - Convite"
-	TICKETS_TILE                 = "Despedida Veras - Ingressos"
+	TICKET_TILE                  = "Despedida Veras - Ingresso"
 	RESET_PASSOWRD_TITLE         = "Despedida Veras - Esqueci minha senha"
 	VERIFY_EMAIL_TITLE           = "Despedida Veras - Confirme seu email"
 	TICKETS_BODY                 = "Aqui está seus ingressos, tenha uma boa festa!"

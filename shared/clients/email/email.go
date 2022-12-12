@@ -3,14 +3,12 @@ package email
 import (
 	"net/smtp"
 
-	qrcode "github.com/skip2/go-qrcode"
 	shared "github.com/verasthiago/tickets-generator/shared/flags"
 	"github.com/verasthiago/tickets-generator/shared/models"
 )
 
 type SMTPClient interface {
-	SendInviteToUser(user *models.User) error
-	SendTicketsToUser(user *models.User, tickets []*models.Ticket) error
+	SendNewTicketToUser(user *models.User, ticket *models.Ticket, url string) error
 	SendForgotPasswordURLToUserByEmail(user *models.User, token string) error
 	SendVerifyEmailToUser(user *models.User, token string) error
 }
@@ -22,9 +20,11 @@ type SMTP struct {
 	auth     smtp.Auth
 }
 
-type InviteTemplateData struct {
-	Name  string
-	Title string
+type NewTicketTemplateData struct {
+	Title          string
+	Name           string
+	TicketUserName string
+	Url            string
 }
 
 type ForgotPasswordTemplateData struct {
@@ -41,53 +41,23 @@ type VerifyEmailTemplateData struct {
 	Name  string
 }
 
-func (s *SMTP) SendInviteToUser(user *models.User) error {
-	inviteTemplateData := InviteTemplateData{
-		Name:  user.Name,
-		Title: INVITE_TITLE,
+func (s *SMTP) SendNewTicketToUser(user *models.User, ticket *models.Ticket, url string) error {
+	newTicketTemplateData := NewTicketTemplateData{
+		Title:          TICKET_TILE,
+		Name:           user.Name,
+		TicketUserName: ticket.Name,
+		Url:            url,
 	}
 
-	body, err := parseTemplate(inviteTemplateData, QR_CODE_TEMPLATE_PATH)
+	body, err := parseTemplate(newTicketTemplateData, NEW_TICKET_TEMPLATE_PATH)
 	if err != nil {
 		return err
 	}
 
 	return s.sendHtmlEmail(models.Email{
 		To:    user.Email,
-		Title: inviteTemplateData.Title,
+		Title: newTicketTemplateData.Title,
 		Body:  *body,
-	})
-}
-
-func (s *SMTP) SendTicketsToUser(user *models.User, tickets []*models.Ticket) error {
-	var err error
-	var qrCode []byte
-	var attachments map[string][]byte = make(map[string][]byte)
-
-	for _, ticket := range tickets {
-		fileName := addFileExtention(ticket.Name, PNG_EXTENTION)
-
-		if qrCode, err = qrcode.Encode(ticket.CPF, qrcode.Medium, 256); err != nil {
-			return err
-		}
-
-		if ticket.CPF != user.CPF {
-			go s.sendEmailWithAttachments(models.Email{
-				To:          ticket.Email,
-				Title:       TICKETS_TILE,
-				Body:        TICKETS_BODY,
-				Attachments: map[string][]byte{fileName: qrCode},
-			})
-		}
-
-		attachments[fileName] = qrCode
-	}
-
-	return s.sendEmailWithAttachments(models.Email{
-		To:          user.Email,
-		Title:       TICKETS_TILE,
-		Body:        TICKETS_BODY,
-		Attachments: attachments,
 	})
 }
 
@@ -123,6 +93,7 @@ func (s *SMTP) SendVerifyEmailToUser(user *models.User, url string) error {
 	if err != nil {
 		return err
 	}
+
 	return s.sendHtmlEmail(models.Email{
 		To:    user.Email,
 		Title: confirmEmailTemplateData.Title,
