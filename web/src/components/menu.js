@@ -22,18 +22,18 @@ export default function Menu() {
       admin: false
     },
     {
-      title: 'Usuários',
+      title: 'Perfil',
       icon: <UserIcon />,
+      path: '/profile',
+      active: location.pathname.includes('/profile'),
+      admin: false
+    },
+    {
+      title: 'Admin',
+      icon: <SettingsIcon />,
       path: '/admin/users',
       active: location.pathname.includes('/admin/users'),
       admin: true
-    },
-    {
-      title: 'Configurações',
-      icon: <SettingsIcon />,
-      path: '/settings',
-      active: location.pathname.includes('/settings'),
-      admin: false
     }
   ];
 
