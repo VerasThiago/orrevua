@@ -32,10 +32,17 @@
 }
 
 .header{
-  background: linear-gradient(0deg, rgba(134, 66, 244, 0.1), rgba(134, 66, 244, 0.1)), url(../../images/image-bg.png);
+  background: linear-gradient(90deg, rgba(#8642F4, 0.1), rgba(#101010, 1)), url(../../images/image-bg.png);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 @media only screen and (max-width: 960px){
+  .header{
+    background: linear-gradient(rgba(#8642F4, 0.1), rgba(#101010, 1)), url(../../images/image-bg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
   .title-login{
     font-size: 24px;
     line-height: 110%;
