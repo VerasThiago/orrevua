@@ -21,6 +21,7 @@ import AuthProvider from './services/auth';
 
 import ResetPassword from './pages/resetPassword';
 import SignUp from './pages/signUp ';
+import UnauthorizedLayout from './layouts/unauthorizedLayout';
 
 export const AuthContext = createContext();
 
@@ -32,8 +33,51 @@ export default function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/home" element={<Landing />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/forgot_password" element={<ForgotPassword />} />
+          <Route
+            exact
+            path="/login"
+            element={
+              <UnauthorizedLayout>
+                <Login />
+              </UnauthorizedLayout>
+            }
+          />
+          <Route
+            exact
+            path="/forgot_password"
+            element={
+              <UnauthorizedLayout>
+                <ForgotPassword />
+              </UnauthorizedLayout>
+            }
+          />
+          <Route
+            exact
+            path="/password/reset"
+            element={
+              <UnauthorizedLayout>
+                <ResetPassword />
+              </UnauthorizedLayout>
+            }
+          />
+          <Route
+            exact
+            path="/email/verify"
+            element={
+              <UnauthorizedLayout>
+                <VerifyEmail />
+              </UnauthorizedLayout>
+            }
+          />
+          <Route
+            exact
+            path="/signup"
+            element={
+              <UnauthorizedLayout>
+                <SignUp />
+              </UnauthorizedLayout>
+            }
+          />
           <Route exact path="/404" element={<NotFound />} />
           <Route
             exact
@@ -80,10 +124,6 @@ export default function App() {
               </PrivateRoute>
             }
           />
-          <Route exact path="/password/reset" element={<ResetPassword />} />
-          <Route exact path="/email/verify" element={<VerifyEmail />} />
-
-          <Route exact path="/signup" element={<SignUp />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

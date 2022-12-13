@@ -33,6 +33,7 @@
 
 .header{
   background: linear-gradient(0deg, rgba(134, 66, 244, 0.1), rgba(134, 66, 244, 0.1)), url(../../images/image-bg.png);
+  background-size: contain;
 }
 
 @media only screen and (max-width: 960px){
