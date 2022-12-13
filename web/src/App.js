@@ -10,6 +10,7 @@ import Tickets from './pages/tickets';
 import NotFound from './pages/notFound';
 import Users from './pages/admin/users';
 import VerifyEmail from './pages/verifyEmail';
+import Profile from './pages/profile';
 
 import AdminCreateTicket from './pages/admin/createTicket';
 import AdminUserTickets from './pages/admin/userTickets';
@@ -40,6 +41,15 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Tickets />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
               </PrivateRoute>
             }
           />
