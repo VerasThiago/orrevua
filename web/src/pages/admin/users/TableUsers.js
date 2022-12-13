@@ -47,8 +47,20 @@ export default function TableUsers({ data }) {
                   </NavLink>
                 </td>
 
-                <td>{item.email}</td>
-                <td>{formatCpf(item.cpf)}</td>
+                <td>
+                  <NavLink
+                    className="text-decoration-none text-white"
+                    to={`/admin/users/${item.id}`}>
+                    {item.email}
+                  </NavLink>
+                </td>
+                <td>
+                  <NavLink
+                    className="text-decoration-none text-white"
+                    to={`/admin/users/${item.id}`}>
+                    {formatCpf(item.cpf)}
+                  </NavLink>
+                </td>
                 <td>
                   <NavLink to={`/admin/users/${item.id}/ticket/create`}>
                     <AddBtn />
