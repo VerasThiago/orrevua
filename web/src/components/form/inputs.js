@@ -22,16 +22,15 @@ export const Input = React.forwardRef(({ icon, errors, ...props }, ref) => {
 
   return (
     <div>
-      <div style={{ position: 'relative' }}>
-        <InputIcon icon={icon}>
-          <input
-            ref={ref}
-            {...props}
-            aria-invalid={errors[props.name] ? 'true' : 'false'}
-            className={errors[props.name] ? props.className + ' border-danger' : props.className}
-          />
-        </InputIcon>
-      </div>
+      <InputIcon icon={icon}>
+        <input
+          ref={ref}
+          {...props}
+          aria-invalid={errors[props.name] ? 'true' : 'false'}
+          className={errors[props.name] ? props.className + ' border-danger' : props.className}
+          style={icon && { paddingRight: '3.1rem' }}
+        />
+      </InputIcon>
       {renderErrors(errors, props.name)}
     </div>
   );
