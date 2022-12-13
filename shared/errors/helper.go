@@ -38,7 +38,7 @@ func recoveryHandler(c *gin.Context, errorData interface{}) {
 		jsonErr := GenericError{
 			Code:    STATUS_INTERNAL_SERVER_ERROR,
 			Err:     err,
-			Message: "There was an error regenerating.  We've been notified and will look into it!",
+			Message: "There was an error regenerating. We've been notified and will look into it!",
 		}
 		jsonErr.GenerateJsonResponse(c)
 	} else if strErr, ok := errorData.(string); ok {

@@ -26,3 +26,18 @@ export function formatCpf(cpf) {
 export function unformatCpf(cpf) {
   return cpf.split('.').join('').replace('-', '');
 }
+
+const errorMessagesMapping = {
+  'User not found': 'Usuário não encontrado',
+  'Ticket not found': 'Ingresso não encontrado',
+  'Email not found': 'Email não encontrado',
+  'Invalid password': 'Senha inválida',
+  'Unverified account': 'Conta não verificada',
+  "There was an error regenerating. We've been notified and will look into it!":
+    'Ocorreu um erro. Nós fomos notificados e vamos trabalhar para corrigí-lo!',
+  'Data is already being used': 'Esses dados já estão em uso'
+};
+
+export function parseErrorMessage(message) {
+  return errorMessagesMapping[message] || message || 'Ocorreu um erro inesperado';
+}

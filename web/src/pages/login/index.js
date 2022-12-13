@@ -47,7 +47,7 @@ export default function Login() {
                   placeholder="E-mail"
                   icon={<IconUser />}
                   {...register('email', {
-                    required: errorMessages.requried,
+                    required: errorMessages.required,
                     pattern: {
                       value: emailPattern,
                       message: errorMessages.emailPattern

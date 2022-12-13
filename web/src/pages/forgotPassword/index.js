@@ -20,11 +20,11 @@ export default function ForgotPassword() {
         if (response.ok) {
           alertMessage('success', 'Você recebeu um email com instruções para trocar sua senha');
         } else {
-          alertMessage('error', 'Ocorreu um erro inesperado');
+          alertMessage('error', null);
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       });
   };
 

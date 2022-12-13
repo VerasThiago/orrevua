@@ -46,7 +46,7 @@ export default function AdminUserTickets() {
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       })
       .finally(() => {
         setLoading(false);
@@ -62,12 +62,11 @@ export default function AdminUserTickets() {
         if (response.ok) {
           alertMessage('success', 'Ingresso criado com sucesso!');
         } else {
-          if (parsedResponse.message) alertMessage('error', parsedResponse.message);
-          else alertMessage('error', 'Ocorreu um erro inesperado');
+          alertMessage('error', parsedResponse.message);
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       });
   };
 

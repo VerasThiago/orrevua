@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
 
     apiRequest('login', 'login/v0/user/token/validate', 'post', { token: getToken() })
       .then(async (response) => {
-        if (response.status === 200) {
+        if (response.ok) {
           const json = await response.json();
           setToken(json.token);
           setAuthenticated(true);

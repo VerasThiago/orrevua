@@ -1,7 +1,10 @@
 import { toast } from 'react-toastify';
+import { parseErrorMessage } from '../utils';
 
 export default function alertMessage(type, message) {
-  toast[type](message, {
+  const parsedMessage = parseErrorMessage(message);
+
+  toast[type](parsedMessage, {
     position: 'top-center',
     autoClose: 5000,
     hideProgressBar: false,

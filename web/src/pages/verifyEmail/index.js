@@ -22,11 +22,11 @@ export default function VerifyEmail() {
             navigate('/login', { replace: true, state: { from: location } });
           }, 5000);
         } else {
-          alertMessage('error', 'Ocorreu um erro inesperado');
+          alertMessage('error', null);
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       });
   }, []);
 
