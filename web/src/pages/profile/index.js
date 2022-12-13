@@ -40,8 +40,8 @@ export default function Profile() {
     <div>
       <Header title="Perfil" subTitle="Confira se seus dados estão corretos" />
 
-      <div className="row">
-        <div className="col-6">
+      <div className="row gap-4 gap-lg-0">
+        <div className="col-12 col-lg-6">
           <div className="fs-4 mb-3">Seus dados</div>
           <div className="row gap-3">
             <div className="col-12">
@@ -85,7 +85,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="col-6">
+        <div className="col-12 col-lg-6">
           <div className="fs-4 mb-3">Trocar senha</div>
 
           <form name="forgot_password" className="row gap-3" onSubmit={handleSubmit(onFinish)}>
