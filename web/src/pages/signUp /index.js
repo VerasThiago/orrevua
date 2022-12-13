@@ -29,11 +29,11 @@ export default function SignUp() {
         if (response.ok) {
           alertMessage('success', 'Você recebeu um email para confirmar sua conta!');
         } else {
-          alertMessage('error', 'Ocorreu um erro inesperado');
+          alertMessage('error', null);
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       });
   };
 

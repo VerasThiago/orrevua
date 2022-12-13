@@ -31,7 +31,7 @@ export default function AdminUserTickets() {
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       })
       .finally(() => {
         setLoading(false);

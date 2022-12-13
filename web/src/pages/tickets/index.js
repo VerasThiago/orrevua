@@ -28,7 +28,7 @@ export default function Tickets() {
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       })
       .finally(() => {
         setLoading(false);

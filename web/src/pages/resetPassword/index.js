@@ -47,11 +47,11 @@ export default function ResetPassword() {
         if (response.ok) {
           alertMessage('success', 'Senha configurada com sucesso');
         } else {
-          alertMessage('error', 'Ocorreu um erro inesperado');
+          alertMessage('error', null);
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       });
   };
 

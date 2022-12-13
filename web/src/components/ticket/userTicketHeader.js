@@ -22,7 +22,7 @@ export default function UserTicketHeader({ ticket, reloadTickets, hideDelete }) 
         }
       })
       .catch(() => {
-        alertMessage('error', 'Ocorreu um erro inesperado');
+        alertMessage('error', null);
       });
   };
 
