@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
@@ -56,9 +55,8 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="row vh-100 m-0">
-      <HomeSidebar />
-      <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
+    <div className="row h-100 m-0">
+      <div className="bg-secondary d-flex flex-column align-items-center justify-content-lg-center pt-3 pt-lg-0">
         <div className="px-4" style={{ maxWidth: '450px' }}>
           <div>
             <p className="fs-2">Crie uma nova senha</p>

@@ -4,7 +4,6 @@ import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconPassword } from '../../images/password.svg';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../App';
-import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
@@ -26,9 +25,8 @@ export default function Login() {
   };
 
   return (
-    <div className="row vh-100 m-0">
-      <HomeSidebar />
-      <div className="col-lg-6 col-md-12 bg-secondary d-flex flex-column align-items-center justify-content-center">
+    <div className="row h-100 m-0 p-0">
+      <div className="bg-secondary d-flex flex-column align-items-center justify-content-lg-center pt-3 pt-lg-0">
         <div className="px-4" style={{ maxWidth: '450px' }}>
           <div>
             <p className="fs-2">Entrar</p>

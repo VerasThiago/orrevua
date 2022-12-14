@@ -2,15 +2,15 @@ import { ReactComponent as IconMenu } from '../images/logo.svg';
 
 export default function HomeSidebar() {
   return (
-    <div className="col-lg-6 col-md-12 d-flex flex-column justify-content-center header">
-      <div className="row justify-content-center h-50">
-        <div className="col-md-8 col-lg-8 d-flex flex-column justify-content-between">
-          <div className="d-flex">
-            <IconMenu className="me-2" />
-            <p className="header-title">orrevuá</p>
-          </div>
-          <p className="title-login h-50">Seus ingressos na palma da mão</p>
+    <div className="d-flex flex-column header h-100 p-2 pt-5 pt-lg-0">
+      <div className="d-flex flex-column h-25 justify-content-end">
+        <div className="d-flex align-items-center ps-5">
+          <IconMenu className="me-2" />
+          <p className="header-title">orrevuá</p>
         </div>
+      </div>
+      <div className="d-flex h-50 flex-column justify-content-center ps-5 mt-4 mt-lg-0">
+        <p className="title-login">Seus ingressos na palma da mão</p>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { ReactComponent as IconMenu } from '../../images/qr_code.svg';
-import ticketImg from './ticket-img.png';
 import UserTicketHeader from './userTicketHeader';
 
 export default function TicketDesktop({
@@ -29,7 +28,7 @@ export default function TicketDesktop({
         </div>
       ) : (
         <div className="d-flex align-items-center" style={{ minHeight: '256px' }}>
-          <img src={ticketImg} alt="ticket image" className="img-fluid" />
+          <img src="/images/ticket-img.png" alt="ticket image" className="img-fluid" />
         </div>
       )}
 
