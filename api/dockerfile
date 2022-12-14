@@ -11,6 +11,8 @@ RUN cd shared && go mod download
 
 RUN cd api && go mod download
 RUN cd api && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -mod=mod -o /go/bin/start main.go
+RUN cd shared/scripts && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -mod=mod -o mage-builder mage.go
+RUN cd shared/scripts && CGO_ENABLED=0 ./mage-builder -compile mage -goos linux
 
 FROM alpine
 
@@ -21,6 +23,7 @@ COPY --from=build /app/api/.env/api.docker.env /app/api/.env/
 COPY --from=build /app/api/dockerfile-run.sh /app/
 COPY --from=build /app/shared/.env/shared.docker.env /app/shared/.env/
 COPY --from=build /app/shared/templates /app/shared/templates
+COPY --from=build /app/shared/scripts/mage /app/shared/scripts/mage
 
 ENV ORREVUA_DEPLOY_ENV=docker
 
