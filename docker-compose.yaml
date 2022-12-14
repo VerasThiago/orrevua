@@ -27,10 +27,11 @@ services:
       context: ./web/
       dockerfile: Dockerfile
     ports:
-      - 8082:3000
-    depends_on:
-      - login
-      - api
+      - 80:80
+      - 443:443
+    expose:
+      - "80"
+      - "443"
 
   database:
     container_name: database
