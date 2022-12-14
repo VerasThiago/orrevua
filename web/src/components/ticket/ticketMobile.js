@@ -1,5 +1,4 @@
 import React from 'react';
-import ticketImgResponsive from './ticket-img-responsive.png';
 
 export default function TicketMobile({ ticket, showQrCode, qrCodeVisible }) {
   if (qrCodeVisible === true) {
@@ -36,7 +35,11 @@ export default function TicketMobile({ ticket, showQrCode, qrCodeVisible }) {
           <small>23 de Dezembro de 2022 às 20h</small>
         </div>
         <div className="col-3">
-          <img src={ticketImgResponsive} alt="ticket image" className="img-fluid float-end" />
+          <img
+            src="/images/ticket-img-responsive.png"
+            alt="ticket image"
+            className="img-fluid float-end"
+          />
         </div>
       </div>
     </div>
