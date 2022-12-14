@@ -2,7 +2,6 @@ import React from 'react';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
