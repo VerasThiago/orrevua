@@ -4,7 +4,6 @@ import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconPassword } from '../../images/password.svg';
 import { useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../App';
-import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';

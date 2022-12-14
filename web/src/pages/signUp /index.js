@@ -5,7 +5,6 @@ import { ReactComponent as IconPassowrd } from '../../images/password.svg';
 
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import HomeSidebar from '../../components/homeSidebar';
 import { NavLink } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';

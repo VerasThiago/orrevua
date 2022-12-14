@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import alertMessage from '../../components/alertMessage';
-import HomeSidebar from '../../components/homeSidebar';
 import { apiRequest } from '../../services/api';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 

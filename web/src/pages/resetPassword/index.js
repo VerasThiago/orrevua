@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
-import HomeSidebar from '../../components/homeSidebar';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
