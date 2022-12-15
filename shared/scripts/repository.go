@@ -15,7 +15,6 @@ import (
 var UserList []*models.User = []*models.User{
 	{
 		Name:     "Thiago Veras Machado",
-		Username: "veras",
 		Email:    "thiago.wortnnes@gmail.com",
 		CPF:      "02602602620",
 		Password: "123456",
@@ -45,7 +44,6 @@ var UserList []*models.User = []*models.User{
 	},
 	{
 		Name:     "Rodrigo Cunha Lima",
-		Username: "lima",
 		Email:    "limarodrigoo@outlook.com",
 		CPF:      "12602602620",
 		Password: "123456",
@@ -70,7 +68,6 @@ var UserList []*models.User = []*models.User{
 	},
 	{
 		Name:     "Diogo The Pontes",
-		Username: "chops",
 		Email:    "diogo_pontes_95@hotmail.com",
 		CPF:      "22602602620",
 		Password: "123456",
@@ -93,7 +90,6 @@ var UserList []*models.User = []*models.User{
 	},
 	{
 		Name:     "Pedro Yhago De Sa Machado",
-		Username: "pedilson",
 		Email:    "pedroyhago@gmail.com",
 		CPF:      "32602602620",
 		Password: "123456",
