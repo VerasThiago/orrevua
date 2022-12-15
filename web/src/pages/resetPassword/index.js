@@ -49,8 +49,18 @@ export default function ResetPassword() {
       .then(async (response) => {
         if (response.ok) {
           reset();
-          alertMessage('success', 'Senha configurada com sucesso ');
-          navigate('/login', { replace: true, state: { from: location } });
+          const message = (
+            <div>
+              <span>
+                Sua senha foi alterada. Vou será redirecionado para o login em breve. Ou clique{' '}
+                <a href="/login">aqui</a> para ir agora.
+              </span>
+            </div>
+          );
+          alertMessage('success', message);
+          setTimeout(() => {
+            navigate('/login', { replace: true, state: { from: location } });
+          }, 4000);
         } else {
           alertMessage('error', null);
         }
