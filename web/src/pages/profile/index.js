@@ -6,7 +6,7 @@ import { ReactComponent as IconBadge } from '../../images/badge.svg';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
-import { formatCpf } from '../../utils';
+import { formatCpf, formatEmail } from '../../utils';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';

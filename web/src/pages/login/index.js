@@ -7,6 +7,7 @@ import { AuthContext } from '../../App';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
+import { formatEmail } from '../../utils';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -53,7 +54,8 @@ export default function Login() {
                     pattern: {
                       value: emailPattern,
                       message: errorMessages.emailPattern
-                    }
+                    },
+                    setValueAs: (v) => formatEmail(v)
                   })}
                   errors={errors}
                 />
