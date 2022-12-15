@@ -5,6 +5,7 @@ import alertMessage from '../../components/alertMessage';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
+import { formatEmail } from '../../utils';
 
 export default function ForgotPassword() {
   const {
@@ -52,7 +53,8 @@ export default function ForgotPassword() {
                     pattern: {
                       value: emailPattern,
                       message: errorMessages.emailPattern
-                    }
+                    },
+                    setValueAs: (v) => formatEmail(v)
                   })}
                   errors={errors}
                 />

@@ -41,3 +41,7 @@ const errorMessagesMapping = {
 export function parseErrorMessage(message) {
   return errorMessagesMapping[message] || message || 'Ocorreu um erro inesperado';
 }
+
+export function formatEmail(email) {
+  return email.toLowerCase();
+}

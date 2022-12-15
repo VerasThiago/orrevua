@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
-import { formatCpf, unformatCpf } from '../../utils';
+import { formatCpf, formatEmail, unformatCpf } from '../../utils';
 
 export default function SignUp() {
   const {
@@ -73,7 +73,8 @@ export default function SignUp() {
                     pattern: {
                       value: emailPattern,
                       message: errorMessages.emailPattern
-                    }
+                    },
+                    setValueAs: (v) => formatEmail(v)
                   })}
                   errors={errors}
                 />
