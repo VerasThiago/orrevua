@@ -2,9 +2,7 @@ package errors
 
 import (
 	"fmt"
-	"strconv"
 
-	"github.com/bugsnag/bugsnag-go"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
@@ -42,18 +40,6 @@ func (e GenericError) GenerateJsonResponse(c *gin.Context) {
 		// get saved user id
 		userId := c.GetInt64("user_id")
 		e.MetaData["user_id"] = userId
-
-		if userId > 0 {
-			_ = bugsnag.Notify(e.Err, bugsnag.MetaData{
-				"data": e.MetaData,
-			}, bugsnag.User{
-				Id: strconv.FormatInt(userId, 10),
-			})
-		} else {
-			_ = bugsnag.Notify(e.Err, bugsnag.MetaData{
-				"data": e.MetaData,
-			})
-		}
 
 		log.Error(e.Err)
 		log.Error(e.MetaData)
