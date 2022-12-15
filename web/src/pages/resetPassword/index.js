@@ -5,11 +5,15 @@ import alertMessage from '../../components/alertMessage';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function ResetPassword() {
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [userToken, setUserToken] = useState('');
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
@@ -44,7 +48,14 @@ export default function ResetPassword() {
     )
       .then(async (response) => {
         if (response.ok) {
-          alertMessage('success', 'Senha configurada com sucesso');
+          alertMessage(
+            'success',
+            `Senha configurada com sucesso! 
+            Você será redirecionado para a página de login.`
+          );
+          setTimeout(() => {
+            navigate('/login', { replace: true, state: { from: location } });
+          }, 6000);
         } else {
           alertMessage('error', null);
         }
