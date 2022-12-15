@@ -1,9 +1,7 @@
 import React, { createContext } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import Landing from './pages/landing';
-import Home from './pages/home';
 import Login from './pages/login';
 import ForgotPassword from './pages/forgotPassword';
 import Tickets from './pages/tickets';
@@ -31,8 +29,7 @@ export default function App() {
       <ToastContainer />
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/home" element={<Landing />} />
+          <Route exact path="/" element={<Navigate to="/login" replace />} />
           <Route
             exact
             path="/login"

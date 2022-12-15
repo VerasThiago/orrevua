@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import './index.scss';
 import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconPassword } from '../../images/password.svg';
-import { useNavigate, useLocation, NavLink } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink, Navigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 
 import { useForm } from 'react-hook-form';
@@ -11,7 +11,7 @@ import { Input, Button, emailPattern, errorMessages } from '../../components/for
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useContext(AuthContext);
+  const { login, userData } = useContext(AuthContext);
 
   const {
     register,
@@ -23,6 +23,10 @@ export default function Login() {
     const result = await login(values);
     if (result) navigate('/tickets', { replace: true, state: { from: location } });
   };
+
+  if (userData()) {
+    return <Navigate to="/tickets" replace />;
+  }
 
   return (
     <div className="row h-100 m-0 p-0">

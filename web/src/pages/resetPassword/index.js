@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
@@ -10,11 +11,14 @@ export default function ResetPassword() {
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [userToken, setUserToken] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm();
 
@@ -44,7 +48,19 @@ export default function ResetPassword() {
     )
       .then(async (response) => {
         if (response.ok) {
-          alertMessage('success', 'Senha configurada com sucesso');
+          reset();
+          const message = (
+            <div>
+              <span>
+                Sua senha foi alterada. Vou será redirecionado para o login em breve. Ou clique{' '}
+                <a href="/login">aqui</a> para ir agora.
+              </span>
+            </div>
+          );
+          alertMessage('success', message);
+          setTimeout(() => {
+            navigate('/login', { replace: true, state: { from: location } });
+          }, 4000);
         } else {
           alertMessage('error', null);
         }

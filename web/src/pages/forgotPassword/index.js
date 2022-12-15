@@ -10,6 +10,7 @@ export default function ForgotPassword() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm();
 
@@ -17,6 +18,7 @@ export default function ForgotPassword() {
     await apiRequest('login', 'login/v0/user/password/forget', 'post', values)
       .then(async (response) => {
         if (response.ok) {
+          reset();
           alertMessage('success', 'Você recebeu um email com instruções para trocar sua senha');
         } else {
           alertMessage('error', null);

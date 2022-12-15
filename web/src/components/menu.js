@@ -57,7 +57,7 @@ export default function Menu() {
             aria-label="Toggle navigation menu">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="menuNav">
+          <div className="collapse navbar-collapse justify-content-center" id="menuNav">
             <ul className="navbar-nav d-flex flex-column">
               {menuItems.map((menuItem, index) => {
                 if (menuItem.admin && !userData().User.isadmin === true) return null;
