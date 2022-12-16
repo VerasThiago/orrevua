@@ -41,7 +41,9 @@ func (r *UpdatePasswordHandler) Handler(context *gin.Context) error {
 	tokenString = context.GetHeader("Authorization")
 
 	if jwt, err = auth.GetJWTClaimFromToken(tokenString, r.GetSharedFlags().JwtKeyEmail); err != nil {
-		return err
+		if jwt, err = auth.GetJWTClaimFromToken(tokenString, r.GetSharedFlags().JwtKey); err != nil {
+			return err
+		}
 	}
 
 	if err := r.GetRepository().UpdateUserPasswordByEmail(jwt.User.Email, request.Password); err != nil {
