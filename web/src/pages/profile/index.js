@@ -6,7 +6,7 @@ import { ReactComponent as IconBadge } from '../../images/badge.svg';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
-import { formatCpf, formatEmail } from '../../utils';
+import { formatCpf } from '../../utils';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
@@ -17,12 +17,12 @@ export default function Profile() {
 
   const { userData } = useContext(AuthContext);
 
+  const form = useForm();
   const {
-    register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting }
-  } = useForm();
+    formState: { isSubmitting }
+  } = form;
 
   const onFinish = async (values) => {
     console.log(values);
@@ -93,37 +93,33 @@ export default function Profile() {
               <Input
                 name="password"
                 type={showPw ? 'text' : 'password'}
-                className="form-control"
-                aria-describedby="password"
                 placeholder="Nova senha"
                 icon={<IconVisibilityPassword onClick={toggleShowPassword} />}
-                {...register('password', {
-                  required: errorMessages.required,
+                form={form}
+                required
+                registerProps={{
                   maxLength: {
                     value: 32,
                     message: errorMessages.passwordMaxLength
                   },
                   minLength: { value: 6, message: errorMessages.passwordMinLength }
-                })}
-                errors={errors}
+                }}
               />
             </div>
             <div className="col-12">
               <Input
                 name="password_confirmation"
                 type={showConfirmPw ? 'text' : 'password'}
-                className="form-control"
-                aria-describedby="password_confirmation"
                 placeholder="Confirme sua senha"
                 icon={<IconVisibilityPassword onClick={toggleShowConfirmPassword} />}
-                {...register('password_confirmation', {
+                form={form}
+                registerProps={{
                   validate: (val) => {
                     if (watch('password') != val) {
                       return errorMessages.passwordConfirmation;
                     }
                   }
-                })}
-                errors={errors}
+                }}
               />
             </div>
 
