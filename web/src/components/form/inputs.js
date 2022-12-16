@@ -28,6 +28,10 @@ function setMasks(registerProps, mask, setValue, props) {
   } else if (mask === 'email') {
     registerProps = {
       ...registerProps,
+      pattern: {
+        value: emailPattern,
+        message: errorMessages.emailPattern
+      },
       setValueAs: (v) => v.toLowerCase(),
       onChange: (e) => setValue(props.name, e.target.value.toLowerCase())
     };
