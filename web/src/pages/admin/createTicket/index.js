@@ -6,7 +6,7 @@ import { ReactComponent as IconUser } from '../../../images/user.svg';
 import { apiRequest } from '../../../services/api';
 import alertMessage from '../../../components/alertMessage';
 import Loading from '../../../components/loading';
-import { formatCpf, unformatCpf } from '../../../utils';
+import { formatCpf } from '../../../utils';
 import Header from '../../../components/header';
 
 import { useForm } from 'react-hook-form';
@@ -23,12 +23,11 @@ export default function AdminUserTickets() {
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const form = useForm();
   const {
-    register,
     handleSubmit,
-    setValue,
-    formState: { errors, isSubmitting }
-  } = useForm();
+    formState: { isSubmitting }
+  } = form;
 
   useEffect(() => {
     reloadTickets();
@@ -106,51 +105,37 @@ export default function AdminUserTickets() {
               <Input
                 name="name"
                 type="text"
-                className="form-control"
-                aria-describedby="name"
                 placeholder="Nome"
                 icon={<IconUser />}
-                {...register('name', { required: errorMessages.required })}
-                errors={errors}
+                form={form}
+                required
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
               <Input
                 name="email"
                 type="text"
-                className="form-control"
-                aria-describedby="email"
                 placeholder="E-mail"
                 icon={<IconEmail />}
-                {...register('email', {
-                  required: errorMessages.required,
+                form={form}
+                required
+                registerProps={{
                   pattern: {
                     value: emailPattern,
                     message: errorMessages.emailPattern
                   }
-                })}
-                errors={errors}
+                }}
               />
             </div>
             <div style={{ maxWidth: '400px' }}>
               <Input
                 name="cpf"
                 type="text"
-                className="form-control"
-                aria-describedby="cpf"
                 placeholder="CPF"
                 icon={<IconBadge />}
-                {...register('cpf', {
-                  required: errorMessages.required,
-                  validate: (val) => {
-                    if (!val || val.length !== 11) {
-                      return errorMessages.cpf;
-                    }
-                  },
-                  setValueAs: (v) => unformatCpf(v),
-                  onChange: (e) => setValue('cpf', formatCpf(e.target.value))
-                })}
-                errors={errors}
+                form={form}
+                required
+                mask="cpf"
               />
             </div>
             <div style={{ maxWidth: '400px' }}>

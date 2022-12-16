@@ -6,19 +6,18 @@ import { useNavigate, useLocation, NavLink, Navigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
-import { formatEmail } from '../../utils';
+import { Input, Button, errorMessages } from '../../components/form/inputs';
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, userData } = useContext(AuthContext);
 
+  const form = useForm();
   const {
-    register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = useForm();
+    formState: { isSubmitting }
+  } = form;
 
   const onFinish = async (values) => {
     const result = await login(values);
@@ -45,38 +44,28 @@ export default function Login() {
                 <Input
                   name="email"
                   type="text"
-                  className="form-control"
-                  aria-describedby="email"
+                  mask="email"
                   placeholder="E-mail"
                   icon={<IconUser />}
-                  {...register('email', {
-                    required: errorMessages.required,
-                    pattern: {
-                      value: emailPattern,
-                      message: errorMessages.emailPattern
-                    },
-                    setValueAs: (v) => formatEmail(v)
-                  })}
-                  errors={errors}
+                  form={form}
+                  required
                 />
               </div>
               <div>
                 <Input
                   name="password"
                   type="password"
-                  className="form-control"
-                  aria-describedby="password"
                   placeholder="Senha"
                   icon={<IconPassword />}
-                  {...register('password', {
-                    required: errorMessages.required,
+                  form={form}
+                  required
+                  registerProps={{
                     maxLength: {
                       value: 32,
                       message: errorMessages.passwordMaxLength
                     },
                     minLength: { value: 6, message: errorMessages.passwordMinLength }
-                  })}
-                  errors={errors}
+                  }}
                 />
               </div>
               <div className="d-flex justify-content-end my-3">

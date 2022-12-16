@@ -4,16 +4,15 @@ import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
-import { formatEmail } from '../../utils';
+import { Input, Button } from '../../components/form/inputs';
 
 export default function ForgotPassword() {
+  const form = useForm();
   const {
-    register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting }
-  } = useForm();
+    formState: { isSubmitting }
+  } = form;
 
   const onFinish = async (values) => {
     await apiRequest('login', 'login/v0/user/password/forget', 'post', values)
@@ -46,19 +45,11 @@ export default function ForgotPassword() {
                 <Input
                   name="email"
                   type="text"
-                  className="form-control"
-                  aria-describedby="email"
+                  mask="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}
-                  {...register('email', {
-                    required: errorMessages.required,
-                    pattern: {
-                      value: emailPattern,
-                      message: errorMessages.emailPattern
-                    },
-                    setValueAs: (v) => formatEmail(v)
-                  })}
-                  errors={errors}
+                  form={form}
+                  required
                 />
               </div>
 

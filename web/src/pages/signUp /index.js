@@ -8,17 +8,15 @@ import alertMessage from '../../components/alertMessage';
 import { NavLink } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
-import { Input, Button, emailPattern, errorMessages } from '../../components/form/inputs';
-import { formatCpf, formatEmail, unformatCpf } from '../../utils';
+import { Input, Button, errorMessages } from '../../components/form/inputs';
 
 export default function SignUp() {
+  const form = useForm();
   const {
-    register,
     handleSubmit,
     watch,
-    setValue,
-    formState: { errors, isSubmitting }
-  } = useForm();
+    formState: { isSubmitting }
+  } = form;
 
   const onFinish = async (values) => {
     await apiRequest('login', 'login/v0/user/signup', 'post', values)
@@ -50,107 +48,81 @@ export default function SignUp() {
                 <Input
                   name="name"
                   type="text"
-                  className="form-control"
-                  aria-describedby="name"
                   placeholder="Nome completo"
                   icon={<IconName />}
-                  {...register('name', { required: errorMessages.required })}
-                  errors={errors}
+                  form={form}
+                  required
                 />
               </div>
               <div className="mb-4">
                 <Input
                   name="email"
                   type="text"
-                  className="form-control"
-                  aria-describedby="email"
+                  mask="email"
                   placeholder="E-mail"
                   icon={<IconEmail />}
-                  {...register('email', {
-                    required: errorMessages.required,
-                    pattern: {
-                      value: emailPattern,
-                      message: errorMessages.emailPattern
-                    },
-                    setValueAs: (v) => formatEmail(v)
-                  })}
-                  errors={errors}
+                  form={form}
+                  required
                 />
               </div>
               <div className="mb-4">
                 <Input
                   name="email_confirmation"
                   type="text"
-                  className="form-control"
-                  aria-describedby="email_confirmation"
                   placeholder="Confirme seu email"
                   icon={<IconEmail />}
-                  {...register('email_confirmation', {
+                  form={form}
+                  registerProps={{
                     validate: (val) => {
                       if (watch('email') != val) {
                         return errorMessages.emailConfirmation;
                       }
                     }
-                  })}
-                  errors={errors}
+                  }}
                 />
               </div>
               <div className="mb-4">
                 <Input
                   name="cpf"
                   type="text"
-                  className="form-control"
-                  aria-describedby="cpf"
                   placeholder="CPF"
                   icon={<IconCpf />}
-                  {...register('cpf', {
-                    required: errorMessages.required,
-                    validate: (val) => {
-                      if (!val || val.length !== 11) {
-                        return errorMessages.cpf;
-                      }
-                    },
-                    setValueAs: (v) => unformatCpf(v),
-                    onChange: (e) => setValue('cpf', formatCpf(e.target.value))
-                  })}
-                  errors={errors}
+                  form={form}
+                  required
+                  mask="cpf"
                 />
               </div>
               <div className="mb-4">
                 <Input
                   name="password"
                   type="password"
-                  className="form-control"
-                  aria-describedby="password"
                   placeholder="Senha"
                   icon={<IconPassowrd />}
-                  {...register('password', {
-                    required: errorMessages.required,
+                  form={form}
+                  required
+                  registerProps={{
                     maxLength: {
                       value: 32,
                       message: errorMessages.passwordMaxLength
                     },
                     minLength: { value: 6, message: errorMessages.passwordMinLength }
-                  })}
-                  errors={errors}
+                  }}
                 />
               </div>
               <div>
                 <Input
                   name="password_confirmation"
                   type="password"
-                  className="form-control"
-                  aria-describedby="password_confirmation"
                   placeholder="Confirme sua senha"
                   icon={<IconPassowrd />}
-                  {...register('password_confirmation', {
+                  form={form}
+                  registerProps={{
                     validate: (val) => {
                       if (watch('password') != val) {
                         return errorMessages.passwordConfirmation;
                       }
                     }
-                  })}
-                  errors={errors}
+                  }}
                 />
               </div>
 

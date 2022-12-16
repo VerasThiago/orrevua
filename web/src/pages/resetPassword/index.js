@@ -14,13 +14,13 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const form = useForm();
   const {
-    register,
     handleSubmit,
     watch,
     reset,
-    formState: { errors, isSubmitting }
-  } = useForm();
+    formState: { isSubmitting }
+  } = form;
 
   useEffect(() => {
     const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -89,37 +89,34 @@ export default function ResetPassword() {
                 <Input
                   name="password"
                   type={showPw ? 'text' : 'password'}
-                  className="form-control"
-                  aria-describedby="password"
                   placeholder="Nova senha"
                   icon={<IconVisibilityPassword onClick={toggleShowPassword} />}
-                  {...register('password', {
-                    required: errorMessages.required,
+                  form={form}
+                  required
+                  registerProps={{
                     maxLength: {
                       value: 32,
                       message: errorMessages.passwordMaxLength
                     },
                     minLength: { value: 6, message: errorMessages.passwordMinLength }
-                  })}
-                  errors={errors}
+                  }}
                 />
               </div>
               <div>
                 <Input
                   name="password_confirmation"
                   type={showConfirmPw ? 'text' : 'password'}
-                  className="form-control"
-                  aria-describedby="password_confirmation"
                   placeholder="Confirme sua senha"
                   icon={<IconVisibilityPassword onClick={toggleShowConfirmPassword} />}
-                  {...register('password_confirmation', {
+                  form={form}
+                  required
+                  registerProps={{
                     validate: (val) => {
                       if (watch('password') != val) {
                         return errorMessages.passwordConfirmation;
                       }
                     }
-                  })}
-                  errors={errors}
+                  }}
                 />
               </div>
 
