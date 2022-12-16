@@ -2,10 +2,13 @@ package models
 
 import (
 	b64 "encoding/base64"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/skip2/go-qrcode"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"gorm.io/gorm"
 )
 
@@ -23,7 +26,8 @@ type Ticket struct {
 
 func (u *Ticket) BeforeCreate(tx *gorm.DB) (err error) {
 	u.ID = uuid.New().String()
-
+	u.Email = strings.ToLower(u.Email)
+	u.Name = cases.Title(language.BrazilianPortuguese).String(u.Name)
 	qrCode, err := qrcode.Encode(u.CPF, qrcode.Medium, 256)
 	if err != nil {
 		return err
