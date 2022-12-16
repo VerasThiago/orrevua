@@ -31,11 +31,12 @@ func (a *AuthResetPasswordHandler) Handler() gin.HandlerFunc {
 			context.Abort()
 			return
 		}
-		err := auth.ValidateToken(tokenString, a.JwtKeyEmail)
-		if err != nil {
-			context.JSON(401, gin.H{"error": err.Error()})
-			context.Abort()
-			return
+		if err := auth.ValidateToken(tokenString, a.JwtKeyEmail); err != nil {
+			if err := auth.ValidateToken(tokenString, a.JwtKey); err != nil {
+				context.JSON(401, gin.H{"error": err.Error()})
+				context.Abort()
+				return
+			}
 		}
 		context.Next()
 	}
