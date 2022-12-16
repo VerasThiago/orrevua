@@ -13,6 +13,9 @@ start_api_docker:
 start_login_local:
 	cd login && ORREVUA_DEPLOY_ENV=local go run main.go
 
+start_web_local:
+	cd web && yarn start
+
 start_login_docker:
 	docker-compose up login
 
@@ -21,3 +24,16 @@ start_db:
 
 ssh_db:
 	docker exec -it database bash
+
+deploy_api:
+	cp fly.api.toml fly.toml
+	fly deploy -a orrevua-api
+	rm fly.toml
+
+deploy_login:
+	cp fly.login.toml fly.toml
+	fly deploy -a orrevua-login
+	rm fly.toml
+
+deploy_web:
+	cd web && fly deploy -a orrevua-web
