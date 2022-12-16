@@ -37,9 +37,10 @@ func GeneratePasswordResetUrl(sharedFlags *flags.SharedFlags, apiFlags *builder.
 }
 
 func (f *ForgotPasswordHandler) Handler(context *gin.Context) error {
-	var request *validator.ForgotPasswordRequest
 	var err error
+	var user *models.User
 	var tokenString string
+	var request *validator.ForgotPasswordRequest
 
 	if err := context.ShouldBindJSON(&request); err != nil {
 		return err
@@ -49,12 +50,16 @@ func (f *ForgotPasswordHandler) Handler(context *gin.Context) error {
 		return errors.CreateGenericErrorFromValidateError(errList)
 	}
 
-	if tokenString, err = auth.GenerateJWT(&models.User{Email: request.Email}, f.GetSharedFlags().JwtKeyEmail, time.Now().Add(constants.RESET_PASSWORD_TOKEN_EXPIRE_TIME)); err != nil {
+	if user, err = f.GetRepository().GetUserByEmail(request.Email); err != nil {
+		return err
+	}
+
+	if tokenString, err = auth.GenerateJWT(user, f.GetSharedFlags().JwtKeyEmail, time.Now().Add(constants.RESET_PASSWORD_TOKEN_EXPIRE_TIME)); err != nil {
 		return err
 	}
 
 	url := GeneratePasswordResetUrl(f.GetSharedFlags(), f.GetFlags(), tokenString)
-	if err := f.GetEmailClient().SendForgotPasswordURLToUserByEmail(&models.User{Email: request.Email}, url); err != nil {
+	if err := f.GetEmailClient().SendForgotPasswordURLToUserByEmail(user, url); err != nil {
 		return err
 	}
 
