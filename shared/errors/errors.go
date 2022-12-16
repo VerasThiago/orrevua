@@ -12,13 +12,12 @@ type JsonError interface {
 	GenerateJsonResponse(c *gin.Context)
 }
 
-type MetaData map[string]interface{}
-
 type GenericError struct {
 	Code     StatusCode
+	Type     string
 	Err      error `json:"-"`
 	Message  string
-	MetaData MetaData `json:"-"`
+	MetaData interface{} `json:"-"`
 }
 
 func (e GenericError) Error() string {
@@ -27,24 +26,15 @@ func (e GenericError) Error() string {
 }
 
 func (e GenericError) GenerateJsonResponse(c *gin.Context) {
-	// if Err was provided log it
-	if e.Err != nil {
-		if e.MetaData == nil {
-			e.MetaData = MetaData{}
-		}
-		// add useful metadata
-		e.MetaData["url"] = c.FullPath()
-		e.MetaData["query"] = c.Request.URL.Query()
-		e.MetaData["post"] = c.Request.PostForm
+	log.Errorf("Error\n")
+	log.Errorf("\tCode: %v\n", e.Code)
+	log.Errorf("\tErr: %v\n", e.Err)
+	log.Errorf("\tMessge: %v\n", e.Message)
+	log.Errorf("\tMetaData: %v\n", e.MetaData)
 
-		// get saved user id
-		userId := c.GetInt64("user_id")
-		e.MetaData["user_id"] = userId
-
-		log.Error(e.Err)
-		log.Error(e.MetaData)
-	}
-
-	log.Errorf("Response %v: %v", e.Code, e.Message)
-	c.AbortWithStatusJSON(int(e.Code), gin.H{"status": "failed", "message": e.Message})
+	c.AbortWithStatusJSON(int(e.Code), gin.H{"status": "failed", "error": gin.H{
+		"type":     e.Type,
+		"message":  e.Message,
+		"metaData": e.MetaData,
+	}})
 }
