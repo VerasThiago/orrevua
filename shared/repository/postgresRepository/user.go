@@ -5,7 +5,7 @@ import (
 	"github.com/verasthiago/tickets-generator/shared/models"
 )
 
-const USER_DATA_NAME = "User"
+const USER_DATA_NAME = "user"
 
 func (p *PostgresRepository) GetAllUsers() ([]*models.User, error) {
 	var userList []*models.User
