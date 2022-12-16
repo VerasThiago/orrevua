@@ -10,7 +10,6 @@ type User struct {
 	gorm.Model
 	ID         string    `json:"id" gorm:"primary_key"`
 	Name       string    `json:"name"`
-	Username   string    `json:"username" gorm:"unique"`
 	Email      string    `json:"email" gorm:"unique"`
 	CPF        string    `json:"cpf" gorm:"unique"`
 	Password   string    `json:"password"`

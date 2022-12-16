@@ -64,6 +64,6 @@ func (c *CreateUserHandler) Handler(context *gin.Context) error {
 		return err
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"email": request.Email, "username": request.Username, "url": url, "token": tokenString})
+	context.JSON(http.StatusCreated, gin.H{"id": request.User.ID, "url": url, "token": tokenString})
 	return nil
 }

@@ -13,7 +13,6 @@ type SignUpRequest struct {
 func (s *SignUpRequest) Validate() []string {
 	rules := govalidator.MapData{
 		"name":     []string{"required", "alpha_space"},
-		"username": []string{"required", "alpha_dash"},
 		"cpf":      []string{"required"},
 		"email":    []string{"required", "email"},
 		"password": []string{"required"},
@@ -25,5 +24,5 @@ func (s *SignUpRequest) Validate() []string {
 	}
 
 	values := govalidator.New(options).ValidateStruct()
-	return validator.MergeUrlValues([]string{"name", "username", "email", "password"}, values)
+	return validator.MergeUrlValues([]string{"name", "email", "password"}, values)
 }

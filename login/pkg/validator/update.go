@@ -14,7 +14,6 @@ func (u *UpdateRequest) Validate() []string {
 	rules := govalidator.MapData{
 		"id":       []string{"required", "uuid"},
 		"name":     []string{"alpha"},
-		"username": []string{"alpha_dash"},
 		"email":    []string{"email"},
 		"password": []string{},
 	}
@@ -25,5 +24,5 @@ func (u *UpdateRequest) Validate() []string {
 	}
 
 	values := govalidator.New(options).ValidateStruct()
-	return validator.MergeUrlValues([]string{"id", "name", "username", "email", "password"}, values)
+	return validator.MergeUrlValues([]string{"id", "name", "email", "password"}, values)
 }

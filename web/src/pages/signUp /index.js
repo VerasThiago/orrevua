@@ -21,8 +21,6 @@ export default function SignUp() {
   } = useForm();
 
   const onFinish = async (values) => {
-    values.username = values.cpf;
-
     await apiRequest('login', 'login/v0/user/signup', 'post', values)
       .then(async (response) => {
         if (response.ok) {
