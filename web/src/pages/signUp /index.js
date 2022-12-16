@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { ReactComponent as IconName } from '../../images/name_icon.svg';
 import { ReactComponent as IconCpf } from '../../images/badge.svg';
@@ -11,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
 
 export default function SignUp() {
+  const [submitted, setSubmitted] = useState(false);
   const form = useForm();
   const {
     handleSubmit,
@@ -22,7 +24,7 @@ export default function SignUp() {
     await apiRequest('login', 'login/v0/user/signup', 'post', values)
       .then(async (response) => {
         if (response.ok) {
-          alertMessage('success', 'Você recebeu um email para confirmar sua conta!');
+          setSubmitted(true);
         } else {
           alertMessage('error', null);
         }
@@ -31,6 +33,23 @@ export default function SignUp() {
         alertMessage('error', null);
       });
   };
+
+  if (!submitted) {
+    return (
+      <div className="row h-100 m-0">
+        <div className="bg-secondary d-flex flex-column align-items-center justify-content-center justify-content-lg-center pt-3 pt-lg-0">
+          <div className="px-4 text-center text-lg-start" style={{ maxWidth: '450px' }}>
+            <div>
+              <p className="fs-2">Sucesso!</p>
+            </div>
+            <div>
+              <p>Você recebeu um email para confirmar sua conta</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="row h-100 m-0">
