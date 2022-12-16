@@ -7,6 +7,8 @@ import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { ReactComponent as IconUser } from '../../images/user.svg';
 import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
 import { formatCpf } from '../../utils';
+import { apiRequest } from '../../services/api';
+import alertMessage from '../../components/alertMessage';
 
 import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
@@ -21,11 +23,25 @@ export default function Profile() {
   const {
     handleSubmit,
     watch,
+    reset,
     formState: { isSubmitting }
   } = form;
 
   const onFinish = async (values) => {
-    console.log(values);
+    await apiRequest('login', 'login/v0/user/password/update', 'PATCH', {
+      password: values.password
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          reset();
+          alertMessage('success', 'Sua senha foi alterada!');
+        } else {
+          alertMessage('error', null);
+        }
+      })
+      .catch(() => {
+        alertMessage('error', null);
+      });
   };
 
   const toggleShowPassword = () => {
@@ -88,7 +104,7 @@ export default function Profile() {
         <div className="col-12 col-lg-6">
           <div className="fs-4 mb-3">Trocar senha</div>
 
-          <form name="forgot_password" className="row gap-3" onSubmit={handleSubmit(onFinish)}>
+          <form name="change_password" className="row gap-3" onSubmit={handleSubmit(onFinish)}>
             <div className="col-12">
               <Input
                 name="password"
