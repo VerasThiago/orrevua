@@ -12,7 +12,7 @@ type SignUpRequest struct {
 
 func (s *SignUpRequest) Validate() []string {
 	rules := govalidator.MapData{
-		"name":     []string{"required", "alpha_space"},
+		"name":     []string{"required"},
 		"cpf":      []string{"required"},
 		"email":    []string{"required", "email"},
 		"password": []string{"required"},

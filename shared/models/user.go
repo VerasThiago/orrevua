@@ -1,9 +1,14 @@
 package models
 
 import (
+	"strings"
+
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type User struct {
@@ -20,6 +25,8 @@ type User struct {
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	u.ID = uuid.New().String()
+	u.Email = strings.ToLower(u.Email)
+	u.Name = cases.Title(language.BrazilianPortuguese).String(u.Name)
 	return nil
 }
 
