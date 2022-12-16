@@ -15,7 +15,7 @@ type CreateRequest struct {
 func (c *CreateRequest) ValidateSyntax() []string {
 	rules := govalidator.MapData{
 		"ownerid": []string{"required", "uuid"},
-		"name":    []string{"required", "alpha_space"},
+		"name":    []string{"required"},
 		"email":   []string{"required", "email"},
 		"cpf":     []string{"required"},
 	}
