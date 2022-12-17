@@ -2,7 +2,6 @@ package errors
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -38,7 +37,8 @@ func recoveryHandler(c *gin.Context, errorData interface{}) {
 		jsonErr := GenericError{
 			Code:    STATUS_INTERNAL_SERVER_ERROR,
 			Err:     err,
-			Message: "There was an error regenerating. We've been notified and will look into it!",
+			Type:    GENERIC_ERROR.Type,
+			Message: GENERIC_ERROR.Message,
 		}
 		jsonErr.GenerateJsonResponse(c)
 	} else if strErr, ok := errorData.(string); ok {
@@ -53,6 +53,7 @@ func recoveryHandler(c *gin.Context, errorData interface{}) {
 func CreateGenericErrorFromValidateError(errors []string) GenericError {
 	return GenericError{
 		Code:    STATUS_BAD_REQUEST,
+		Type:    INVALID_INPUT.Type,
 		Message: strings.Join(errors, "\n"),
 	}
 }
@@ -78,7 +79,8 @@ func HandleDuplicateError(err error) error {
 		return GenericError{
 			Code:    STATUS_BAD_REQUEST,
 			Err:     err,
-			Message: "Data is already being used",
+			Type:    DATA_ALREADY_BEGIN_USED.Type,
+			Message: DATA_ALREADY_BEGIN_USED.Message,
 		}
 	}
 
@@ -92,9 +94,11 @@ func HandleDataNotFoundError(err error, dataName string) error {
 
 	if IsNotFoundError(err) {
 		return GenericError{
-			Code:    STATUS_NOT_FOUND,
-			Err:     err,
-			Message: fmt.Sprintf("%+v not found", dataName),
+			Code:     STATUS_NOT_FOUND,
+			Err:      err,
+			Type:     DATA_NOT_FOUND.Type,
+			Message:  DATA_NOT_FOUND.Message,
+			MetaData: dataName,
 		}
 	}
 

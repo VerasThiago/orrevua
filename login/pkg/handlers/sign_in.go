@@ -47,7 +47,8 @@ func (l *LoginUserHandler) Handler(context *gin.Context) error {
 	if !user.IsVerified {
 		return errors.GenericError{
 			Code:    errors.STATUS_UNAUTHORIZED,
-			Message: "Unverified account",
+			Type:    errors.UNVERIFIED_ACCOUNT.Type,
+			Message: errors.UNVERIFIED_ACCOUNT.Message,
 		}
 	}
 
@@ -55,7 +56,8 @@ func (l *LoginUserHandler) Handler(context *gin.Context) error {
 		if err == bcrypt.ErrMismatchedHashAndPassword {
 			return errors.GenericError{
 				Code:    errors.STATUS_UNAUTHORIZED,
-				Message: "Invalid password",
+				Type:    errors.INVALID_PASSWORD.Type,
+				Message: errors.INVALID_PASSWORD.Message,
 			}
 		}
 		return err
