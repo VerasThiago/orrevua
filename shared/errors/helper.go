@@ -22,6 +22,15 @@ const (
 	PSQL_DUPLICATED_KEY_ERROR_CODE = "23505"
 )
 
+var (
+	ERROR_KEY_MAP = map[string]string{
+		"users_email_key":   "email",
+		"users_cpf_key":     "cpf",
+		"tickets_cpf_key":   "cpf",
+		"tickets_email_key": "email",
+	}
+)
+
 func ErrorRoute(route models.Route) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		if err := route(c); err != nil {
@@ -76,11 +85,22 @@ func HandleDuplicateError(err error) error {
 	}
 
 	if IsDuplicatedKeyError(err) {
+		var ok bool
+		var duplicatedData string
+
+		// Assuming that always the message will be 'Something... "key" (SQLSTATE 23505)'
+		// This will break into ["Something...", "key", "(SQLSTATE 23505)"]
+		duplicatedDataDB := strings.Split(err.Error(), "\"")[1]
+		if duplicatedData, ok = ERROR_KEY_MAP[duplicatedDataDB]; !ok {
+			duplicatedData = "UNDEFINED"
+		}
+
 		return GenericError{
-			Code:    STATUS_BAD_REQUEST,
-			Err:     err,
-			Type:    DATA_ALREADY_BEGIN_USED.Type,
-			Message: DATA_ALREADY_BEGIN_USED.Message,
+			Code:     STATUS_BAD_REQUEST,
+			Err:      err,
+			Type:     DATA_ALREADY_BEGIN_USED.Type,
+			Message:  DATA_ALREADY_BEGIN_USED.Message,
+			MetaData: duplicatedData,
 		}
 	}
 
