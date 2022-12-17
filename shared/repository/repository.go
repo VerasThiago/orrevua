@@ -17,7 +17,7 @@ type Repository interface {
 	MigrateUser(model *models.User) error
 
 	CreateTicket(ticket *models.Ticket) error
-	GetTicketListByUserID(userID string) ([]*models.Ticket, error)
+	GetTicketListByUser(user *models.User) ([]*models.Ticket, error)
 	GetTicketByID(id string) (*models.Ticket, error)
 	GetTicketByCPF(cpf string) (*models.Ticket, error)
 	DeleteTicketByID(id string) error
