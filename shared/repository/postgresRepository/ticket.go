@@ -9,11 +9,12 @@ import (
 
 const TICKET_DATA_NAME = "ticket"
 
-func (p *PostgresRepository) GetTicketListByUserID(userID string) ([]*models.Ticket, error) {
+func (p *PostgresRepository) GetTicketListByUser(user *models.User) ([]*models.Ticket, error) {
 	var ticketList []*models.Ticket
-	if err := errors.HandleDataNotFoundError(p.db.Where("owner_id = ?", userID).Find(&ticketList).Error, TICKET_DATA_NAME); err != nil {
+	if err := errors.HandleDataNotFoundError(p.db.Where("owner_id = ? or cpf = ?", user.ID, user.CPF).Find(&ticketList).Error, TICKET_DATA_NAME); err != nil {
 		return nil, err
 	}
+
 	return ticketList, nil
 }
 
