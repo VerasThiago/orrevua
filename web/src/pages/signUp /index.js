@@ -34,7 +34,7 @@ export default function SignUp() {
       });
   };
 
-  if (!submitted) {
+  if (submitted) {
     return (
       <div className="row h-100 m-0">
         <div className="bg-secondary d-flex flex-column align-items-center justify-content-center justify-content-lg-center pt-3 pt-lg-0">
