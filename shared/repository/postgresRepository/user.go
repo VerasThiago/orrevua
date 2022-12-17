@@ -40,7 +40,7 @@ func (p *PostgresRepository) GetUserWithTicketsByID(id string) (*models.User, er
 		return nil, err
 	}
 
-	if user.TicketList, err = p.GetTicketListByUserID(id); err != nil {
+	if user.TicketList, err = p.GetTicketListByUser(user); err != nil {
 		return nil, err
 	}
 

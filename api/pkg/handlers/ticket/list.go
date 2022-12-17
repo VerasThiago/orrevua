@@ -47,14 +47,8 @@ func (l *TicketListHandler) Handler(context *gin.Context) error {
 		return errors.CreateGenericErrorFromValidateError(errList)
 	}
 
-	if ticketList, err = l.GetRepository().GetTicketListByUserID(request.UserID); err != nil {
+	if ticketList, err = l.GetRepository().GetTicketListByUser(user); err != nil {
 		return err
-	}
-
-	if len(ticketList) == 0 {
-		if ticket, err := l.GetRepository().GetTicketByCPF(user.CPF); err == nil {
-			ticketList = append(ticketList, ticket)
-		}
 	}
 
 	context.JSON(http.StatusOK, gin.H{"status": "success", "data": ticketList})
