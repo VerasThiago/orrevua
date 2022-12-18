@@ -27,21 +27,19 @@ export function unformatCpf(cpf) {
   return cpf.split('.').join('').replace('-', '');
 }
 
-const errorMessagesMapping = {
-  'User not found': 'Usuário não encontrado',
-  'Ticket not found': 'Ingresso não encontrado',
-  'Email not found': 'Email não encontrado',
-  'Invalid password': 'Senha inválida',
-  'Unverified account': 'Conta não verificada',
-  "There was an error regenerating. We've been notified and will look into it!":
-    'Ocorreu um erro. Nós fomos notificados e vamos trabalhar para corrigí-lo!',
-  'Data is already being used': 'Esses dados já estão em uso'
+Object.searchPath = function (obj, path) {
+  path = path.replace(/\[(\w+)\]/g, '.$1');
+  path = path.replace(/^\./, '');
+  const keys = path.split('.');
+
+  for (let i = 0, n = keys.length; i < n; ++i) {
+    let key = keys[i];
+    if (key in obj) {
+      obj = obj[key];
+    } else {
+      return;
+    }
+  }
+
+  return obj;
 };
-
-export function parseErrorMessage(message) {
-  return errorMessagesMapping[message] || message || 'Ocorreu um erro inesperado';
-}
-
-export function formatEmail(email) {
-  return email.toLowerCase();
-}

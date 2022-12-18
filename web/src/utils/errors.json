@@ -1,0 +1,20 @@
+{
+  "pt-BR":{
+    "messages": {
+      "GENERIC_ERROR": "Ocorreu um erro. Nós fomos notificados e vamos trabalhar para corrigí-lo",
+      "UNVERIFIED_ACCOUNT": "Conta não verificada",
+      "INVALID_PASSWORD": "Senha inválida",
+      "DATA_ALREADY_BEGIN_USED": "{{var}} já está em uso",
+      "DATA_NOT_FOUND": "{{var}} não encontrado",
+      "INVALID_INPUT": "Dado inválido"
+    },
+    "models": {
+      "user": "Usuário",
+      "ticket": "Ingresso"
+    },
+    "fields": {
+      "email": "Email",
+      "cpf": "Cpf"
+    }
+  }
+}
