@@ -42,7 +42,7 @@ export default function AuthProvider({ children }) {
       return true;
     } else {
       removeToken();
-      if (responseBody.message) alertMessage('error', responseBody.message);
+      alertMessage('error', responseBody.error);
       return false;
     }
   };

@@ -13,12 +13,12 @@ export default function UserTicketHeader({ ticket, reloadTickets, hideDelete }) 
 
     apiRequest('api', `api/v0/ticket/delete`, 'delete', { id: ticket.id })
       .then(async (response) => {
-        const parsedResponse = await response.json();
+        const responseBody = await response.json();
         if (response.ok) {
-          if (parsedResponse.message) alertMessage('success', 'Ingresso deletado com sucesso');
+          if (responseBody.message) alertMessage('success', 'Ingresso deletado com sucesso');
           reloadTickets();
         } else {
-          if (parsedResponse.message) alertMessage('error', parsedResponse.message);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {

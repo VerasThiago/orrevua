@@ -16,15 +16,15 @@ export default function Users() {
     setLoading(true);
     apiRequest('login', 'login/v0/user/list', 'get')
       .then(async (response) => {
-        const dataUsers = await response.json();
+        const responseBody = await response.json();
         if (response.ok) {
-          setData(dataUsers.data);
+          setData(responseBody.data);
         } else {
-          if (dataUsers.message) alertMessage('error', dataUsers.message);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {
-        console.log('error');
+        alertMessage('error', null);
       })
       .finally(() => {
         setLoading(false);

@@ -23,10 +23,11 @@ export default function SignUp() {
   const onFinish = async (values) => {
     await apiRequest('login', 'login/v0/user/signup', 'post', values)
       .then(async (response) => {
+        const responseBody = await response.json();
         if (response.ok) {
           setSubmitted(true);
         } else {
-          alertMessage('error', null);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {
