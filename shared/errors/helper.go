@@ -79,6 +79,10 @@ func IsDuplicatedKeyError(err error) bool {
 	return false
 }
 
+func buildI18NPath(key, value string) string {
+	return strings.Join([]string{key, value}, ".")
+}
+
 func HandleDuplicateError(err error) error {
 	if err == nil {
 		return err
@@ -96,11 +100,17 @@ func HandleDuplicateError(err error) error {
 		}
 
 		return GenericError{
-			Code:     STATUS_BAD_REQUEST,
-			Err:      err,
-			Type:     DATA_ALREADY_BEGIN_USED.Type,
-			Message:  DATA_ALREADY_BEGIN_USED.Message,
-			MetaData: duplicatedData,
+			Code:    STATUS_BAD_REQUEST,
+			Err:     err,
+			Type:    DATA_ALREADY_BEGIN_USED.Type,
+			Message: DATA_ALREADY_BEGIN_USED.Message,
+			MetaData: map[string]interface{}{
+				"variables": []map[string]interface{}{
+					{
+						"path": buildI18NPath(I18N_FIELDS, duplicatedData),
+					},
+				},
+			},
 		}
 	}
 
@@ -114,11 +124,17 @@ func HandleDataNotFoundError(err error, dataName string) error {
 
 	if IsNotFoundError(err) {
 		return GenericError{
-			Code:     STATUS_NOT_FOUND,
-			Err:      err,
-			Type:     DATA_NOT_FOUND.Type,
-			Message:  DATA_NOT_FOUND.Message,
-			MetaData: dataName,
+			Code:    STATUS_NOT_FOUND,
+			Err:     err,
+			Type:    DATA_NOT_FOUND.Type,
+			Message: DATA_NOT_FOUND.Message,
+			MetaData: map[string]interface{}{
+				"variables": []map[string]interface{}{
+					{
+						"path": buildI18NPath(I18N_MODELS, dataName),
+					},
+				},
+			},
 		}
 	}
 

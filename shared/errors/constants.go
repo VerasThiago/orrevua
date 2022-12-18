@@ -12,4 +12,7 @@ var (
 	DATA_ALREADY_BEGIN_USED = ErrorData{Type: "DATA_ALREADY_BEGIN_USED", Message: "Data is already being used"}
 	DATA_NOT_FOUND          = ErrorData{Type: "DATA_NOT_FOUND", Message: "Data not found"}
 	INVALID_INPUT           = ErrorData{Type: "INVALID_INPUT", Message: "Invalid Input"}
+
+	I18N_MODELS = "models"
+	I18N_FIELDS = "fields"
 )
