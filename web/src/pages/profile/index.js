@@ -32,11 +32,12 @@ export default function Profile() {
       password: values.password
     })
       .then(async (response) => {
+        const responseBody = await response.json();
         if (response.ok) {
           reset();
           alertMessage('success', 'Sua senha foi alterada!');
         } else {
-          alertMessage('error', null);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {

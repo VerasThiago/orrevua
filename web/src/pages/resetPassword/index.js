@@ -47,6 +47,7 @@ export default function ResetPassword() {
       { Authorization: userToken }
     )
       .then(async (response) => {
+        const responseBody = await response.json();
         if (response.ok) {
           reset();
           const message = (
@@ -62,7 +63,7 @@ export default function ResetPassword() {
             navigate('/login', { replace: true, state: { from: location } });
           }, 4000);
         } else {
-          alertMessage('error', null);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {

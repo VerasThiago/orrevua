@@ -15,13 +15,14 @@ export default function VerifyEmail() {
     let token = params.token;
     apiRequest('login', 'login/v0/user/email/verify', 'PATCH', {}, { Authorization: token })
       .then(async (response) => {
+        const responseBody = await response.json();
         if (response.ok) {
           setUserIsVerified(true);
           setTimeout(() => {
             navigate('/login', { replace: true, state: { from: location } });
           }, 5000);
         } else {
-          alertMessage('error', null);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {

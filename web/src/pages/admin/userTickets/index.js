@@ -23,11 +23,11 @@ export default function AdminUserTickets() {
     setLoading(true);
     apiRequest('login', `login/v0/user/${userId}`, 'get')
       .then(async (response) => {
-        const parsedResponse = await response.json();
+        const responseBody = await response.json();
         if (response.ok) {
-          setUser(parsedResponse.data);
+          setUser(responseBody.data);
         } else {
-          if (parsedResponse.message) alertMessage('error', parsedResponse.message);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {

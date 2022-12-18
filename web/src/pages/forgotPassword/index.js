@@ -17,11 +17,12 @@ export default function ForgotPassword() {
   const onFinish = async (values) => {
     await apiRequest('login', 'login/v0/user/password/forget', 'post', values)
       .then(async (response) => {
+        const responseBody = await response.json();
         if (response.ok) {
           reset();
           alertMessage('success', 'Você recebeu um email com instruções para trocar sua senha');
         } else {
-          alertMessage('error', null);
+          alertMessage('error', responseBody.error);
         }
       })
       .catch(() => {
