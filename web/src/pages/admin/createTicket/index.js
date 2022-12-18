@@ -16,6 +16,7 @@ export default function AdminUserTickets() {
   const { userId } = useParams();
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showInfos, setShowInfos] = useState(true);
 
   const form = useForm();
   const {
@@ -26,6 +27,32 @@ export default function AdminUserTickets() {
   useEffect(() => {
     reloadTickets();
   }, []);
+
+  const setFormsValues = () => {
+    form.setValue('name', user.name);
+    form.setValue('email', user.email);
+    form.setValue('cpf', formatCpf(user.cpf));
+  };
+
+  useEffect(() => {
+    if (user && Object.keys(user).length > 0) {
+      if (showInfos === false) {
+        form.reset();
+      } else {
+        setFormsValues();
+      }
+    }
+  }, [showInfos]);
+
+  const handleChange = () => {
+    setShowInfos(!showInfos);
+  };
+
+  useEffect(() => {
+    if (user && Object.keys(user).length > 0) {
+      setFormsValues();
+    }
+  }, [user]);
 
   const reloadTickets = () => {
     setLoading(true);
@@ -102,6 +129,7 @@ export default function AdminUserTickets() {
                 placeholder="Nome"
                 icon={<IconUser />}
                 form={form}
+                readOnly={showInfos}
                 required
               />
             </div>
@@ -113,6 +141,7 @@ export default function AdminUserTickets() {
                 placeholder="E-mail"
                 icon={<IconEmail />}
                 form={form}
+                readOnly={showInfos}
                 required
               />
             </div>
@@ -124,8 +153,18 @@ export default function AdminUserTickets() {
                 icon={<IconBadge />}
                 form={form}
                 required
+                readOnly={showInfos}
                 mask="cpf"
               />
+            </div>
+            <div className="d-flex">
+              <input
+                className="align-self-start my-1 mx-2"
+                type={'checkbox'}
+                checked={showInfos}
+                onChange={handleChange}
+              />
+              <p>Ingresso para esse usuário</p>
             </div>
             <div style={{ maxWidth: '400px' }}>
               <Button
