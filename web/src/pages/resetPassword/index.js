@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
 
@@ -8,8 +7,6 @@ import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
 
 export default function ResetPassword() {
-  const [showPw, setShowPw] = useState(false);
-  const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [userToken, setUserToken] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,14 +26,6 @@ export default function ResetPassword() {
     let token = params.token;
     setUserToken(token);
   }, []);
-
-  const toggleShowPassword = () => {
-    setShowPw(!showPw);
-  };
-
-  const toggleShowConfirmPassword = () => {
-    setShowConfirmPw(!showConfirmPw);
-  };
 
   const onFinish = async (values) => {
     await apiRequest(
@@ -89,9 +78,8 @@ export default function ResetPassword() {
               <div className="mb-4">
                 <Input
                   name="password"
-                  type={showPw ? 'text' : 'password'}
+                  password_visibility
                   placeholder="Nova senha"
-                  icon={<IconVisibilityPassword onClick={toggleShowPassword} />}
                   form={form}
                   required
                   registerProps={{
@@ -106,9 +94,8 @@ export default function ResetPassword() {
               <div>
                 <Input
                   name="password_confirmation"
-                  type={showConfirmPw ? 'text' : 'password'}
+                  password_visibility
                   placeholder="Confirme sua senha"
-                  icon={<IconVisibilityPassword onClick={toggleShowConfirmPassword} />}
                   form={form}
                   required
                   registerProps={{

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import './index.scss';
 import { ReactComponent as IconUser } from '../../images/user.svg';
-import { ReactComponent as IconPassword } from '../../images/password.svg';
 import { useNavigate, useLocation, NavLink, Navigate } from 'react-router-dom';
 import { AuthContext } from '../../App';
 
@@ -54,9 +53,8 @@ export default function Login() {
               <div>
                 <Input
                   name="password"
-                  type="password"
+                  password_visibility
                   placeholder="Senha"
-                  icon={<IconPassword />}
                   form={form}
                   required
                   registerProps={{

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { ReactComponent as IconName } from '../../images/name_icon.svg';
 import { ReactComponent as IconCpf } from '../../images/badge.svg';
-import { ReactComponent as IconPassowrd } from '../../images/password.svg';
 
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
@@ -115,9 +114,8 @@ export default function SignUp() {
               <div className="mb-4">
                 <Input
                   name="password"
-                  type="password"
+                  password_visibility
                   placeholder="Senha"
-                  icon={<IconPassowrd />}
                   form={form}
                   required
                   registerProps={{
@@ -132,9 +130,8 @@ export default function SignUp() {
               <div>
                 <Input
                   name="password_confirmation"
-                  type="password"
+                  password_visibility
                   placeholder="Confirme sua senha"
-                  icon={<IconPassowrd />}
                   form={form}
                   registerProps={{
                     validate: (val) => {
