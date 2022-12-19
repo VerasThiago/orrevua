@@ -5,11 +5,11 @@ export function parseErrorMessage(error) {
     return errors['pt-BR']['messages']['GENERIC_ERROR'];
   }
 
-  if (typeof error === 'string') {
+  if (typeof error !== 'object' || error.$$typeof?.toString() === 'Symbol(react.element)') {
     return error;
   }
 
-  if (typeof error !== 'object' || !(error.type in errors['pt-BR']['messages'])) {
+  if (!(error.type in errors['pt-BR']['messages'])) {
     return errors['pt-BR']['messages']['GENERIC_ERROR'];
   }
 
