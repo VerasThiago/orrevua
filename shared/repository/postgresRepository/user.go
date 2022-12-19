@@ -1,6 +1,7 @@
 package postgresrepository
 
 import (
+	"github.com/cenkalti/backoff"
 	"github.com/verasthiago/tickets-generator/shared/errors"
 	"github.com/verasthiago/tickets-generator/shared/models"
 )
@@ -17,7 +18,12 @@ func (p *PostgresRepository) GetAllUsers() ([]*models.User, error) {
 
 func (p *PostgresRepository) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
-	if err := errors.HandleDataNotFoundError(p.db.Where("email = ?", email).First(&user).Error, USER_DATA_NAME); err != nil {
+	if err := backoff.Retry(
+		func() error {
+			return errors.HandleDataNotFoundError(p.db.Where("email = ?", email).First(&user).Error, USER_DATA_NAME)
+		},
+		backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 6),
+	); err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -48,7 +54,12 @@ func (p *PostgresRepository) GetUserWithTicketsByID(id string) (*models.User, er
 }
 
 func (p *PostgresRepository) CreateUser(user *models.User) error {
-	return errors.HandleDuplicateError(p.db.Create(user).Error)
+	return backoff.Retry(
+		func() error {
+			return errors.HandleDuplicateError(p.db.Create(user).Error)
+		},
+		backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 2),
+	)
 }
 
 func (p *PostgresRepository) UpdateUser(user *models.User) error {
