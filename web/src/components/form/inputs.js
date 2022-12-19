@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { formatCpf, unformatCpf } from '../../utils';
 
 export const emailPattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -40,7 +40,15 @@ function setMasks(registerProps, mask, setValue, props) {
   return registerProps;
 }
 
-export const Input = ({ icon, form, registerProps = {}, mask, required, ...props }) => {
+export const Input = ({
+  icon,
+  form,
+  registerProps = {},
+  mask,
+  required,
+  password_visibility,
+  ...props
+}) => {
   function renderErrors(errors, name) {
     if (errors && errors[name]) {
       return <span className="text-danger fs-6 ps-3">{errors[name].message}</span>;
@@ -56,6 +64,19 @@ export const Input = ({ icon, form, registerProps = {}, mask, required, ...props
   registerProps = setMasks(registerProps, mask, setValue, props);
 
   if (required) registerProps = { ...registerProps, required: errorMessages.required };
+
+  if (password_visibility) {
+    const [showPassword, setShowPassword] = useState(false);
+
+    icon = (
+      <img
+        src={showPassword ? '/images/visibility_on.svg' : '/images/visibility_off.svg'}
+        onClick={() => setShowPassword(!showPassword)}
+      />
+    );
+
+    props.type = showPassword ? 'text' : 'password';
+  }
 
   return (
     <div>

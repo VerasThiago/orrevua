@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from '../../App';
 import Header from '../../components/header';
 import { InputIcon } from '../../components/form/inputs';
 import { ReactComponent as IconBadge } from '../../images/badge.svg';
 import { ReactComponent as IconEmail } from '../../images/alternate_email.svg';
 import { ReactComponent as IconUser } from '../../images/user.svg';
-import { ReactComponent as IconVisibilityPassword } from '../../images/visibility_off.svg';
 import { formatCpf } from '../../utils';
 import { apiRequest } from '../../services/api';
 import alertMessage from '../../components/alertMessage';
@@ -14,9 +13,6 @@ import { useForm } from 'react-hook-form';
 import { Input, Button, errorMessages } from '../../components/form/inputs';
 
 export default function Profile() {
-  const [showPw, setShowPw] = useState(false);
-  const [showConfirmPw, setShowConfirmPw] = useState(false);
-
   const { userData } = useContext(AuthContext);
 
   const form = useForm();
@@ -43,14 +39,6 @@ export default function Profile() {
       .catch(() => {
         alertMessage('error', null);
       });
-  };
-
-  const toggleShowPassword = () => {
-    setShowPw(!showPw);
-  };
-
-  const toggleShowConfirmPassword = () => {
-    setShowConfirmPw(!showConfirmPw);
   };
 
   return (
@@ -109,9 +97,8 @@ export default function Profile() {
             <div className="col-12">
               <Input
                 name="password"
-                type={showPw ? 'text' : 'password'}
+                password_visibility
                 placeholder="Nova senha"
-                icon={<IconVisibilityPassword onClick={toggleShowPassword} />}
                 form={form}
                 required
                 registerProps={{
@@ -126,9 +113,8 @@ export default function Profile() {
             <div className="col-12">
               <Input
                 name="password_confirmation"
-                type={showConfirmPw ? 'text' : 'password'}
+                password_visibility
                 placeholder="Confirme sua senha"
-                icon={<IconVisibilityPassword onClick={toggleShowConfirmPassword} />}
                 form={form}
                 registerProps={{
                   validate: (val) => {
