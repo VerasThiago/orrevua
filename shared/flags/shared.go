@@ -52,7 +52,7 @@ type EnvFileConfig struct {
 	Type string
 }
 
-func getDeployEnv() string {
+func GetDeployEnv() string {
 	env := os.Getenv(DEPLOY_ENV)
 	if _, ok := AVAILABLE_ENV_VARS_MAP[string(env)]; !ok {
 		panic("invalid ORREVUA_DEPLOY_ENV env variable i.e. [production, local, docker]")
@@ -61,7 +61,7 @@ func getDeployEnv() string {
 }
 
 func GetFileEnvConfigFromDeployEnv(serviceName string) *EnvFileConfig {
-	deployEnv := getDeployEnv()
+	deployEnv := GetDeployEnv()
 
 	var filePath string = ENV_FILE_PATH
 	fileName := fmt.Sprintf("%v.%v.env", serviceName, deployEnv)
@@ -94,7 +94,7 @@ func (f *SharedFlags) InitFromViper(config *EnvFileConfig) (*SharedFlags, error)
 		return nil, err
 	}
 
-	flags.Deploy = getDeployEnv()
+	flags.Deploy = GetDeployEnv()
 
 	return &flags, nil
 }

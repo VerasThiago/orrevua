@@ -109,7 +109,7 @@ var UserList []*models.User = []*models.User{
 func PopulateDB() {
 	sharedEnvConfigFile := &shared.EnvFileConfig{
 		Path: "../.env",
-		Name: "shared.local",
+		Name: fmt.Sprintf("shared.%+v", shared.GetDeployEnv()),
 		Type: "env",
 	}
 

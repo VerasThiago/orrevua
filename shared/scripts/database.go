@@ -14,7 +14,7 @@ import (
 func MigrateUserDatabase() {
 	sharedEnvConfigFile := &shared.EnvFileConfig{
 		Path: "../.env",
-		Name: "shared.local",
+		Name: fmt.Sprintf("shared.%+v", shared.GetDeployEnv()),
 		Type: "env",
 	}
 
@@ -33,7 +33,7 @@ func MigrateUserDatabase() {
 func MigrateApiDatabase() {
 	sharedEnvConfigFile := &shared.EnvFileConfig{
 		Path: "../.env",
-		Name: "shared.local",
+		Name: fmt.Sprintf("shared.%+v", shared.GetDeployEnv()),
 		Type: "env",
 	}
 
