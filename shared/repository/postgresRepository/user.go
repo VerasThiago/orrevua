@@ -22,7 +22,7 @@ func (p *PostgresRepository) GetUserByEmail(email string) (*models.User, error) 
 		func() error {
 			return errors.HandleDataNotFoundError(p.db.Where("email = ?", email).First(&user).Error, USER_DATA_NAME)
 		},
-		backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 6),
+		backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 2),
 	); err != nil {
 		return nil, err
 	}
