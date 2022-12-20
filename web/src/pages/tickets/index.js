@@ -43,7 +43,16 @@ export default function Tickets() {
 
       <div className="row gap-4 m-0">
         {!user.ticketlist || user.ticketlist.length === 0 ? (
-          <div className="text-center fs-2">Você não possui nenhum ingresso :(</div>
+          <div className="row justify-content-center align-items-center">
+            <div className="col-12 fs-2 mb-4 text-center">Você ainda não possui ingressos</div>
+            <div className="col-12" style={{ maxWidth: '350px' }}>
+              <img
+                src="/images/empty-tickets.svg"
+                className="img-fluid"
+                alt="Empty tickets image"
+              />
+            </div>
+          </div>
         ) : (
           user.ticketlist.map(function (ticket) {
             return (
