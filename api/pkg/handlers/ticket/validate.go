@@ -8,7 +8,6 @@ import (
 	validator "github.com/verasthiago/tickets-generator/api/pkg/validator/ticket"
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	"github.com/verasthiago/tickets-generator/shared/errors"
-	"github.com/verasthiago/tickets-generator/shared/models"
 	postgresrepository "github.com/verasthiago/tickets-generator/shared/repository/postgresRepository"
 )
 
@@ -27,7 +26,6 @@ func (c *TicketValidateHandler) InitFromBuilder(builder builder.Builder) *Ticket
 
 func (c *TicketValidateHandler) Handler(context *gin.Context) error {
 	var err error
-	var ticket *models.Ticket
 	var request *validator.ValidateRequest
 
 	if err = context.ShouldBindJSON(&request); err != nil {
@@ -68,10 +66,10 @@ func (c *TicketValidateHandler) Handler(context *gin.Context) error {
 		}
 	}
 
-	if ticket, err = c.GetRepository().ValidateTicketByCPF(request.TicketCPF); err != nil {
+	if err = c.GetRepository().ValidateTicketByCPF(request.TicketCPF); err != nil {
 		return err
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"status": "success", "name": ticket.Name})
+	context.JSON(http.StatusCreated, gin.H{"status": "success", "name": request.Ticket.Name})
 	return nil
 }
