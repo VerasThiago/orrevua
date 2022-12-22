@@ -21,6 +21,6 @@ type Repository interface {
 	GetTicketByID(id string) (*models.Ticket, error)
 	GetTicketByCPF(cpf string) (*models.Ticket, error)
 	DeleteTicketByID(id string) error
-	ValidateTicketByCPF(cpf string) (*models.Ticket, error)
+	ValidateTicketByCPF(cpf string) error
 	MigrateTicket(model *models.Ticket) error
 }
