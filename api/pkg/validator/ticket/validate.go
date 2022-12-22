@@ -1,8 +1,6 @@
 package ticket
 
 import (
-	"fmt"
-
 	"github.com/thedevsaddam/govalidator"
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	"github.com/verasthiago/tickets-generator/shared/models"
@@ -35,10 +33,6 @@ func (d *ValidateRequest) ValidateSemantic() []string {
 	if !d.Token.User.IsAdmin {
 		errors = append(errors, "Only admin can execute this operation")
 		return errors
-	}
-
-	if d.Ticket.IsUsed {
-		errors = append(errors, fmt.Sprintf("Ticket already validated at %+v", d.Ticket.UsedTime))
 	}
 
 	return errors
