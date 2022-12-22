@@ -5,9 +5,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/verasthiago/tickets-generator/api/pkg/builder"
-	"github.com/verasthiago/tickets-generator/api/pkg/validator/ticket"
+	validator "github.com/verasthiago/tickets-generator/api/pkg/validator/ticket"
 	"github.com/verasthiago/tickets-generator/shared/auth"
 	"github.com/verasthiago/tickets-generator/shared/errors"
+	"github.com/verasthiago/tickets-generator/shared/models"
+	postgresrepository "github.com/verasthiago/tickets-generator/shared/repository/postgresRepository"
 )
 
 type TicketValidateAPI interface {
@@ -25,7 +27,8 @@ func (c *TicketValidateHandler) InitFromBuilder(builder builder.Builder) *Ticket
 
 func (c *TicketValidateHandler) Handler(context *gin.Context) error {
 	var err error
-	var request *ticket.ValidateRequest
+	var ticket *models.Ticket
+	var request *validator.ValidateRequest
 
 	if err = context.ShouldBindJSON(&request); err != nil {
 		return err
@@ -47,10 +50,28 @@ func (c *TicketValidateHandler) Handler(context *gin.Context) error {
 		return errors.CreateGenericErrorFromValidateError(errList)
 	}
 
-	if err = c.GetRepository().ValidateTicketByCPF(request.TicketCPF); err != nil {
+	//TODO: Generate this error inside validate semantic
+	if request.Ticket.IsUsed {
+		return errors.GenericError{
+			Code:    errors.STATUS_BAD_REQUEST,
+			Type:    errors.DATA_ALREADY_BEGIN_USED.Type,
+			Message: errors.DATA_ALREADY_BEGIN_USED.Message,
+			MetaData: map[string]interface{}{
+				"time": request.Ticket.UsedTime.String(),
+				"name": request.Ticket.Name,
+				"variables": []map[string]interface{}{
+					{
+						"path": errors.BuildI18NPath(errors.I18N_FIELDS, postgresrepository.TICKET_DATA_NAME),
+					},
+				},
+			},
+		}
+	}
+
+	if ticket, err = c.GetRepository().ValidateTicketByCPF(request.TicketCPF); err != nil {
 		return err
 	}
 
-	context.JSON(http.StatusCreated, gin.H{"status": "success"})
+	context.JSON(http.StatusCreated, gin.H{"status": "success", "name": ticket.Name})
 	return nil
 }
