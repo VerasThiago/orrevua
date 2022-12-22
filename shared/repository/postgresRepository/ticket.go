@@ -42,8 +42,12 @@ func (p *PostgresRepository) DeleteTicketByID(id string) error {
 	return errors.HandleDataNotFoundError(p.db.Where("id = ?", id).Delete(&models.Ticket{}).Error, TICKET_DATA_NAME)
 }
 
-func (p *PostgresRepository) ValidateTicketByCPF(cpf string) error {
-	return errors.HandleDataNotFoundError(p.db.Model(&models.Ticket{}).Where("cpf = ?", cpf).Updates(&models.Ticket{IsUsed: true, UsedTime: time.Now()}).Error, TICKET_DATA_NAME)
+func (p *PostgresRepository) ValidateTicketByCPF(cpf string) (*models.Ticket, error) {
+	ticket := &models.Ticket{}
+	if err := errors.HandleDataNotFoundError(p.db.Model(ticket).Where("cpf = ?", cpf).Updates(&models.Ticket{IsUsed: true, UsedTime: time.Now()}).Error, TICKET_DATA_NAME); err != nil {
+		return nil, err
+	}
+	return ticket, nil
 }
 
 func (p *PostgresRepository) MigrateTicket(model *models.Ticket) error {
