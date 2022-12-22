@@ -79,7 +79,7 @@ func IsDuplicatedKeyError(err error) bool {
 	return false
 }
 
-func buildI18NPath(key, value string) string {
+func BuildI18NPath(key, value string) string {
 	return strings.Join([]string{key, value}, ".")
 }
 
@@ -107,7 +107,7 @@ func HandleDuplicateError(err error) error {
 			MetaData: map[string]interface{}{
 				"variables": []map[string]interface{}{
 					{
-						"path": buildI18NPath(I18N_FIELDS, duplicatedData),
+						"path": BuildI18NPath(I18N_FIELDS, duplicatedData),
 					},
 				},
 			},
@@ -131,7 +131,7 @@ func HandleDataNotFoundError(err error, dataName string) error {
 			MetaData: map[string]interface{}{
 				"variables": []map[string]interface{}{
 					{
-						"path": buildI18NPath(I18N_MODELS, dataName),
+						"path": BuildI18NPath(I18N_MODELS, dataName),
 					},
 				},
 			},
