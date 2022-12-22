@@ -84,8 +84,8 @@ export default function Validate() {
           if (responseBody.error.type === 'DATA_NOT_FOUND') {
             setStatus('error', responseBody.name);
           } else if (responseBody.error.type === 'DATA_ALREADY_BEGIN_USED') {
-            const time = new Date(responseBody.error.metaData.time).toLocaleString('pt-BR');
-            setStatus('alreadyUsed', responseBody.name, time);
+            const time = new Date(responseBody.error.metaData.time).toLocaleTimeString('pt-BR');
+            setStatus('alreadyUsed', responseBody.error.metaData.name, time);
           }
         }
       })
@@ -131,9 +131,9 @@ export default function Validate() {
         <div className="d-flex justify-content-center">
           {loading && <Loading />}
           {statusImage && !loading && (
-            <div>
-              <div className="fs-1 text-center fw-bold">{statusMessageName}</div>
-              <div className="fs-1 text-center fw-bold">{statusMessage}</div>
+            <div className="text-center">
+              <div className="fs-1 fw-bold">{statusMessageName}</div>
+              <div className="fs-1 fw-bold">{statusMessage}</div>
               <img src={statusImage} alt="Validation status" className="img-fluid" />
             </div>
           )}
