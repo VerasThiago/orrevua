@@ -5,6 +5,7 @@ import { ReactComponent as LogoutIcon } from '../images/logout.svg';
 import { ReactComponent as TicketIcon } from '../images/ticket.svg';
 import { ReactComponent as SettingsIcon } from '../images/settings.svg';
 import { ReactComponent as UserIcon } from '../images/user.svg';
+import { ReactComponent as QrCodeIcon } from '../images/qr_code_validation.svg';
 import { AuthContext } from '../App';
 
 import 'bootstrap/js/src/collapse.js';
@@ -33,6 +34,13 @@ export default function Menu() {
       icon: <SettingsIcon />,
       path: '/admin/users',
       active: location.pathname.includes('/admin/users'),
+      admin: true
+    },
+    {
+      title: 'Validar',
+      icon: <QrCodeIcon />,
+      path: '/admin/validate',
+      active: location.pathname.includes('/admin/validate'),
       admin: true
     }
   ];

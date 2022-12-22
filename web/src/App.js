@@ -12,6 +12,7 @@ import Profile from './pages/profile';
 
 import AdminCreateTicket from './pages/admin/createTicket';
 import AdminUserTickets from './pages/admin/userTickets';
+import AdminValidate from './pages/admin/validate';
 
 import PrivateRoute from './components/privateRoute';
 
@@ -100,6 +101,15 @@ export default function App() {
             element={
               <PrivateRoute admin>
                 <Users />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            exact
+            path="/admin/validate"
+            element={
+              <PrivateRoute admin>
+                <AdminValidate />
               </PrivateRoute>
             }
           />
